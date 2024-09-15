@@ -32,6 +32,7 @@ import { CacheProvider, ThemeProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { PlatformProvider } from "./PlatformProvider";
 
 let restartRequestedBeforeConnected = false;
 let gracefullyRestart = () => {
@@ -193,24 +194,26 @@ export default function MainProvider() {
             <PersistGate loading={null} persistor={persistor}>
                 <ApolloProvider client={client}>
                     <Router>
-                        <ThemeProvider theme={theme}>
-                            <StyledEngineProvider injectFirst>
-                                <CacheProvider value={emotionCache}>
-                                    <LocalizationProvider
-                                        dateAdapter={AdapterDateFns}
-                                    >
-                                        <HelmetProvider>
-                                            <AuthProvider>
-                                                <AppModeProvider>
-                                                    <CssBaseline />
-                                                    <App />
-                                                </AppModeProvider>
-                                            </AuthProvider>
-                                        </HelmetProvider>
-                                    </LocalizationProvider>
-                                </CacheProvider>
-                            </StyledEngineProvider>
-                        </ThemeProvider>
+                        <PlatformProvider>
+                            <ThemeProvider theme={theme}>
+                                <StyledEngineProvider injectFirst>
+                                    <CacheProvider value={emotionCache}>
+                                        <LocalizationProvider
+                                            dateAdapter={AdapterDateFns}
+                                        >
+                                            <HelmetProvider>
+                                                <AuthProvider>
+                                                    <AppModeProvider>
+                                                        <CssBaseline />
+                                                        <App />
+                                                    </AppModeProvider>
+                                                </AuthProvider>
+                                            </HelmetProvider>
+                                        </LocalizationProvider>
+                                    </CacheProvider>
+                                </StyledEngineProvider>
+                            </ThemeProvider>
+                        </PlatformProvider>
                     </Router>
                 </ApolloProvider>
             </PersistGate>

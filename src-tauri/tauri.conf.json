@@ -8,6 +8,11 @@
         "beforeBuildCommand": "bun run build",
         "frontendDist": "../dist"
     },
+    "plugins": {
+        "platform": {
+            "all": true
+        }
+    },
     "app": {
         "windows": [
             {
@@ -39,6 +44,7 @@
         ],
         "iOS": {
             "developmentTeam": "HQ5FZ3HQC5"
-        }
+        },
+        "category": "Social"
     }
 }

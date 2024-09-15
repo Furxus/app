@@ -14,11 +14,12 @@ import Layout from "./shared/Layout";
 import ChannelPage from "./servers/pages/Channel.page";
 import PostsTrending from "./posts/pages/PostsTrending";
 import PostsFollowing from "./posts/pages/PostsFollowing";
-import { useAppMode } from "./hooks";
+import { useAppMode, usePlatform } from "./hooks";
 import SEO from "./shared/SEO";
 
 const App = () => {
     const { appMode } = useAppMode();
+    usePlatform();
     const [apiStatus, setApiStatus] = useState(false);
 
     const { loading, error } = useQuery(APIStatus, {
