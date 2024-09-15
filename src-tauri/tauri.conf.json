@@ -1,5 +1,5 @@
 {
-    "productName": "furxus",
+    "productName": "Furxus",
     "version": "1.0.0",
     "identifier": "com.furxus.app",
     "build": {
@@ -12,12 +12,19 @@
         "windows": [
             {
                 "title": "Furxus",
-                "width": 800,
-                "height": 600
+                "width": 1280,
+                "height": 720,
+                "minWidth": 640,
+                "minHeight": 480,
+                "decorations": true
             }
         ],
         "security": {
             "csp": null
+        },
+        "trayIcon": {
+            "tooltip": "Furxus",
+            "iconPath": "icons/icon.ico"
         }
     },
     "bundle": {
@@ -29,6 +36,9 @@
             "icons/128x128@2x.png",
             "icons/icon.icns",
             "icons/icon.ico"
-        ]
+        ],
+        "iOS": {
+            "developmentTeam": "HQ5FZ3HQC5"
+        }
     }
 }

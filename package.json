@@ -19,6 +19,7 @@
         "@mui/x-date-pickers": "^7.17.0",
         "@reduxjs/toolkit": "^2.2.7",
         "@tauri-apps/api": ">=2.0.0-rc.0",
+        "@tauri-apps/plugin-os": "^2.0.0-rc.1",
         "@tauri-apps/plugin-shell": ">=2.0.0-rc.0",
         "apollo-upload-client": "^18.0.1",
         "classnames": "^2.5.1",
