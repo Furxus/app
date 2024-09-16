@@ -10,18 +10,22 @@ import {
 import { FaHashtag } from "react-icons/fa";
 import { Channel, Server } from "@furxus/types";
 import Stack from "@mui/material/Stack";
+import SidebarProfile from "./SidebarProfile";
 
 const ServerSidebar = ({ server }: { server: Server }) => {
     const navigate = useNavigate();
     const { channelId } = useParams();
 
-    const { subscribeToMore, data: { getChannels: channels = [] } = {} } =
-        useQuery(GetChannels, {
-            variables: {
-                serverId: server?.id,
-                type: ["text", "voice"],
-            },
-        });
+    const {
+        loading,
+        subscribeToMore,
+        data: { getChannels: channels = [] } = {},
+    } = useQuery(GetChannels, {
+        variables: {
+            serverId: server?.id,
+            type: ["text", "voice"],
+        },
+    });
 
     useEffect(() => {
         if (!channelId && channels.length > 0) {
@@ -88,8 +92,9 @@ const ServerSidebar = ({ server }: { server: Server }) => {
                     </span>
                 </div>
                 <SidebarChannels server={server} channels={channels} />
+                <SidebarProfile />
             </Stack>
-            {channels.length === 0 && (
+            {!loading && channels.length === 0 && (
                 <Stack
                     alignItems="center"
                     justifyContent="center"
