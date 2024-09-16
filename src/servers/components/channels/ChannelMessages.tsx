@@ -5,7 +5,6 @@ import {
     OnMessageDeleted,
     OnMessageEdited,
 } from "../../../gql/messages";
-import ScrollContainer from "../../../shared/components/ScrollContainer";
 import { useEffect, useRef } from "react";
 import MessageItem from "../messages/MessageItem";
 import { MessageSkeleton } from "../../../exports";
