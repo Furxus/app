@@ -6,11 +6,12 @@ import {
     OnMessageEdited,
 } from "../../../gql/messages";
 import ScrollContainer from "../../../shared/components/ScrollContainer";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import MessageItem from "../messages/MessageItem";
 import { MessageSkeleton } from "../../../exports";
 import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";
+import ScrollableFeed from "react-scrollable-feed";
 
 const ChannelMessages = ({
     serverId,
@@ -19,6 +20,8 @@ const ChannelMessages = ({
     serverId: string;
     channelId: string;
 }) => {
+    const scrollRef = useRef<ScrollableFeed>(null);
+
     const {
         loading,
         subscribeToMore,
@@ -100,6 +103,10 @@ const ChannelMessages = ({
         return () => {};
     });
 
+    useEffect(() => {
+        scrollRef.current?.scrollToBottom();
+    }, []);
+
     const EmptyMessage = () => (
         <Stack justifyContent="center" alignItems="center">
             <span className="text-xl">No messages</span>
@@ -115,11 +122,15 @@ const ChannelMessages = ({
             justifyContent="center"
             className="flex-grow overflow-y-auto"
         >
-            {loading && <MessageSkeleton />}
-            {messages.length === 0 && !loading ? (
+            {loading ? (
+                <MessageSkeleton />
+            ) : messages.length === 0 ? (
                 <EmptyMessage />
             ) : (
-                <ScrollContainer className="flex flex-col overflow-y-auto">
+                <ScrollableFeed
+                    ref={scrollRef}
+                    className="flex flex-col overflow-y-auto"
+                >
                     {messages.map((message: any, i: number) => (
                         <Stack
                             key={message.id}
@@ -134,7 +145,7 @@ const ChannelMessages = ({
                             />
                         </Stack>
                     ))}
-                </ScrollContainer>
+                </ScrollableFeed>
             )}
         </Stack>
     );
