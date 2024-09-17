@@ -1,7 +1,7 @@
 {
     "productName": "Furxus",
     "version": "1.0.0",
-    "identifier": "com.furxus.app",
+    "identifier": "com.furxus.Furxus",
     "build": {
         "beforeDevCommand": "bun run dev",
         "devUrl": "http://localhost:1420",

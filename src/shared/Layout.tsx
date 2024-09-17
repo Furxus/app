@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./web/components/Sidebar";
 import { Outlet } from "react-router-dom";
 
 const Layout = () => {

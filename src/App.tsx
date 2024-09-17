@@ -1,19 +1,19 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 
-import { LoginPage, NotFound, RegisterPage } from "./shared/pages";
+import { LoginPage, NotFound, RegisterPage } from "./shared/web/pages";
 import { useQuery } from "@apollo/client";
 import { APIStatus } from "./gql/general";
 import { useEffect, useState } from "react";
-import APILoading from "./shared/components/status/APILoading";
-import APIDown from "./shared/components/status/APIDown";
+import APILoading from "./shared/web/components/status/APILoading";
+import APIDown from "./shared/web/components/status/APIDown";
 
-import PostPage from "./posts/pages/Post";
-import ServerLayout from "./servers/ServerLayout";
-import PostLayout from "./posts/PostsLayout";
+import PostPage from "./posts/web/pages/Post";
+import ServerLayout from "./servers/web/ServerLayout";
+import PostLayout from "./posts/web/PostsLayout";
 import Layout from "./shared/Layout";
-import ChannelPage from "./servers/pages/Channel.page";
-import PostsTrending from "./posts/pages/PostsTrending";
-import PostsFollowing from "./posts/pages/PostsFollowing";
+import ChannelPage from "./servers/web/pages/Channel.page";
+import PostsTrending from "./posts/web/pages/PostsTrending";
+import PostsFollowing from "./posts/web/pages/PostsFollowing";
 import { useAppMode, usePlatform } from "./hooks";
 import SEO from "./shared/SEO";
 

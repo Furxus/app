@@ -110,7 +110,7 @@ const retryLink = new RetryLink({
         jitter: true,
     },
     attempts: {
-        max: 5,
+        max: Infinity,
         retryIf: (error) => !!error,
     },
 });

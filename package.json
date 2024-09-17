@@ -57,6 +57,7 @@
         "twemoji": "^14.0.2",
         "unified": "^11.0.5",
         "unist-util-visit": "^5.0.0",
+        "vite-tsconfig-paths": "^5.0.1",
         "yup": "^1.4.0"
     },
     "devDependencies": {
