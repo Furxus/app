@@ -1,3 +1,3 @@
-package com.furxus.app
+package com.furxus.Furxus
 
 class MainActivity : TauriActivity()
