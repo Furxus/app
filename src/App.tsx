@@ -1,25 +1,14 @@
-import { Outlet, Route, Routes } from "react-router-dom";
-
-import { LoginPage, NotFound, RegisterPage } from "./shared/web/pages";
 import { useQuery } from "@apollo/client";
 import { APIStatus } from "./gql/general";
 import { useEffect, useState } from "react";
-import APILoading from "./shared/web/components/status/APILoading";
-import APIDown from "./shared/web/components/status/APIDown";
+import APILoading from "./shared/components/status/APILoading";
 
-import PostPage from "./posts/web/pages/Post";
-import ServerLayout from "./servers/web/ServerLayout";
-import PostLayout from "./posts/web/PostsLayout";
-import Layout from "./shared/Layout";
-import ChannelPage from "./servers/web/pages/Channel.page";
-import PostsTrending from "./posts/web/pages/PostsTrending";
-import PostsFollowing from "./posts/web/pages/PostsFollowing";
-import { useAppMode, usePlatform } from "./hooks";
+import { useAppMode } from "./hooks";
 import SEO from "./shared/SEO";
+import WebRoutes from "./shared/Web.routes";
 
 const App = () => {
     const { appMode } = useAppMode();
-    usePlatform();
     const [apiStatus, setApiStatus] = useState(false);
 
     const { loading, error } = useQuery(APIStatus, {
@@ -32,7 +21,6 @@ const App = () => {
     }, [error]);
 
     if (loading) return <APILoading />;
-    if (error) return <APIDown />;
 
     return (
         <>
@@ -52,26 +40,7 @@ const App = () => {
                         : "/logo.png"
                 }
             />
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route path="/servers" element={<ServerLayout />}>
-                        <Route path=":serverId" element={<Outlet />}>
-                            <Route
-                                path=":channelId"
-                                element={<ChannelPage />}
-                            />
-                        </Route>
-                    </Route>
-                    <Route path="/posts" element={<PostLayout />}>
-                        <Route path="trending" element={<PostsTrending />} />
-                        <Route path="following" element={<PostsFollowing />} />
-                        <Route path=":postId" element={<PostPage />} />
-                    </Route>
-                </Route>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+            <WebRoutes />
         </>
     );
 };
