@@ -1,7 +1,7 @@
 import { Outlet, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
-import ServerLayout from "@/servers/web/ServerLayout";
-import ChannelPage from "@/servers/web/pages/Channel.page";
+import ServerLayout from "@/servers/ServerLayout";
+import ChannelPage from "@/servers/pages/Channel.page";
 import PostLayout from "@/posts/PostsLayout";
 import PostPage from "@/posts/pages/Post";
 import PostsFollowing from "@/posts/pages/PostsFollowing";
