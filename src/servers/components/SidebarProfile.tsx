@@ -1,9 +1,10 @@
-import { Avatar, IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { useAuth } from "@hooks";
 import { FaCogs } from "react-icons/fa";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { MouseEvent, useState } from "react";
-import ProfileSettings from "@/shared/components/ProfileSettings";
+
+import ProfileSettings from "@/shared/components/profile/ProfileSettings";
 
 const SidebarProfile = () => {
     const { user, logout } = useAuth();
@@ -49,14 +50,19 @@ const SidebarProfile = () => {
                     className=" w-full"
                     justifyContent="flex-end"
                 >
-                    <IconButton
-                        onContextMenu={showMenu}
-                        onClick={() => setModalOpen(true)}
-                        size="small"
-                        className="hover:animate-pulse"
+                    <Tooltip
+                        arrow
+                        title={<Typography>User Settings</Typography>}
                     >
-                        <FaCogs />
-                    </IconButton>
+                        <IconButton
+                            onContextMenu={showMenu}
+                            onClick={() => setModalOpen(true)}
+                            size="small"
+                            className="hover:animate-pulse"
+                        >
+                            <FaCogs />
+                        </IconButton>
+                    </Tooltip>
                 </Stack>
             </Stack>
             <ProfileSettings open={modalOpen} setOpen={setModalOpen} />

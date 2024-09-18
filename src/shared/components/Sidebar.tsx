@@ -5,9 +5,15 @@ import classNames from "classnames";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { Tooltip, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
     const { appMode, changeAppMode } = useAppMode();
+    const [bounce, setBounce] = useState(true);
+
+    useEffect(() => {
+        if (bounce) setTimeout(() => setBounce(false), 4500);
+    }, []);
 
     return (
         <Stack
@@ -32,6 +38,7 @@ const Sidebar = () => {
                     className={classNames("cursor-pointer", {
                         "border-2 border-blue-500/60": appMode === "posts",
                         "border-2 border-green-500/60": appMode === "servers",
+                        "animate-bounce": bounce,
                     })}
                     src={appMode === "servers" ? "/logo2.png" : "/logo.png"}
                     sx={{ width: 64, height: 64 }}

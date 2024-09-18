@@ -21,6 +21,14 @@ export const LoginUser = gql`
                 mode
                 theme
             }
+            activity {
+                status
+                text
+                lastLogin
+                lastLoginTimestamp
+                lastActive
+                lastActiveTimestamp
+            }
             type
         }
     }

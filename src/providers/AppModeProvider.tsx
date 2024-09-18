@@ -8,22 +8,24 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 
+type AppModes = "servers" | "posts";
+
 export const AppModeContext = createContext<{
-    appMode: string | null;
-    setAppMode: (appMode: string) => void;
-    changeAppMode: (appMode: string) => void;
+    appMode: AppModes;
+    setAppMode: (appMode: AppModes) => void;
+    changeAppMode: (appMode: AppModes) => void;
 }>({
     appMode: "servers",
-    setAppMode: (_appMode: string) => void 0,
-    changeAppMode: (_appMode: string) => void 0,
+    setAppMode: (_appMode: AppModes) => void 0,
+    changeAppMode: (_appMode: AppModes) => void 0,
 });
 
 export function AppModeProvider({ children }: PropsWithChildren) {
     const location = useLocation();
     const navigate = useNavigate();
     const { isLoggedIn, user, refresh } = useContext(AuthContext);
-    const [appMode, setAppMode] = useState<string | null>(
-        user?.preferences?.mode ?? null
+    const [appMode, setAppMode] = useState<AppModes>(
+        user?.preferences?.mode ?? "servers"
     );
 
     useEffect(() => {
@@ -61,7 +63,7 @@ export function AppModeProvider({ children }: PropsWithChildren) {
         return () => {};
     }, [isLoggedIn, appMode, location.pathname, user]);
 
-    const changeAppMode = (appMode: string) => {
+    const changeAppMode = (appMode: AppModes) => {
         setAppMode(appMode);
         navigate(appMode);
     };
