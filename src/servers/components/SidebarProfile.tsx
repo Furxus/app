@@ -2,10 +2,12 @@ import { Avatar, IconButton, Stack, Typography } from "@mui/material";
 import { useAuth } from "@hooks";
 import { FaCogs } from "react-icons/fa";
 import { Item, Menu, useContextMenu } from "react-contexify";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
+import ProfileSettings from "@/shared/components/ProfileSettings";
 
 const SidebarProfile = () => {
     const { user, logout } = useAuth();
+    const [modalOpen, setModalOpen] = useState(false);
 
     const { show } = useContextMenu();
 
@@ -49,6 +51,7 @@ const SidebarProfile = () => {
                 >
                     <IconButton
                         onContextMenu={showMenu}
+                        onClick={() => setModalOpen(true)}
                         size="small"
                         className="hover:animate-pulse"
                     >
@@ -56,6 +59,7 @@ const SidebarProfile = () => {
                     </IconButton>
                 </Stack>
             </Stack>
+            <ProfileSettings open={modalOpen} setOpen={setModalOpen} />
             <Menu id="sidebar-profile-menu">
                 <Item onClick={() => logout()}>Logout</Item>
             </Menu>
