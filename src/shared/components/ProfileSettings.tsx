@@ -1,7 +1,7 @@
 import { useAppMode } from "@/hooks";
 import { Modal, Stack } from "@mui/material";
 import classNames from "classnames";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 const ProfileSettings = ({
     open,
