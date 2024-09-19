@@ -1,6 +1,6 @@
 import { useAppMode } from "@/hooks";
 import { ProfileSettingsPages } from "@/utils";
-import { Button, IconButton, Modal, Stack } from "@mui/material";
+import { IconButton, Modal, Stack } from "@mui/material";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
 
