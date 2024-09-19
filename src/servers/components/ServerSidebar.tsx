@@ -87,7 +87,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
                         {server.name}
                     </span>
                 </div>
-                <SidebarChannels server={server} channels={channels} />
+                <SidebarChannels server={server} />
                 <SidebarProfile />
             </Stack>
             {!loading && channels.length === 0 && (

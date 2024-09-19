@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Channel, Server } from "@furxus/types";
 import { useAuth } from "@hooks";
@@ -10,18 +10,60 @@ import ChannelTextListItem from "./ChannelTextListItem";
 
 import { Item, Menu, useContextMenu } from "react-contexify";
 import Stack from "@mui/material/Stack";
+import { useQuery } from "@apollo/client";
+import {
+    GetChannels,
+    OnChannelCreated,
+    OnChannelDeleted,
+} from "@/gql/channels";
 
-const ServerSidebarChannels = ({
-    server,
-    channels,
-}: {
-    server: Server;
-    channels: Channel[];
-}) => {
+const ServerSidebarChannels = ({ server }: { server: Server }) => {
     const { user } = useAuth();
     const [visible, setVisible] = useState(false);
 
+    const { subscribeToMore, data: { getChannels: channels = [] } = {} } =
+        useQuery(GetChannels, {
+            variables: {
+                serverId: server.id,
+                type: ["text"],
+            },
+        });
+
     const { show } = useContextMenu();
+
+    useEffect(() => {
+        const unsubcribe = subscribeToMore({
+            document: OnChannelCreated,
+            variables: { serverId: server.id },
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                const newChannel = subscriptionData.data.channelCreated;
+                return {
+                    getChannels: [...prev.getChannels, newChannel],
+                };
+            },
+        });
+
+        return () => unsubcribe();
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = subscribeToMore({
+            document: OnChannelDeleted,
+            variables: { serverId: server.id },
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                const deletedChannel = subscriptionData.data.channelDeleted;
+                return {
+                    getChannels: prev.getChannels.filter(
+                        (channel: Channel) => channel.id !== deletedChannel.id
+                    ),
+                };
+            },
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     // Keep this for now since they are no permission system created
     const showMenu = (event: any) => {
@@ -45,7 +87,7 @@ const ServerSidebarChannels = ({
                     onContextMenu={showMenu}
                     className="w-full h-full flex-grow pt-14"
                 >
-                    {channels.map((channel: any) => (
+                    {channels.map((channel: Channel) => (
                         <ChannelTextListItem
                             key={channel.id}
                             channel={channel}
