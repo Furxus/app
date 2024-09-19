@@ -22,7 +22,7 @@ const SidebarServers = () => {
         useQuery(GetUserServers);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubcribe = subscribeToMore({
             document: OnServerCreated,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -38,11 +38,11 @@ const SidebarServers = () => {
             },
         });
 
-        return () => {};
+        return () => unsubcribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubcribe = subscribeToMore({
             document: OnServerJoined,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -65,11 +65,11 @@ const SidebarServers = () => {
             },
         });
 
-        return () => {};
+        return () => unsubcribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubcribe = subscribeToMore({
             document: OnServerLeft,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -87,11 +87,11 @@ const SidebarServers = () => {
             },
         });
 
-        return () => {};
+        return () => unsubcribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubcribe = subscribeToMore({
             document: OnServerDeleted,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -109,7 +109,7 @@ const SidebarServers = () => {
             },
         });
 
-        return () => {};
+        return () => unsubcribe();
     }, []);
 
     if (!servers || servers?.length === 0) return <SidebarAddServerIcon />;

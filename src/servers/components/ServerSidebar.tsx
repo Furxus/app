@@ -30,7 +30,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
     }, [channels]);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnChannelCreated,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -47,11 +47,11 @@ const ServerSidebar = ({ server }: { server: Server }) => {
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnChannelDeleted,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -70,7 +70,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     });
 
     if (!server) return <></>;

@@ -33,7 +33,7 @@ const ChannelMessages = ({
     });
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnMessageCreated,
             variables: {
                 serverId,
@@ -51,11 +51,11 @@ const ChannelMessages = ({
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnMessageEdited,
             variables: {
                 serverId,
@@ -75,11 +75,11 @@ const ChannelMessages = ({
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnMessageDeleted,
             variables: {
                 serverId,
@@ -99,7 +99,7 @@ const ChannelMessages = ({
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     });
 
     useEffect(() => {

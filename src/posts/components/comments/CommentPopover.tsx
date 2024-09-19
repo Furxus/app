@@ -59,7 +59,7 @@ const CommentPopover = ({
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubcribe = subscribeToMore({
             document: OnCommentCreated,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -72,7 +72,7 @@ const CommentPopover = ({
             },
         });
 
-        return () => {};
+        return () => unsubcribe();
     }, []);
 
     const togglePopover = (e: any) => {

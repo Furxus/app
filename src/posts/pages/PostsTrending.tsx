@@ -31,7 +31,7 @@ const PostsTrending = () => {
     });
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnPostCreated,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -44,11 +44,11 @@ const PostsTrending = () => {
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnPostDeleted,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -63,11 +63,11 @@ const PostsTrending = () => {
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnPostLiked,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -87,11 +87,11 @@ const PostsTrending = () => {
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     }, []);
 
     useEffect(() => {
-        subscribeToMore({
+        const unsubscribe = subscribeToMore({
             document: OnPostUnliked,
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
@@ -111,7 +111,7 @@ const PostsTrending = () => {
             },
         });
 
-        return () => {};
+        return () => unsubscribe();
     }, []);
 
     const fetchMoreData = () => {
