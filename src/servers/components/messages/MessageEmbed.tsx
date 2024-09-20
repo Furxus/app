@@ -3,8 +3,6 @@ import { Avatar, Link } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 const MessageEmbed = ({ embed }: { embed: MessageEmbedType }) => {
-    console.log(embed);
-
     return (
         <Box className="w-[30rem] p-4 bg-neutral-900 rounded-xl mt-1">
             <Stack direction="column" gap={1}>
