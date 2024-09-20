@@ -381,10 +381,12 @@ const MessageItem = ({
             )}
 
             <Menu id={`message-menu-${message.id}`}>
-                <Item onClick={() => setMessageEditing(true)}>
-                    <FaEdit className="mr-2" />
-                    Edit Message
-                </Item>
+                {auth.id === user.id && (
+                    <Item onClick={() => setMessageEditing(true)}>
+                        <FaEdit className="mr-2" />
+                        Edit Message
+                    </Item>
+                )}
                 <Item onClick={() => copy(markdownToTxt(content))}>
                     <FaCopy className="mr-2" />
                     Copy Raw Text
