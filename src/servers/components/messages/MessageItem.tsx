@@ -156,7 +156,7 @@ const MessageItem = ({
                         h1({ node, className, children, ref, ...props }) {
                             return (
                                 <Typography
-                                    variant="h1"
+                                    variant="h3"
                                     children={children}
                                     {...props}
                                 />
@@ -165,7 +165,7 @@ const MessageItem = ({
                         h2({ node, className, children, ref, ...props }) {
                             return (
                                 <Typography
-                                    variant="h2"
+                                    variant="h4"
                                     children={children}
                                     {...props}
                                 />
@@ -174,7 +174,7 @@ const MessageItem = ({
                         h3({ node, className, children, ref, ...props }) {
                             return (
                                 <Typography
-                                    variant="h3"
+                                    variant="h5"
                                     children={children}
                                     {...props}
                                 />
@@ -183,7 +183,7 @@ const MessageItem = ({
                         h4({ node, className, children, ref, ...props }) {
                             return (
                                 <Typography
-                                    variant="h4"
+                                    variant="h6"
                                     children={children}
                                     {...props}
                                 />
@@ -192,7 +192,7 @@ const MessageItem = ({
                         h5({ node, className, children, ref, ...props }) {
                             return (
                                 <Typography
-                                    variant="h5"
+                                    variant="h6"
                                     children={children}
                                     {...props}
                                 />
