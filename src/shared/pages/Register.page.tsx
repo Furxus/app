@@ -101,6 +101,9 @@ const RegisterPage = () => {
                         <span className="text-lg">
                             Account was created successfully
                         </span>
+                        <span className="text-sm">
+                            Please verify your email to login
+                        </span>
                         <Button
                             color="success"
                             variant="contained"
@@ -168,26 +171,26 @@ const RegisterPage = () => {
                                                         autoComplete="off"
                                                         fullWidth
                                                         error={
-                                                            touched[
-                                                                field.name as keyof typeof errors
+                                                            (touched[
+                                                                field.name as keyof typeof touched
                                                             ] &&
-                                                            (!!errors[
-                                                                field.name as keyof typeof errors
-                                                            ] ||
-                                                                !!serverErrors[
-                                                                    field.name
-                                                                ])
+                                                                !!errors[
+                                                                    field.name as keyof typeof errors
+                                                                ]) ||
+                                                            !!serverErrors[
+                                                                field.name
+                                                            ]
                                                         }
                                                         helperText={
-                                                            touched[
-                                                                field.name as keyof typeof errors
+                                                            (touched[
+                                                                field.name as keyof typeof touched
                                                             ] &&
-                                                            (errors[
-                                                                field.name as keyof typeof errors
-                                                            ] ||
-                                                                serverErrors[
-                                                                    field.name
-                                                                ])
+                                                                errors[
+                                                                    field.name as keyof typeof errors
+                                                                ]) ||
+                                                            serverErrors[
+                                                                field.name
+                                                            ]
                                                         }
                                                         type={
                                                             field.type ===
@@ -255,6 +258,13 @@ const RegisterPage = () => {
                                                     }
                                                     value={dob}
                                                 />
+                                                {serverErrors.dateOfBirth && (
+                                                    <span className="text-red-500">
+                                                        {
+                                                            serverErrors.dateOfBirth
+                                                        }
+                                                    </span>
+                                                )}
                                             </Stack>
                                             <Stack
                                                 direction="column"

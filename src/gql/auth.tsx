@@ -14,20 +14,13 @@ export const LoginUser = gql`
             displayName
             bio
             createdAt
+            verified
             createdTimestamp
             updatedAt
             updatedTimestamp
             preferences {
                 mode
                 theme
-            }
-            activity {
-                status
-                text
-                lastLogin
-                lastLoginTimestamp
-                lastActive
-                lastActiveTimestamp
             }
             type
         }
@@ -64,6 +57,7 @@ export const RefreshUser = gql`
             username
             email
             avatar
+            verified
             defaultAvatar
             displayName
             bio
@@ -77,5 +71,17 @@ export const RefreshUser = gql`
             }
             type
         }
+    }
+`;
+
+export const VerifyUser = gql`
+    query verifyUser($code: String!) {
+        verifyUser(code: $code)
+    }
+`;
+
+export const ResendEmail = gql`
+    mutation resendEmail {
+        resendEmail
     }
 `;

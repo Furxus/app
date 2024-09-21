@@ -7,6 +7,7 @@ import PostPage from "@/posts/pages/Post";
 import PostsFollowing from "@/posts/pages/PostsFollowing";
 import PostsTrending from "@/posts/pages/PostsTrending";
 import { LoginPage, RegisterPage, NotFound } from "./pages";
+import VerifyPage from "./pages/Verify.page";
 
 const WebRoutes = () => {
     return (
@@ -25,6 +26,9 @@ const WebRoutes = () => {
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="verify">
+                <Route path=":code" element={<VerifyPage />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
         </Routes>
     );

@@ -53,7 +53,8 @@ export function AppModeProvider({ children }: PropsWithChildren) {
         if (
             !isLoggedIn &&
             !location.pathname.includes("login") &&
-            !location.pathname.includes("register")
+            !location.pathname.includes("register") &&
+            !location.pathname.includes("verify")
         )
             navigate("/login");
 

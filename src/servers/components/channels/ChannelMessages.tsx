@@ -103,7 +103,9 @@ const ChannelMessages = ({
     });
 
     useEffect(() => {
-        scrollRef.current?.scrollToBottom();
+        setTimeout(() => {
+            scrollRef.current?.scrollToBottom();
+        }, 400);
     }, []);
 
     const EmptyMessage = () => (

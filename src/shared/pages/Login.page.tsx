@@ -18,8 +18,6 @@ const LoginPage = () => {
     const { isLoggedIn, login } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
 
-    const [unsuccessful, setUnsuccessful] = useState(false);
-
     useEffect(() => {
         if (isLoggedIn) navigate("/");
     }, [isLoggedIn]);
@@ -27,9 +25,6 @@ const LoginPage = () => {
     const [loginUser] = useMutation(LoginUser, {
         onCompleted: ({ loginUser: userData }) => {
             login(userData);
-        },
-        onError: () => {
-            setUnsuccessful(true);
         },
     });
 
@@ -98,9 +93,8 @@ const LoginPage = () => {
                                             }
                                             onChange={handleChange}
                                             error={
-                                                (!!errors.password &&
-                                                    touched.password) ||
-                                                unsuccessful
+                                                !!errors.password &&
+                                                touched.password
                                             }
                                             value={values.password}
                                             required
@@ -139,9 +133,6 @@ const LoginPage = () => {
                                             type="submit"
                                             variant="contained"
                                             sx={{ color: "white" }}
-                                            onClick={() =>
-                                                setUnsuccessful(false)
-                                            }
                                         >
                                             Login
                                         </Button>

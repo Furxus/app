@@ -14,11 +14,11 @@
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "@fontsource/montserrat": "^5.1.0",
-        "@furxus/types": "^1.1.0",
-        "@mui/material": "^6.1.0",
-        "@mui/x-date-pickers": "^7.17.0",
+        "@furxus/types": "^1.1.1",
+        "@mui/material": "^6.1.1",
+        "@mui/x-date-pickers": "^7.18.0",
         "@reduxjs/toolkit": "^2.2.7",
-        "@tauri-apps/api": "^2.0.0-rc.4",
+        "@tauri-apps/api": "^2.0.0-rc.5",
         "@tauri-apps/plugin-log": "^2.0.0-rc.1",
         "@tauri-apps/plugin-os": "^2.0.0-rc.1",
         "@tauri-apps/plugin-shell": "^2.0.0-rc.1",
@@ -62,20 +62,20 @@
         "yup": "^1.4.0"
     },
     "devDependencies": {
-        "@types/react": "^18.3.5",
+        "@types/react": "^18.3.8",
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react": "^4.3.1",
         "typescript": "^5.6.2",
-        "vite": "^5.4.5",
-        "@tauri-apps/cli": "^2.0.0-rc.15",
+        "vite": "^5.4.7",
+        "@tauri-apps/cli": "^2.0.0-rc.16",
         "@types/apollo-upload-client": "^18.0.0",
-        "@types/bun": "^1.1.9",
+        "@types/bun": "^1.1.10",
         "@types/react-infinite-scroller": "^1.2.5",
         "@types/react-syntax-highlighter": "^15.5.13",
         "@types/twemoji": "^13.1.2",
         "autoprefixer": "^10.4.20",
         "postcss": "^8.4.47",
-        "tailwindcss": "^3.4.11"
+        "tailwindcss": "^3.4.12"
     },
     "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }

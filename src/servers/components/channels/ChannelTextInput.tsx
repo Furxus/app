@@ -30,11 +30,13 @@ const ChannelTextInput = ({
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
-            sendMessage();
-        }
 
-        if (e.key === "Up" || e.key === "ArrowUp") {
-            e.preventDefault();
+            if (message.startsWith("```") && !message.endsWith("```")) {
+                setMessage(`${message}\n`);
+                return;
+            }
+
+            sendMessage();
         }
     };
 
