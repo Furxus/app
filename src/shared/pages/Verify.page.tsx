@@ -1,4 +1,5 @@
 import { VerifyUser } from "@/gql/auth";
+import { useAuth } from "@/hooks";
 import { useQuery } from "@apollo/client";
 import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -6,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const VerifyPage = () => {
     const { code } = useParams();
+    const { logout } = useAuth();
     const navigation = useNavigate();
     const [countdown, setCountdown] = useState(5);
 
@@ -27,7 +29,10 @@ const VerifyPage = () => {
         return () => clearInterval(interval);
     }, []);
 
-    if (countdown === 0) navigation("/login");
+    if (countdown === 0) {
+        navigation("/login");
+        logout();
+    }
 
     return (
         <Stack justifyContent="center" alignItems="center" className="h-screen">
