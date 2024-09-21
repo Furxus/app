@@ -18,8 +18,6 @@ const Layout = () => {
         },
     });
 
-    console.log(user);
-
     if (!user.verified)
         return (
             <Stack
