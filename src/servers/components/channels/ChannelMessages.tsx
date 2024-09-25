@@ -103,10 +103,8 @@ const ChannelMessages = ({
     });
 
     useEffect(() => {
-        setTimeout(() => {
-            scrollRef.current?.scrollToBottom();
-        }, 400);
-    }, []);
+        scrollRef.current?.scrollToBottom();
+    }, [messages]);
 
     const EmptyMessage = () => (
         <Stack justifyContent="center" alignItems="center">

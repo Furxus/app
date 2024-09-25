@@ -1,10 +1,10 @@
 import { useAppMode } from "@/hooks";
 import { ProfileSettingsPages } from "@/utils";
-import { IconButton, Modal, Stack } from "@mui/material";
+import { IconButton, Modal, Stack, Typography } from "@mui/material";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
 
-import ProfileCustomization from "./Customization";
+import ProfileCustomization from "./ProfileCustomization";
 import AccountSettings from "./AccountSettings";
 import ProfileSidebar from "./ProfileSidebar";
 import { MdClose } from "react-icons/md";
@@ -38,17 +38,15 @@ const ProfileSettings = ({
                     }
                 )}
             >
-                <Stack
-                    direction="row"
-                    justifyContent="center"
-                    className="h-full"
-                >
-                    <ProfileSidebar setCurrentPage={setCurrentPage} />
-                    <Stack className="bg-neutral-800 w-full relative p-4">
+                <Stack direction="row" className="h-full">
+                    <ProfileSidebar
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
+                    <Stack className="bg-neutral-800 w-full p-4">
                         <Stack
-                            className="absolute top-2 right-2"
+                            alignItems="flex-end"
                             justifyContent="center"
-                            alignItems="center"
                             gap={0.25}
                         >
                             <IconButton
@@ -63,7 +61,7 @@ const ProfileSettings = ({
                             >
                                 <MdClose />
                             </IconButton>
-                            <span className="text-sm">Esc</span>
+                            <Typography variant="body1">Esc</Typography>
                         </Stack>
                         {currentPage === "profile" && <ProfileCustomization />}
                         {currentPage === "account" && <AccountSettings />}

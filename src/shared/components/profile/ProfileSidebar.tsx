@@ -5,8 +5,10 @@ import classNames from "classnames";
 import { Dispatch, SetStateAction } from "react";
 
 const ProfileSidebar = ({
+    currentPage,
     setCurrentPage,
 }: {
+    currentPage: ProfileSettingsPages;
     setCurrentPage: Dispatch<SetStateAction<ProfileSettingsPages>>;
 }) => {
     const { appMode } = useAppMode();
@@ -27,17 +29,28 @@ const ProfileSidebar = ({
                 variant="text"
                 sx={{
                     color: appMode === "posts" ? Colors.posts : Colors.servers,
+                    borderRightColor:
+                        appMode === "posts" ? Colors.posts : Colors.servers,
+                    borderRight: currentPage === "profile" ? "2px solid" : null,
                 }}
                 onClick={() => setCurrentPage("profile")}
+                className="w-full"
+                size="large"
             >
                 Profile
             </Button>
             <Button
                 sx={{
                     color: appMode === "posts" ? Colors.posts : Colors.servers,
+                    borderRightColor:
+                        appMode === "posts" ? Colors.posts : Colors.servers,
+                    borderRight:
+                        currentPage === "account" ? "2px solid" : "none",
                 }}
                 variant="text"
                 onClick={() => setCurrentPage("account")}
+                className="w-full"
+                size="large"
             >
                 Account
             </Button>
