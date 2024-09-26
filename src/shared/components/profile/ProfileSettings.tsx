@@ -43,9 +43,10 @@ const ProfileSettings = ({
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
                     />
-                    <Stack className="bg-neutral-800 w-full p-4">
+                    <Stack className="bg-neutral-800 w-full p-4" gap={1}>
                         <Stack
-                            alignItems="flex-end"
+                            alignItems="center"
+                            alignSelf="flex-end"
                             justifyContent="center"
                             gap={0.25}
                         >
