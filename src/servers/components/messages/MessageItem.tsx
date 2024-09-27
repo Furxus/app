@@ -85,6 +85,7 @@ const MessageItem = ({
         member: { user },
         content,
         createdAt,
+        updatedAt,
     } = message;
 
     const sameUser = (i: number, message: Message) =>
@@ -103,12 +104,7 @@ const MessageItem = ({
 
     const renderMessage = () => (
         <Stack direction="column">
-            <Stack
-                direction="row"
-                alignItems="flex-end"
-                gap={0.5}
-                className="w-full"
-            >
+            <Stack direction="row" alignItems="flex-end" className="w-full">
                 <Markdown
                     skipHtml={true}
                     remarkPlugins={[
@@ -254,9 +250,9 @@ const MessageItem = ({
                     <Tooltip
                         disableInteractive
                         title={
-                            <time className="text-xs" dateTime={createdAt}>
-                                {moment(createdAt).calendar()} (
-                                {moment(createdAt).fromNow()})
+                            <time className="text-xs" dateTime={updatedAt}>
+                                {moment(updatedAt).calendar()} (
+                                {moment(updatedAt).fromNow()})
                             </time>
                         }
                         placement="top-start"
@@ -267,10 +263,12 @@ const MessageItem = ({
                     </Tooltip>
                 )}
             </Stack>
-            {message.embeds.length > 0 &&
-                message.embeds.map((embed, i) => (
-                    <MessageEmbed embed={embed} key={i} />
-                ))}
+            <Stack pb={1}>
+                {message.embeds.length > 0 &&
+                    message.embeds.map((embed, i) => (
+                        <MessageEmbed embed={embed} key={i} />
+                    ))}
+            </Stack>
         </Stack>
     );
 
