@@ -1,20 +1,40 @@
 import { useAuth } from "@/hooks";
-import { Avatar, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import AvatarEditor from "./AvatarEditor";
 
 const ProfileCustomization = () => {
     const { user } = useAuth();
 
+    const [avatarEditorVisible, setAvatarEditorVisible] = useState(false);
+
     return (
-        <Stack justifyContent="center" alignItems="center">
-            <Stack className="bg-neutral-700 p-4 rounded-lg">
-                <Stack direction="row" gap={1}>
+        <>
+            <Stack justifyContent="center" alignItems="center">
+                <Stack
+                    className="bg-neutral-700 p-4 rounded-lg"
+                    justifyContent="center"
+                    alignItems="center"
+                    gap={0.5}
+                >
                     <Avatar
+                        className="cursor-pointer"
                         src={user.avatar ?? user.defaultAvatar}
-                        sx={{ width: 128, height: 128 }}
+                        sx={{ width: 72, height: 72 }}
+                        onClick={() => setAvatarEditorVisible(true)}
                     />
+                    <Typography variant="caption" color="textSecondary">
+                        Click to change
+                    </Typography>
                 </Stack>
             </Stack>
-        </Stack>
+            {avatarEditorVisible && (
+                <AvatarEditor
+                    open={avatarEditorVisible}
+                    setOpen={setAvatarEditorVisible}
+                />
+            )}
+        </>
     );
 };
 
