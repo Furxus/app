@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks";
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Avatar, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import AvatarEditor from "./AvatarEditor";
+import AvatarEditor from "../avatar/AvatarEditor";
 
 const ProfileCustomization = () => {
     const { user } = useAuth();

@@ -2,6 +2,7 @@ import { useAppMode, useAuth } from "@/hooks";
 import { Avatar, Button, Modal, Stack } from "@mui/material";
 import classNames from "classnames";
 import { Dispatch, SetStateAction } from "react";
+import AvatarDraw from "./AvatarDraw";
 
 const AvatarEditor = ({
     open,
@@ -34,9 +35,13 @@ const AvatarEditor = ({
                     sx={{ width: 72, height: 72 }}
                 />
                 <Stack direction="row" gap={1}>
-                    <Button variant="outlined">Avatars</Button>
-                    <Button variant="outlined">Upload</Button>
-                    <Button variant="outlined">Draw</Button>
+                    <Button size="small" variant="outlined">
+                        Avatars
+                    </Button>
+                    <Button size="small" variant="outlined">
+                        Upload
+                    </Button>
+                    <AvatarDraw />
                 </Stack>
             </Stack>
         </Modal>
