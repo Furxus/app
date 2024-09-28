@@ -33,11 +33,7 @@ export function AppModeProvider({ children }: PropsWithChildren) {
             user &&
             parseInt(localStorage.getItem("refresh_in") ?? "") < Date.now()
         ) {
-            refresh({
-                variables: {
-                    token: localStorage.getItem("fx-token"),
-                },
-            });
+            refresh();
 
             localStorage.setItem(
                 "refresh_in",

@@ -12,7 +12,7 @@ export const ChannelTypeIcons: Record<string, any> = {
 };
 
 export const MessageSkeleton = () =>
-    new Array(20).fill(0).map((_, i) => (
+    new Array(10).fill(0).map((_, i) => (
         <Stack key={i} ml={2} className="mb-xs">
             <Skeleton variant="circular" width={40} height={40} />
             <div className="w-20">
@@ -81,3 +81,20 @@ export const useSyntaxHighlighterTheme = () => {
 
     return styles;
 };
+
+export const dataURLToFile = (dataURL: string, filename: string) => {
+    const arr = dataURL.split(",");
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+};
+
+export const randEl = <T extends any>(arr: T[]): T =>
+    arr[Math.floor(Math.random() * arr.length)];

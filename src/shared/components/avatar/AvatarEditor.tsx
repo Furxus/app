@@ -3,6 +3,7 @@ import { Avatar, Button, Modal, Stack } from "@mui/material";
 import classNames from "classnames";
 import { Dispatch, SetStateAction } from "react";
 import AvatarDraw from "./AvatarDraw";
+import DefaultAvatars from "./DefaultAvatars";
 
 const AvatarEditor = ({
     open,
@@ -35,9 +36,7 @@ const AvatarEditor = ({
                     sx={{ width: 72, height: 72 }}
                 />
                 <Stack direction="row" gap={1}>
-                    <Button size="small" variant="outlined">
-                        Avatars
-                    </Button>
+                    <DefaultAvatars />
                     <Button size="small" variant="outlined">
                         Upload
                     </Button>

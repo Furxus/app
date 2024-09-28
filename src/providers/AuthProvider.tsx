@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, refresh } from "../reducers/auth";
-import { MutationFunctionOptions, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { RefreshUser } from "../gql/auth";
 import { User, UserWithToken } from "@furxus/types";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +12,14 @@ export const AuthContext = createContext<{
     error?: string | null;
     login: (userData: any) => void;
     logout: () => void;
-    refresh: (options: MutationFunctionOptions) => void;
+    refresh: () => void;
 }>({
     user: {} as User,
     isLoggedIn: false,
     error: null,
     login: (_userData: any) => void 0,
     logout: () => void 0,
-    refresh: (_options: MutationFunctionOptions) => void 0,
+    refresh: () => void 0,
 });
 
 export function AuthProvider({ children }: PropsWithChildren) {
@@ -36,6 +36,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
                 "refresh_in",
                 (Date.now() + 1000 * 60 * 60).toString()
             );
+        },
+        variables: {
+            token: localStorage.getItem("fx-token"),
         },
         onError: (error) => {
             setError(error.message);
@@ -60,6 +63,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
         localStorage.removeItem("refresh_in");
     };
 
+    const refreshUser = () => {
+        refreshFunc({
+            variables: {
+                token: localStorage.getItem("fx-token"),
+            },
+        });
+    };
+
     return (
         <AuthContext.Provider
             value={{
@@ -67,7 +78,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
                 isLoggedIn: !!user,
                 login: loginUser,
                 logout: logoutUser,
-                refresh: refreshFunc,
+                refresh: refreshUser,
                 error,
             }}
         >

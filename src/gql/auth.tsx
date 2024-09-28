@@ -85,3 +85,9 @@ export const ResendEmail = gql`
         resendEmail
     }
 `;
+
+export const UpdateAvatar = gql`
+    mutation updateAvatar($avatar: Upload!) {
+        updateAvatar(avatar: $avatar)
+    }
+`;
