@@ -1,17 +1,45 @@
 import { Button, Modal, Stack } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 import classNames from "classnames";
 import { useState } from "react";
+import capitalize from "lodash/capitalize";
+import { UpdateDefaultAvatar } from "@/gql/auth";
+import { useMutation } from "@apollo/client";
+import { useAuth } from "@/hooks";
 
-const species = ["dog", "dragon", "fox", "hyena", "rabbit", "raccoon", "wolf"];
+const species = [
+    "cat",
+    "dog",
+    "dragon",
+    "fox",
+    "hyena",
+    "rabbit",
+    "raccoon",
+    "wolf",
+];
 
 const DefaultAvatars = () => {
-    const [open, setOpen] = useState(false);
+    const { refresh } = useAuth();
 
+    const [open, setOpen] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState<string>("");
+
+    const [updateDefaultAvatar, { loading }] = useMutation(
+        UpdateDefaultAvatar,
+        {
+            variables: {
+                avatar: currentAvatar,
+            },
+            update: () => {
+                setOpen(false);
+                refresh();
+                setCurrentAvatar("");
+            },
+        }
+    );
 
     const onClose = () => {
         setOpen(false);
+        setCurrentAvatar("");
     };
 
     return (
@@ -28,9 +56,9 @@ const DefaultAvatars = () => {
                 open={open}
                 onClose={onClose}
             >
-                <Grid spacing={2}>
-                    {species.map((species) => (
-                        <Grid key={species}>
+                <Stack direction="column" className="bg-neutral-800 p-4">
+                    <Stack direction="row">
+                        {species.map((species) => (
                             <Stack
                                 className="p-4"
                                 justifyContent="center"
@@ -49,10 +77,46 @@ const DefaultAvatars = () => {
                                     src={`https://cdn.furxus.com/defaultAvatar/${species}.png`}
                                     alt={species}
                                 />
+                                <span className="text-sm font-semibold">
+                                    {capitalize(species)}
+                                </span>
                             </Stack>
-                        </Grid>
-                    ))}
-                </Grid>
+                        ))}
+                    </Stack>
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        className="pr-4"
+                        gap={0.5}
+                    >
+                        <span className="text-sm font-semibold">
+                            {currentAvatar
+                                ? `Selected: ${capitalize(currentAvatar)}`
+                                : "Select an avatar"}
+                        </span>
+                        <Stack direction="row" gap={0.5}>
+                            <Button
+                                color="success"
+                                size="small"
+                                variant="contained"
+                                disabled={loading || !currentAvatar}
+                                onClick={() => updateDefaultAvatar()}
+                            >
+                                Save
+                            </Button>
+                            <Button
+                                onClick={onClose}
+                                size="small"
+                                disabled={loading}
+                                variant="outlined"
+                                color="error"
+                            >
+                                Close
+                            </Button>
+                        </Stack>
+                    </Stack>
+                </Stack>
             </Modal>
         </>
     );

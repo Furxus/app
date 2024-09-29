@@ -91,3 +91,9 @@ export const UpdateAvatar = gql`
         updateAvatar(avatar: $avatar)
     }
 `;
+
+export const UpdateDefaultAvatar = gql`
+    mutation updateDefaultAvatar($avatar: String!) {
+        updateDefaultAvatar(avatar: $avatar)
+    }
+`;

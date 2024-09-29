@@ -18,7 +18,7 @@ const AvatarDraw = () => {
     const [brushSize, setBrushSize] = useState<number | string>(6);
 
     const [updateAvatar] = useMutation(UpdateAvatar, {
-        onCompleted: () => {
+        update: () => {
             setOpen(false);
             canvasRef.current?.clear();
             refresh();
