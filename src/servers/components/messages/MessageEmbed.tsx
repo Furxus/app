@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 const MessageEmbed = ({ embed }: { embed: MessageEmbedType }) => {
     return (
-        <Box className="w-[30rem] p-4 bg-neutral-900 rounded-xl mt-0.5">
+        <Box className="ml-1 w-[25rem] p-4 bg-neutral-900 rounded-xl mt-0.5">
             <Stack direction="column" gap={1}>
                 <Stack direction="row" gap={1} alignItems="center">
                     {embed.author?.iconUrl && (
