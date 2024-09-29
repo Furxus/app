@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { GetMembers } from "@gql/members";
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 const ChannelMemberList = ({ serverId }: { serverId: string }) => {
     const { data: { getMembers: members } = {} } = useQuery(GetMembers, {

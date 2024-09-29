@@ -1,10 +1,12 @@
-import { Button, Modal, Stack } from "@mui/material";
 import classNames from "classnames";
 import { useState } from "react";
 import capitalize from "lodash/capitalize";
 import { UpdateDefaultAvatar } from "@/gql/auth";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "@/hooks";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Modal from "@mui/material/Modal";
 
 const species = [
     "cat",

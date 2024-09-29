@@ -1,5 +1,5 @@
 import { useAppMode, useAuth } from "@/hooks";
-import { Button, Modal, Stack, Typography } from "@mui/material";
+
 import classNames from "classnames";
 import { ChangeEvent, useRef, useState } from "react";
 
@@ -8,6 +8,10 @@ import PopoverPicker from "../PopoverPicker";
 import { Colors } from "@/utils";
 import { useMutation } from "@apollo/client";
 import { UpdateAvatar } from "@/gql/auth";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 const AvatarDraw = () => {
     const { appMode } = useAppMode();

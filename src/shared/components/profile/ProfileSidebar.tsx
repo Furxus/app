@@ -1,6 +1,8 @@
 import { useAppMode, useAuth } from "@/hooks";
 import { Colors, ProfileSettingsPages } from "@/utils";
-import { Button, Divider, Stack } from "@mui/material";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
 import classNames from "classnames";
 import { Dispatch, SetStateAction } from "react";
 

@@ -1,6 +1,5 @@
 import { useAppMode } from "@/hooks";
 import { ProfileSettingsPages } from "@/utils";
-import { IconButton, Modal, Stack, Typography } from "@mui/material";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
 
@@ -8,6 +7,10 @@ import ProfileCustomization from "./ProfileCustomization";
 import AccountSettings from "./AccountSettings";
 import ProfileSidebar from "./ProfileSidebar";
 import { MdClose } from "react-icons/md";
+import Modal from "@mui/material/Modal";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 
 const ProfileSettings = ({
     open,

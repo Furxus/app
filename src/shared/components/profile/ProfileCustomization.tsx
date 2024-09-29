@@ -1,7 +1,9 @@
 import { useAppMode, useAuth } from "@/hooks";
-import { Avatar, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import AvatarEditor from "../avatar/AvatarEditor";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 
 const ProfileCustomization = () => {
     const { user } = useAuth();

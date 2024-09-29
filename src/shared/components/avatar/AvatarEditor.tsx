@@ -1,9 +1,12 @@
 import { useAppMode, useAuth } from "@/hooks";
-import { Avatar, Button, Modal, Stack } from "@mui/material";
 import classNames from "classnames";
 import { Dispatch, SetStateAction } from "react";
 import AvatarDraw from "./AvatarDraw";
 import DefaultAvatars from "./DefaultAvatars";
+import AvatarUpload from "./AvatarUpload";
+import Modal from "@mui/material/Modal";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
 
 const AvatarEditor = ({
     open,
@@ -37,9 +40,7 @@ const AvatarEditor = ({
                 />
                 <Stack direction="row" gap={1}>
                     <DefaultAvatars />
-                    <Button size="small" variant="outlined">
-                        Upload
-                    </Button>
+                    <AvatarUpload />
                     <AvatarDraw />
                 </Stack>
             </Stack>
