@@ -1,4 +1,4 @@
-import { Ref, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./providers/AuthProvider";
 import { AppModeContext } from "./providers/AppModeProvider";
 
