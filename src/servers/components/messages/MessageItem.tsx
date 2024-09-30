@@ -69,6 +69,14 @@ const MessageItem = ({
     if (!message) return <></>;
 
     const editMessage = () => {
+        if (newContent.trim() === "") {
+            deleteMessage();
+            setMessageEditing(false);
+            return;
+        } else if (newContent === message.content) {
+            setMessageEditing(false);
+            return;
+        }
         mEditMessage();
         setMessageEditing(false);
     };
@@ -371,7 +379,8 @@ const MessageItem = ({
                                     onClick={() => editMessage()}
                                 >
                                     save
-                                </Link>
+                                </Link>{" "}
+                                ● empty message to delete
                             </Typography>
                         </Stack>
                     ) : (
