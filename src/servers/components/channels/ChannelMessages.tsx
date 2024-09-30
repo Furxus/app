@@ -133,18 +133,11 @@ const ChannelMessages = ({
                     className="flex flex-col overflow-y-auto"
                 >
                     {messages.map((message: any, i: number) => (
-                        <Stack
-                            key={message.id}
-                            direction="row"
-                            gap={1.5}
-                            alignItems="center"
-                        >
-                            <MessageItem
-                                message={message}
-                                index={i}
-                                messages={messages}
-                            />
-                        </Stack>
+                        <MessageItem
+                            message={message}
+                            index={i}
+                            messages={messages}
+                        />
                     ))}
                 </ScrollableFeed>
             )}
