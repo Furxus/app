@@ -104,8 +104,6 @@ const AvatarUpload = () => {
                                 onFileLoad={onUpload}
                                 onClose={onClose}
                                 borderStyle={{
-                                    border: "dashed 1px #ccc",
-                                    borderRadius: "50%",
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",

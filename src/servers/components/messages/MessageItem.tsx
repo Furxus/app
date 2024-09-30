@@ -275,7 +275,12 @@ const MessageItem = ({
     return (
         <>
             {sameUser(index, message) ? (
-                <Stack className="w-full " direction="row" gap={1} mt={3}>
+                <Stack
+                    className="w-full hover:bg-neutral-700/60 p-2"
+                    direction="row"
+                    gap={1}
+                    mt={3}
+                >
                     <Avatar src={user.avatar ?? user.defaultAvatar} />
                     <Stack className="w-full">
                         <Stack gap={1} direction="row" alignItems="center">
@@ -290,10 +295,7 @@ const MessageItem = ({
                                 {moment(createdAt).fromNow()})
                             </time>
                         </Stack>
-                        <Stack
-                            onContextMenu={showMenu}
-                            className="w-full hover:bg-neutral-600"
-                        >
+                        <Stack onContextMenu={showMenu} className="w-full">
                             {messageEditing ? (
                                 <TextField
                                     className="w-full"
@@ -328,8 +330,8 @@ const MessageItem = ({
             ) : (
                 <Stack
                     onContextMenu={showMenu}
-                    className="w-full hover:bg-neutral-700"
-                    pl={6}
+                    className="w-full hover:bg-neutral-700/60 py-1"
+                    pl={7}
                 >
                     {messageEditing ? (
                         <Stack direction="column">
