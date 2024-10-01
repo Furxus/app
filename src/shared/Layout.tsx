@@ -74,12 +74,7 @@ const Layout = () => {
         );
 
     return (
-        <Stack
-            onContextMenu={(e) =>
-                !import.meta.env.DEV ? e.preventDefault() : undefined
-            }
-            direction="row"
-        >
+        <Stack direction="row">
             <Sidebar />
             <Stack className="w-full h-screen">
                 <Outlet />
