@@ -16,8 +16,6 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { useSyntaxHighlighterTheme } from "@utils";
 
 // Markdown imports
 import Markdown from "react-markdown";
@@ -25,13 +23,17 @@ import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import rehypePrism from "rehype-prism-plus/all";
-import rehypeRaw from "rehype-raw";
+import rehypeHighlight from "rehype-highlight";
 import remarkParse from "remark-parse";
 import { rehypeTwemoji, RehypeTwemojiOptions } from "rehype-twemoji";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import MessageEmbed from "./MessageEmbed";
 import { KeyboardEvent, useState } from "react";
 import { TextField, Tooltip } from "@mui/material";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 const MessageItem = ({
     messages,
@@ -44,7 +46,6 @@ const MessageItem = ({
 }) => {
     const { show } = useContextMenu();
     const { user: auth } = useAuth();
-    const mdTheme = useSyntaxHighlighterTheme();
     const [messageEditing, setMessageEditing] = useState(false);
     const [newContent, setNewContent] = useState(message.content);
 
@@ -122,6 +123,8 @@ const MessageItem = ({
                         remarkEmoji,
                     ]}
                     rehypePlugins={[
+                        rehypeHighlight,
+                        rehypeSanitize,
                         rehypeRaw,
                         [
                             rehypeTwemoji,
@@ -134,27 +137,24 @@ const MessageItem = ({
                     components={{
                         code({
                             node,
-                            inline,
                             className,
                             children,
+                            style,
+                            ref,
                             ...props
-                        }: any) {
+                        }) {
                             const match = /language-(\w+)/.exec(
                                 className || ""
-                            );
-                            return !inline && match ? (
+                            ) ?? ["", ""];
+                            console.log(String(children?.toString()));
+                            return (
                                 <SyntaxHighlighter
-                                    style={mdTheme}
-                                    PreTag="div"
+                                    style={materialDark}
                                     language={match[1]}
+                                    PreTag="div"
+                                    children={children}
                                     {...props}
-                                >
-                                    {String(children).replace(/\n$/, "")}
-                                </SyntaxHighlighter>
-                            ) : (
-                                <code className={className} {...props}>
-                                    {children}
-                                </code>
+                                />
                             );
                         },
                         h1({ node, className, children, ref, ...props }) {
@@ -271,12 +271,13 @@ const MessageItem = ({
                     </Tooltip>
                 )}
             </Stack>
-            <Stack pb={1}>
-                {message.embeds.length > 0 &&
-                    message.embeds.map((embed, i) => (
+            {message.embeds.length > 0 && (
+                <Stack pb={1}>
+                    {message.embeds.map((embed, i) => (
                         <MessageEmbed embed={embed} key={i} />
                     ))}
-            </Stack>
+                </Stack>
+            )}
         </Stack>
     );
 
