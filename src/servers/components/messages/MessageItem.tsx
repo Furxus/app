@@ -284,8 +284,10 @@ const MessageItem = ({
         <>
             {sameUser(index, message) ? (
                 <Stack
-                    className="w-full hover:bg-neutral-700/60 p-2"
+                    className="w-full hover:bg-neutral-700/60 px-2"
                     direction="row"
+                    alignItems="center"
+                    justifyContent="center"
                     gap={1}
                     mt={3}
                 >
@@ -338,7 +340,7 @@ const MessageItem = ({
             ) : (
                 <Stack
                     onContextMenu={showMenu}
-                    className="w-full hover:bg-neutral-700/60 py-1"
+                    className="w-full hover:bg-neutral-700/60"
                     pl={7}
                 >
                     {messageEditing ? (
@@ -380,7 +382,11 @@ const MessageItem = ({
                                 >
                                     save
                                 </Link>{" "}
-                                ● empty message to delete
+                                ●{" "}
+                                <span className="font-semibold">
+                                    empty message
+                                </span>{" "}
+                                to delete
                             </Typography>
                         </Stack>
                     ) : (
