@@ -22,8 +22,6 @@ import Markdown from "react-markdown";
 import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
-import rehypePrism from "rehype-prism-plus/all";
-import rehypeHighlight from "rehype-highlight";
 import remarkParse from "remark-parse";
 import { rehypeTwemoji, RehypeTwemojiOptions } from "rehype-twemoji";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -123,7 +121,6 @@ const MessageItem = ({
                         remarkEmoji,
                     ]}
                     rehypePlugins={[
-                        rehypeHighlight,
                         rehypeSanitize,
                         rehypeRaw,
                         [
@@ -132,7 +129,6 @@ const MessageItem = ({
                                 format: "svg",
                             } satisfies RehypeTwemojiOptions,
                         ],
-                        rehypePrism,
                     ]}
                     components={{
                         code({
@@ -143,16 +139,19 @@ const MessageItem = ({
                             ref,
                             ...props
                         }) {
-                            const match = /language-(\w+)/.exec(
-                                className || ""
-                            ) ?? ["", ""];
-                            console.log(String(children?.toString()));
+                            const match =
+                                /language-(\w+)/.exec(className || "") ?? "";
                             return (
                                 <SyntaxHighlighter
                                     style={materialDark}
-                                    language={match[1]}
+                                    language={match[1] ?? ""}
                                     PreTag="div"
-                                    children={String(children)}
+                                    children={String(children).replace(
+                                        /\n$/,
+                                        ""
+                                    )}
+                                    wrapLongLines
+                                    showLineNumbers
                                     {...props}
                                 />
                             );
@@ -265,7 +264,7 @@ const MessageItem = ({
                         }
                         placement="top-start"
                     >
-                        <Typography className="text-[10px] text-neutral-400">
+                        <Typography className="ml-0.5 text-[10px] text-neutral-400">
                             (edited)
                         </Typography>
                     </Tooltip>
