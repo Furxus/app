@@ -152,7 +152,7 @@ const MessageItem = ({
                                     style={materialDark}
                                     language={match[1]}
                                     PreTag="div"
-                                    children={children}
+                                    children={String(children)}
                                     {...props}
                                 />
                             );
