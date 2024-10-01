@@ -11,6 +11,7 @@ import { MessageSkeleton } from "@utils";
 import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import ScrollableFeed from "react-scrollable-feed";
+import { OnUserUpdated } from "@/gql/users";
 
 const ChannelMessages = ({
     serverId,
@@ -100,7 +101,29 @@ const ChannelMessages = ({
         });
 
         return () => unsubscribe();
-    });
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = subscribeToMore({
+            document: OnUserUpdated,
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                const updatedUser = subscriptionData.data.userUpdated;
+                if (!updatedUser) return prev;
+
+                return {
+                    getMessages: prev.getMessages.map((m: Message) => {
+                        if (m.member.user.id === updatedUser.id) {
+                            m.member.user = updatedUser;
+                        }
+                        return m;
+                    }),
+                };
+            },
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     useEffect(() => {
         if (!loading) {
@@ -118,11 +141,7 @@ const ChannelMessages = ({
     );
 
     return (
-        <Stack
-            pl={2}
-            justifyContent="center"
-            className="flex-grow overflow-y-auto"
-        >
+        <Stack pl={2} className="flex-grow overflow-y-auto">
             {loading ? (
                 <MessageSkeleton />
             ) : messages.length === 0 ? (
@@ -134,6 +153,7 @@ const ChannelMessages = ({
                 >
                     {messages.map((message: any, i: number) => (
                         <MessageItem
+                            key={i}
                             message={message}
                             index={i}
                             messages={messages}
