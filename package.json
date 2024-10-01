@@ -15,7 +15,6 @@
         "@emotion/styled": "^11.13.0",
         "@fontsource/montserrat": "^5.1.0",
         "@furxus/types": "^1.1.1",
-        "@milessystems/react-syntax-highlighter": "^15.5.9",
         "@mui/material": "^6.1.1",
         "@mui/x-date-pickers": "^7.18.0",
         "@reduxjs/toolkit": "^2.2.7",
