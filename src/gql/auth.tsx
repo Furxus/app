@@ -97,3 +97,15 @@ export const UpdateDefaultAvatar = gql`
         updateDefaultAvatar(avatar: $avatar)
     }
 `;
+
+export const UpdateAvatarFromURL = gql`
+    mutation updateAvatarFromURL($avatar: String!) {
+        updateAvatarFromURL(avatar: $avatar)
+    }
+`;
+
+export const GetPreviousAvatars = gql`
+    query getPreviousAvatars {
+        getPreviousAvatars
+    }
+`;
