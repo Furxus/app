@@ -10,6 +10,8 @@ import { useMutation } from "@apollo/client";
 import { DeleteMessage, EditMessage } from "@gql/messages";
 import { useAuth } from "@hooks";
 
+import { useHover } from "usehooks-ts";
+
 import copy from "copy-to-clipboard";
 import markdownToTxt from "markdown-to-txt";
 import Divider from "@mui/material/Divider";
@@ -28,7 +30,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import MessageEmbed from "./MessageEmbed";
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useRef, useState } from "react";
 import { TextField, Tooltip } from "@mui/material";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
@@ -46,6 +48,8 @@ const MessageItem = ({
     const { user: auth } = useAuth();
     const [messageEditing, setMessageEditing] = useState(false);
     const [newContent, setNewContent] = useState(message.content);
+    const hoverRef = useRef<HTMLDivElement>(null);
+    const messageHovered = useHover(hoverRef);
 
     // "m" implies it is a mutation function
     const [mEditMessage] = useMutation(EditMessage, {
@@ -112,6 +116,14 @@ const MessageItem = ({
     const renderMessage = () => (
         <Stack direction="column">
             <Stack direction="row" alignItems="flex-end" className="w-full">
+                {messageHovered && (
+                    <Typography
+                        variant="subtitle2"
+                        className="text-[10px] text-neutral-400"
+                    >
+                        {message.id}
+                    </Typography>
+                )}
                 <Markdown
                     skipHtml={true}
                     remarkPlugins={[
