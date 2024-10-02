@@ -73,6 +73,7 @@ const DefaultAvatars = () => {
                     <Stack direction="row">
                         {species.map((species) => (
                             <Stack
+                                key={species}
                                 className="p-4"
                                 justifyContent="center"
                                 alignItems="center"
