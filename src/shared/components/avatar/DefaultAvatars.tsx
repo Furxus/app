@@ -3,7 +3,7 @@ import { useState } from "react";
 import capitalize from "lodash/capitalize";
 import { UpdateDefaultAvatar } from "@/gql/auth";
 import { useMutation } from "@apollo/client";
-import { useAuth } from "@/hooks";
+import { useAppMode, useAuth } from "@/hooks";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
@@ -21,6 +21,7 @@ const species = [
 
 const DefaultAvatars = () => {
     const { refresh } = useAuth();
+    const { appMode } = useAppMode();
 
     const [open, setOpen] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState<string>("");
@@ -50,6 +51,7 @@ const DefaultAvatars = () => {
                 onClick={() => setOpen(true)}
                 size="small"
                 variant="outlined"
+                color={appMode === "servers" ? "success" : "primary"}
             >
                 Avatars
             </Button>
@@ -58,7 +60,16 @@ const DefaultAvatars = () => {
                 open={open}
                 onClose={onClose}
             >
-                <Stack direction="column" className="bg-neutral-800 p-4">
+                <Stack
+                    direction="column"
+                    className={classNames(
+                        "bg-neutral-900 border rounded-lg p-4",
+                        {
+                            "border-green-500/60": appMode === "servers",
+                            "border-blue-500/60": appMode === "posts",
+                        }
+                    )}
+                >
                     <Stack direction="row">
                         {species.map((species) => (
                             <Stack
