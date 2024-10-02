@@ -50,6 +50,7 @@ const AvatarUpload = () => {
                 onClick={() => setOpen(true)}
                 size="small"
                 variant="outlined"
+                color={appMode === "servers" ? "success" : "primary"}
             >
                 Upload
             </Button>
