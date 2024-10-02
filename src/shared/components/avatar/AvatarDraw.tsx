@@ -21,7 +21,7 @@ const AvatarDraw = () => {
     const [brushColor, setBrushColor] = useState("#000000");
     const [brushSize, setBrushSize] = useState<number | string>(6);
 
-    const [updateAvatar] = useMutation(UpdateAvatar, {
+    const [updateAvatar, { loading }] = useMutation(UpdateAvatar, {
         update: () => {
             setOpen(false);
             canvasRef.current?.clear();
@@ -32,13 +32,9 @@ const AvatarDraw = () => {
     const canvasRef = useRef<CanvasDraw>(null);
 
     const changeBrushSize = (e: ChangeEvent<HTMLInputElement>) => {
-        if (parseInt(e.target.value) > 0 || e.target.value === "") {
-            if (e.target.value === "") {
-                setBrushSize("");
-                return;
-            }
-            setBrushSize(parseInt(e.target.value));
-        }
+        if (isNaN(parseInt(e.target.value)) && e.target.value !== "") return;
+
+        setBrushSize(parseInt(e.target.value));
     };
 
     const onUpload = async () => {
@@ -64,6 +60,7 @@ const AvatarDraw = () => {
                 onClick={() => setOpen(true)}
                 size="small"
                 variant="outlined"
+                color={appMode === "servers" ? "success" : "primary"}
             >
                 Draw
             </Button>
@@ -86,7 +83,6 @@ const AvatarDraw = () => {
                     alignItems="center"
                 >
                     <CanvasDraw
-                        className="rounded-full"
                         ref={canvasRef}
                         brushColor={brushColor}
                         brushRadius={brushSize as number}
@@ -107,6 +103,7 @@ const AvatarDraw = () => {
                                 onClick={() => canvasRef.current?.clear()}
                                 size="small"
                                 variant="outlined"
+                                disabled={loading}
                             >
                                 Clear
                             </Button>
@@ -119,6 +116,7 @@ const AvatarDraw = () => {
                                 onClick={() => canvasRef.current?.undo()}
                                 size="small"
                                 variant="outlined"
+                                disabled={loading}
                             >
                                 Undo
                             </Button>
@@ -159,6 +157,7 @@ const AvatarDraw = () => {
                                             : Colors.posts
                                     }
                                     pattern="\d*"
+                                    type="number"
                                 />
                             </Stack>
                         </Stack>
@@ -172,6 +171,7 @@ const AvatarDraw = () => {
                                 size="small"
                                 variant="outlined"
                                 onClick={onUpload}
+                                disabled={loading}
                             >
                                 Upload
                             </Button>
@@ -184,6 +184,7 @@ const AvatarDraw = () => {
                                 onClick={onClose}
                                 size="small"
                                 variant="outlined"
+                                disabled={loading}
                             >
                                 Cancel
                             </Button>
