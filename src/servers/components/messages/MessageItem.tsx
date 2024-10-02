@@ -108,22 +108,22 @@ const MessageItem = ({
             editMessage();
         }
 
-        if (e.key === "Escape") {
-            setMessageEditing(false);
-        }
+        if (e.key === "Escape") setMessageEditing(false);
     };
 
+    console.log(messageHovered);
+
     const renderMessage = () => (
-        <Stack direction="column">
-            <Stack direction="row" alignItems="flex-end" className="w-full">
-                {messageHovered && (
-                    <Typography
-                        variant="subtitle2"
-                        className="text-[10px] text-neutral-400"
-                    >
-                        {message.id}
-                    </Typography>
-                )}
+        <Stack direction="column" position="relative">
+            {messageHovered && (
+                <time
+                    className="absolute left-[-50px] top-[0.31rem] text-neutral-400 text-[10px]"
+                    dateTime={createdAt}
+                >
+                    {moment(createdAt).format("hh:mm A")}
+                </time>
+            )}
+            <Stack direction="row" alignItems="center" className="w-full">
                 <Markdown
                     skipHtml={true}
                     remarkPlugins={[
@@ -354,6 +354,7 @@ const MessageItem = ({
                     onContextMenu={showMenu}
                     className="w-full hover:bg-neutral-700/60"
                     pl={7}
+                    ref={hoverRef}
                 >
                     {messageEditing ? (
                         <Stack direction="column">
@@ -406,7 +407,6 @@ const MessageItem = ({
                     )}
                 </Stack>
             )}
-
             <Menu id={`message-menu-${message.id}`}>
                 {auth.id === user.id && (
                     <Item onClick={() => setMessageEditing(true)}>
