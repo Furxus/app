@@ -13,6 +13,8 @@ import Stack from "@mui/material/Stack";
 import ScrollableFeed from "react-scrollable-feed";
 import { OnUserUpdated } from "@/gql/users";
 
+import cloneDeep from "lodash/cloneDeep";
+
 const ChannelMessages = ({
     serverId,
     channelId,
@@ -111,13 +113,17 @@ const ChannelMessages = ({
                 const updatedUser = subscriptionData.data.userUpdated;
                 if (!updatedUser) return prev;
 
-                return {
-                    getMessages: prev.getMessages.map((m: Message) => {
-                        if (m.member.user.id === updatedUser.id) {
+                const newMessages = cloneDeep(prev.getMessages).map(
+                    (m: Message) => {
+                        if (m.member.user?.id === updatedUser.id) {
                             m.member.user = updatedUser;
                         }
                         return m;
-                    }),
+                    }
+                );
+
+                return {
+                    getMessages: newMessages,
                 };
             },
         });
