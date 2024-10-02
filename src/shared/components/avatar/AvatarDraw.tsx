@@ -3,7 +3,6 @@ import { useAppMode, useAuth } from "@/hooks";
 import classNames from "classnames";
 import { ChangeEvent, useRef, useState } from "react";
 
-import CanvasDraw from "react-canvas-draw";
 import PopoverPicker from "../PopoverPicker";
 import { Colors } from "@/utils";
 import { useMutation } from "@apollo/client";
@@ -13,33 +12,40 @@ import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
+import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
+import { Box } from "@mui/material";
+import { FaEraser, FaPaintBrush } from "react-icons/fa";
+
 const AvatarDraw = () => {
     const { appMode } = useAppMode();
     const { refresh } = useAuth();
 
     const [open, setOpen] = useState(false);
+
     const [brushColor, setBrushColor] = useState("#000000");
-    const [brushSize, setBrushSize] = useState<number | string>(6);
+    const [bgColor, setBgColor] = useState("#ffffff");
+
+    const [size, setSize] = useState<number | string>(6);
+
+    const [eraserMode, setEraserMode] = useState(false);
+
+    const canvasRef = useRef<ReactSketchCanvasRef>(null);
 
     const [updateAvatar, { loading }] = useMutation(UpdateAvatar, {
         update: () => {
             setOpen(false);
-            canvasRef.current?.clear();
+            canvasRef.current?.clearCanvas();
             refresh();
         },
     });
 
-    const canvasRef = useRef<CanvasDraw>(null);
-
-    const changeBrushSize = (e: ChangeEvent<HTMLInputElement>) => {
+    const changeSize = (e: ChangeEvent<HTMLInputElement>) => {
         if (isNaN(parseInt(e.target.value)) && e.target.value !== "") return;
-
-        setBrushSize(parseInt(e.target.value));
+        setSize(parseInt(e.target.value));
     };
 
     const onUpload = async () => {
-        // @ts-ignore: Unreachable code error
-        const data = canvasRef.current?.getDataURL("png");
+        const data = await canvasRef.current?.exportImage("png");
         const blob = data ? await fetch(data).then((res) => res.blob()) : null;
         if (!blob) return;
         updateAvatar({
@@ -51,7 +57,12 @@ const AvatarDraw = () => {
 
     const onClose = () => {
         setOpen(false);
-        canvasRef.current?.clear();
+        canvasRef.current?.clearCanvas();
+    };
+
+    const toggleEraser = (value: boolean) => {
+        setEraserMode(value);
+        canvasRef.current?.eraseMode(value);
     };
 
     return (
@@ -70,7 +81,7 @@ const AvatarDraw = () => {
                 onClose={onClose}
             >
                 <Stack
-                    direction="column"
+                    direction="row"
                     gap={2}
                     className={classNames(
                         "bg-neutral-900 border rounded-lg p-4",
@@ -82,113 +93,181 @@ const AvatarDraw = () => {
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <CanvasDraw
-                        ref={canvasRef}
-                        brushColor={brushColor}
-                        brushRadius={brushSize as number}
-                        hideGrid
-                    />
                     <Stack
-                        direction="row"
+                        direction="column"
                         gap={2}
-                        justifyContent="space-between"
+                        justifyContent="center"
+                        alignItems="center"
+                        className={classNames("border rounded-md p-2", {
+                            "border-green-500/60": appMode === "servers",
+                            "border-blue-500/60": appMode === "posts",
+                        })}
                     >
-                        <Stack direction="row" gap={1} alignItems="center">
-                            <Button
-                                color={
-                                    appMode === "servers"
-                                        ? "success"
-                                        : "primary"
-                                }
-                                onClick={() => canvasRef.current?.clear()}
-                                size="small"
-                                variant="outlined"
-                                disabled={loading}
-                            >
-                                Clear
-                            </Button>
-                            <Button
-                                color={
-                                    appMode === "servers"
-                                        ? "success"
-                                        : "primary"
-                                }
-                                onClick={() => canvasRef.current?.undo()}
-                                size="small"
-                                variant="outlined"
-                                disabled={loading}
-                            >
-                                Undo
-                            </Button>
+                        <Stack
+                            direction="column"
+                            gap={0.5}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            {eraserMode ? (
+                                <FaEraser
+                                    size={26}
+                                    onClick={() => toggleEraser(false)}
+                                />
+                            ) : (
+                                <FaPaintBrush
+                                    size={26}
+                                    onClick={() => toggleEraser(true)}
+                                />
+                            )}
+                            <Typography variant="button">
+                                {eraserMode ? "Eraser" : "Brush"} Mode
+                            </Typography>
                         </Stack>
-                        <Stack direction="row" gap={1} alignItems="center">
+                        <Stack
+                            direction="column"
+                            gap={0.5}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <input
+                                value={size}
+                                onChange={changeSize}
+                                className="w-20 bg-neutral-700 text-neutral-200 rounded-md pl-1"
+                                color={
+                                    appMode === "servers"
+                                        ? Colors.servers
+                                        : Colors.posts
+                                }
+                                pattern="\d*"
+                                type="number"
+                            />
+                            <Typography variant="button">
+                                {eraserMode ? "Eraser" : "Brush"} Size
+                            </Typography>
+                        </Stack>
+                        {!eraserMode && (
                             <Stack
                                 direction="column"
                                 gap={0.5}
                                 justifyContent="center"
                                 alignItems="center"
                             >
-                                <Typography variant="body2">
-                                    Brush Color
-                                </Typography>
                                 <PopoverPicker
                                     color={brushColor}
                                     onChange={(color: string) =>
                                         setBrushColor(color)
                                     }
                                 />
-                            </Stack>
-                            <Stack
-                                direction="column"
-                                gap={0.5}
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <Typography variant="body2">
-                                    Brush Size
+                                <Typography variant="button">
+                                    Brush Color
                                 </Typography>
-                                <input
-                                    value={brushSize}
-                                    onChange={changeBrushSize}
-                                    className="w-20 bg-neutral-700 text-neutral-200 rounded-md pl-1"
-                                    color={
-                                        appMode === "servers"
-                                            ? Colors.servers
-                                            : Colors.posts
-                                    }
-                                    pattern="\d*"
-                                    type="number"
-                                />
                             </Stack>
+                        )}
+                        <Stack
+                            direction="column"
+                            gap={0.5}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <PopoverPicker
+                                color={bgColor}
+                                onChange={(color: string) => setBgColor(color)}
+                                classNames={classNames("border", {
+                                    "border-green-500/60":
+                                        appMode === "servers",
+                                    "border-blue-500/60": appMode === "posts",
+                                })}
+                            />
+                            <Typography variant="button">
+                                Background Color
+                            </Typography>
                         </Stack>
-                        <Stack direction="row" gap={1} alignItems="center">
-                            <Button
-                                color={
+                    </Stack>
+                    <Box position="relative">
+                        <ReactSketchCanvas
+                            id="avatar-canvas"
+                            strokeColor={brushColor}
+                            strokeWidth={size as number}
+                            eraserWidth={size as number}
+                            canvasColor={bgColor}
+                            ref={canvasRef}
+                            width="512px"
+                            height="512px"
+                            svgStyle={{
+                                borderRadius: "50%",
+                            }}
+                            style={{
+                                border: `1px solid ${
                                     appMode === "servers"
-                                        ? "success"
-                                        : "primary"
-                                }
-                                size="small"
-                                variant="outlined"
-                                onClick={onUpload}
-                                disabled={loading}
-                            >
-                                Upload
-                            </Button>
-                            <Button
-                                color={
-                                    appMode === "servers"
-                                        ? "success"
-                                        : "primary"
-                                }
-                                onClick={onClose}
-                                size="small"
-                                variant="outlined"
-                                disabled={loading}
-                            >
-                                Cancel
-                            </Button>
-                        </Stack>
+                                        ? Colors.servers
+                                        : Colors.posts
+                                }`,
+                                borderRadius: "50%",
+                            }}
+                        />
+                    </Box>
+                    <Stack
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        gap={2}
+                    >
+                        <Button
+                            color={
+                                appMode === "servers" ? "success" : "primary"
+                            }
+                            onClick={() => canvasRef.current?.clearCanvas()}
+                            size="small"
+                            variant="outlined"
+                            disabled={loading}
+                        >
+                            Clear
+                        </Button>
+                        <Button
+                            color={
+                                appMode === "servers" ? "success" : "primary"
+                            }
+                            onClick={() => canvasRef.current?.undo()}
+                            size="small"
+                            variant="outlined"
+                            disabled={loading}
+                        >
+                            Undo
+                        </Button>
+                        <Button
+                            color={
+                                appMode === "servers" ? "success" : "primary"
+                            }
+                            size="small"
+                            variant="outlined"
+                            onClick={() => canvasRef.current?.redo()}
+                            disabled={loading}
+                        >
+                            Redo
+                        </Button>
+                        <Button
+                            color={
+                                appMode === "servers" ? "success" : "primary"
+                            }
+                            size="small"
+                            variant="outlined"
+                            onClick={onUpload}
+                            disabled={loading}
+                        >
+                            Upload
+                        </Button>
+                        <Button
+                            color={
+                                appMode === "servers" ? "success" : "primary"
+                            }
+                            onClick={onClose}
+                            size="small"
+                            variant="outlined"
+                            disabled={loading}
+                        >
+                            Cancel
+                        </Button>
                     </Stack>
                 </Stack>
             </Modal>
