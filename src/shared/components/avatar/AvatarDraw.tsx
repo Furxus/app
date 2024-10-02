@@ -7,13 +7,14 @@ import PopoverPicker from "../PopoverPicker";
 import { Colors } from "@/utils";
 import { useMutation } from "@apollo/client";
 import { UpdateAvatar } from "@/gql/auth";
+
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
-import { Box } from "@mui/material";
 import { FaEraser, FaPaintBrush } from "react-icons/fa";
 
 const AvatarDraw = () => {
