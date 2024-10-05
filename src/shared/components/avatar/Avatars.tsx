@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import capitalize from "lodash/capitalize";
 import {
     GetPreviousAvatars,
@@ -24,7 +24,11 @@ const species = [
     "wolf",
 ];
 
-const Avatars = () => {
+const Avatars = ({
+    setMainOpen,
+}: {
+    setMainOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
     const { refresh } = useAuth();
     const { appMode } = useAppMode();
 
@@ -42,6 +46,7 @@ const Avatars = () => {
             },
             update: () => {
                 setOpen(false);
+                setMainOpen(false);
                 refresh();
                 setCurrentAvatar("");
             },
@@ -56,6 +61,7 @@ const Avatars = () => {
             },
             update: () => {
                 setOpen(false);
+                setMainOpen(false);
                 refresh();
                 setCurrentAvatar("");
             },

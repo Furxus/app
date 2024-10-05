@@ -39,9 +39,9 @@ const AvatarEditor = ({
                     sx={{ width: 72, height: 72 }}
                 />
                 <Stack direction="row" gap={1}>
-                    <Avatars />
-                    <AvatarUpload />
-                    <AvatarDraw />
+                    <Avatars setMainOpen={setOpen} />
+                    <AvatarUpload setMainOpen={setOpen} />
+                    <AvatarDraw setMainOpen={setOpen} />
                 </Stack>
             </Stack>
         </Modal>

@@ -1,7 +1,7 @@
 import { useAppMode, useAuth } from "@/hooks";
 
 import classNames from "classnames";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
 
 import PopoverPicker from "../PopoverPicker";
 import { Colors } from "@/utils";
@@ -17,7 +17,11 @@ import Typography from "@mui/material/Typography";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 import { FaEraser, FaPaintBrush } from "react-icons/fa";
 
-const AvatarDraw = () => {
+const AvatarDraw = ({
+    setMainOpen,
+}: {
+    setMainOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
     const { appMode } = useAppMode();
     const { refresh } = useAuth();
 
@@ -36,6 +40,7 @@ const AvatarDraw = () => {
         update: () => {
             setOpen(false);
             canvasRef.current?.clearCanvas();
+            setMainOpen(false);
             refresh();
         },
     });

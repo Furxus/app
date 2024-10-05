@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import classNames from "classnames";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { MdClose } from "react-icons/md";
 import AvatarEditor from "react-avatar-edit";
 import { useAppMode, useAuth } from "@/hooks";
@@ -10,7 +10,11 @@ import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
 import Avatar from "@mui/material/Avatar";
 
-const AvatarUpload = () => {
+const AvatarUpload = ({
+    setMainOpen,
+}: {
+    setMainOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
     const { appMode } = useAppMode();
     const { user, refresh } = useAuth();
 
@@ -28,6 +32,7 @@ const AvatarUpload = () => {
             setOpen(false);
             setFile(null);
             setThumbnail(null);
+            setMainOpen(false);
             refresh();
         },
     });
