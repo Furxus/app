@@ -68,7 +68,7 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
     // Keep this for now since they are no permission system created
     const showMenu = (event: any) => {
         event.stopPropagation();
-        if (user?.id === server.owner.id) {
+        if (user?.id === server.owner?.id) {
             show({
                 id: "sidebar-channels-menu",
                 event,
@@ -97,7 +97,7 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
                 </Stack>
             </ScrollableFeed>
             <Menu id="sidebar-channels-menu">
-                {user?.id === server.owner.id && (
+                {user?.id === server.owner?.id && (
                     <Item onClick={() => setVisible(true)}>
                         <FaPlus className="mr-2" />
                         Create Channel

@@ -25,7 +25,7 @@ const VideoPlayer = ({ post }: { post: Post }) => {
                 loop
                 ref={videoRef}
                 onClick={onVideoPress}
-                src={post.content.video}
+                src={post.content?.video}
             ></video>
             <VideoFooter post={post} />
             <VideoSidebar post={post} />

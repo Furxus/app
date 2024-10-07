@@ -32,7 +32,7 @@ const ChannelCategoryListItem = ({
                 gap={4}
                 alignItems="center"
             >
-                {ChannelTypeIcons[channel.type]} {channel.name}
+                {ChannelTypeIcons[channel.type ?? "category"]} {channel.name}
             </Stack>
             {children}
         </Stack>

@@ -115,7 +115,7 @@ const ChannelMessages = ({
 
                 const newMessages = cloneDeep(prev.getMessages).map(
                     (m: Message) => {
-                        if (m.member.user?.id === updatedUser.id) {
+                        if (m.member && m.member?.user?.id === updatedUser.id) {
                             m.member.user = updatedUser;
                         }
                         return m;

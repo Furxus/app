@@ -25,7 +25,7 @@ const PostCard = ({ post }: { post: Post }) => {
         },
     });
 
-    if (post.content.video)
+    if (post.content?.video)
         return (
             <Stack
                 className={classNames("w-1/3 rounded-lg")}
@@ -33,7 +33,7 @@ const PostCard = ({ post }: { post: Post }) => {
                 gap={2}
             >
                 <Stack className="w-full h-full">
-                    {(post.content.video || post.content.image) && (
+                    {(post.content?.video || post.content?.image) && (
                         <VideoPlayer post={post} />
                     )}
                 </Stack>
@@ -44,7 +44,7 @@ const PostCard = ({ post }: { post: Post }) => {
         <Stack
             className={classNames("w-1/3 p-4 rounded-lg", {
                 "border border-blue-500":
-                    post.content.text || post.content.image,
+                    post.content?.text || post.content?.image,
             })}
             alignItems="flex-start"
             gap={2}
@@ -60,12 +60,12 @@ const PostCard = ({ post }: { post: Post }) => {
                     alignItems="center"
                     gap={0.5}
                 >
-                    <Avatar src={user.avatar ?? user.defaultAvatar}>
+                    <Avatar src={user?.avatar ?? user?.defaultAvatar}>
                         <span className="font-semibold">
-                            {user.nameAcronym}
+                            {user?.nameAcronym}
                         </span>
                     </Avatar>
-                    <p className="font-bold">{user.displayName}</p>
+                    <p className="font-bold">{user?.displayName}</p>
                 </Stack>
                 <Stack justifyContent="center" alignItems="center">
                     <time
@@ -77,8 +77,8 @@ const PostCard = ({ post }: { post: Post }) => {
                     </time>
                 </Stack>
             </Stack>
-            {post.content.text && <p>{post.content.text}</p>}
-            {post.content.image && <PostImage post={post} />}
+            {post.content?.text && <p>{post.content?.text}</p>}
+            {post.content?.image && <PostImage post={post} />}
             <Stack
                 direction="row"
                 alignItems="center"
@@ -86,7 +86,7 @@ const PostCard = ({ post }: { post: Post }) => {
                 className="w-full"
             >
                 <Stack direction="row" alignItems="center" gap={0.5}>
-                    {post.likes.some((usr) => usr.id === user.id) ? (
+                    {post.likes?.some((usr) => usr.id === user?.id) ? (
                         <FaHeart
                             size={18}
                             color="red"
@@ -100,11 +100,11 @@ const PostCard = ({ post }: { post: Post }) => {
                             onClick={() => likePost()}
                         />
                     )}
-                    <p>{post.likes.length}</p>
+                    <p>{post.likes?.length}</p>
                 </Stack>
                 <Stack direction="row" alignItems="center" gap={0.5}>
                     <CommentPopover size={18} post={post} type="nonVideo" />
-                    <p>{post.comments.length}</p>
+                    <p>{post.comments?.length}</p>
                 </Stack>
             </Stack>
         </Stack>

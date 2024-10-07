@@ -38,7 +38,7 @@ const ChannelTextListItem = ({
     // Keep this for now since they are no permission system created
     const showMenu = (event: any) => {
         event.stopPropagation();
-        if (user?.id === server.owner.id) {
+        if (user?.id === server.owner?.id) {
             show({
                 id: "channel-actions",
                 event,
@@ -72,10 +72,10 @@ const ChannelTextListItem = ({
                         navigate(`/servers/${server.id}/${channel.id}`);
                 }}
             >
-                {ChannelTypeIcons[channel.type]} {channel.name}
+                {ChannelTypeIcons[channel.type ?? "text"]} {channel.name}
             </Stack>
             <Menu id="channel-actions">
-                {user?.id === server.owner.id && (
+                {user?.id === server.owner?.id && (
                     <Item
                         onClick={() => {
                             deleteChannel();

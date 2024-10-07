@@ -44,7 +44,7 @@ export function AppModeProvider({ children }: PropsWithChildren) {
 
     useEffect(() => {
         if (isLoggedIn && location.pathname === "/" && user)
-            navigate(user.preferences.mode);
+            navigate(user.preferences?.mode ?? "servers");
 
         if (
             !isLoggedIn &&

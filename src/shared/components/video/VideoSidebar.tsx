@@ -30,7 +30,7 @@ const VideoSidebar = ({ post }: { post: Post }) => {
                     justifyContent="center"
                     alignItems="center"
                 >
-                    {post.likes.some((usr) => usr.id === user?.id) ? (
+                    {post.likes?.some((usr) => usr.id === user?.id) ? (
                         <FaHeart
                             size={24}
                             onClick={() => unlikePost()}
@@ -44,11 +44,11 @@ const VideoSidebar = ({ post }: { post: Post }) => {
                             className="text-2xl cursor-pointer"
                         />
                     )}
-                    <p>{post.likes.length}</p>
+                    <p>{post.likes?.length}</p>
                 </Stack>
                 <Stack justifyContent="center" alignItems="center">
                     <CommentPopover size={24} post={post} type="video" />
-                    <p>{post.comments.length}</p>
+                    <p>{post.comments?.length}</p>
                 </Stack>
             </Stack>
         </div>

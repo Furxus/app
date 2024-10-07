@@ -4,8 +4,8 @@ const PostImage = ({ post }: { post: Post }) => {
     return (
         <img
             className="w-full"
-            src={post.content.image}
-            alt={post.content.text}
+            src={post.content?.image}
+            alt={post.content?.text}
         />
     );
 };

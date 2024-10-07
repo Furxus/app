@@ -48,7 +48,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const loginUser = (userData: UserWithToken) => {
         const { token, ...user }: UserWithToken = userData;
         localStorage.setItem("fx-token", token);
-        navigate(user.preferences.mode ?? "servers");
+        navigate(user.preferences?.mode ?? "servers");
         dispatch(login(user));
         localStorage.setItem(
             "refresh_in",

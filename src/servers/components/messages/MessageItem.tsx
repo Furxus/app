@@ -54,8 +54,8 @@ const MessageItem = ({
     // "m" implies it is a mutation function
     const [mEditMessage] = useMutation(EditMessage, {
         variables: {
-            serverId: message.server.id,
-            channelId: message.channel.id,
+            serverId: message.server?.id,
+            channelId: message.channel?.id,
             id: message.id,
             content: newContent,
         },
@@ -63,8 +63,8 @@ const MessageItem = ({
 
     const [deleteMessage] = useMutation(DeleteMessage, {
         variables: {
-            serverId: message.server.id,
-            channelId: message.channel.id,
+            serverId: message.server?.id,
+            channelId: message.channel?.id,
             id: message.id,
         },
     });
@@ -72,7 +72,7 @@ const MessageItem = ({
     if (!message) return <></>;
 
     const editMessage = () => {
-        if (newContent.trim() === "") {
+        if (newContent?.trim() === "") {
             deleteMessage();
             setMessageEditing(false);
             return;
@@ -92,15 +92,10 @@ const MessageItem = ({
         });
     };
 
-    const {
-        member: { user },
-        content,
-        createdAt,
-        updatedAt,
-    } = message;
+    const { member, content, createdAt, updatedAt } = message;
 
     const sameUser = (i: number, message: Message) =>
-        messages[i - 1]?.member.user.id !== message.member.user.id;
+        messages[i - 1]?.member?.user?.id !== message.member?.user?.id;
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -282,7 +277,7 @@ const MessageItem = ({
                     </Tooltip>
                 )}
             </Stack>
-            {message.embeds.length > 0 && (
+            {message.embeds && message.embeds.length > 0 && (
                 <Stack pb={1}>
                     {message.embeds.map((embed, i) => (
                         <MessageEmbed embed={embed} key={i} />
@@ -303,11 +298,16 @@ const MessageItem = ({
                     gap={1}
                     mt={3}
                 >
-                    <Avatar src={user.avatar ?? user.defaultAvatar} />
+                    <Avatar
+                        src={
+                            member?.user?.avatar ?? member?.user?.defaultAvatar
+                        }
+                    />
                     <Stack className="w-full">
                         <Stack gap={1} direction="row" alignItems="center">
                             <span className="font-bold">
-                                {user.displayName ?? user.username}
+                                {member?.user?.displayName ??
+                                    member?.user?.username}
                             </span>
                             <time
                                 className="text-gray-500 text-xs"
@@ -337,8 +337,8 @@ const MessageItem = ({
                                     autoFocus
                                     onFocus={(e) =>
                                         e.target.setSelectionRange(
-                                            message.content.length,
-                                            message.content.length
+                                            message.content?.length ?? 0,
+                                            message.content?.length ?? 0
                                         )
                                     }
                                     autoComplete="off"
@@ -374,8 +374,8 @@ const MessageItem = ({
                                 autoFocus
                                 onFocus={(e) =>
                                     e.target.setSelectionRange(
-                                        message.content.length,
-                                        message.content.length
+                                        message.content?.length ?? 0,
+                                        message.content?.length ?? 0
                                     )
                                 }
                                 autoComplete="off"
@@ -408,21 +408,21 @@ const MessageItem = ({
                 </Stack>
             )}
             <Menu id={`message-menu-${message.id}`}>
-                {auth.id === user.id && (
+                {auth.id === member?.user?.id && (
                     <Item onClick={() => setMessageEditing(true)}>
                         <FaEdit className="mr-2" />
                         Edit Message
                     </Item>
                 )}
-                <Item onClick={() => copy(markdownToTxt(content))}>
+                <Item onClick={() => copy(markdownToTxt(content ?? ""))}>
                     <FaCopy className="mr-2" />
                     Copy Raw Text
                 </Item>
-                <Item onClick={() => copy(content)}>
+                <Item onClick={() => copy(content ?? "")}>
                     <FaCopy className="mr-2" />
                     Copy Text
                 </Item>
-                {auth.id === user.id && (
+                {auth.id === member?.user?.id && (
                     <Item
                         onClick={() => deleteMessage()}
                         className="text-red-500"

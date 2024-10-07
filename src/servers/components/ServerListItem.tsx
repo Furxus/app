@@ -36,7 +36,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
     useEffect(() => {
         if (!member)
             setMember(
-                server.members.find((m) => m.user.id === user.id) || null
+                server.members?.find((m) => m.user?.id === user.id) || null
             );
     });
 
@@ -97,13 +97,13 @@ const ServerListItem = ({ server }: { server: Server }) => {
                 )}
             </Tooltip>
             <Menu id={`server-menu-${server.id}`}>
-                {user?.id === server.owner.id && (
+                {user?.id === server.owner?.id && (
                     <Item onClick={() => setInvitesDialogVisible(true)}>
                         <FaMailBulk className="mr-2" />
                         Server Invites
                     </Item>
                 )}
-                {user?.id === server.owner.id ? (
+                {user?.id === server.owner?.id ? (
                     <Item onClick={() => setConfirmDeleteVisible(true)}>
                         <FaTrash className="mr-2" />
                         Delete Server

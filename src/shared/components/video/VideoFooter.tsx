@@ -7,7 +7,7 @@ import moment from "moment";
 const VideoFooter = ({ post }: { post: Post }) => {
     const { user } = post;
 
-    return post.content.text ? (
+    return post.content?.text ? (
         <Stack className="relative text-white ml-3 mr-2 flex justify-start align-center flex-col bottom-[4.5rem] gap-1">
             <Stack
                 direction="row"
@@ -15,10 +15,10 @@ const VideoFooter = ({ post }: { post: Post }) => {
                 alignItems="center"
                 className="flex"
             >
-                <Avatar src={user.avatar ?? user.defaultAvatar}>
-                    {user.nameAcronym}
+                <Avatar src={user?.avatar ?? user?.defaultAvatar}>
+                    {user?.nameAcronym}
                 </Avatar>
-                <p className="font-bold">{user.displayName ?? user.username}</p>
+                <p className="font-bold">{user?.displayName ?? user?.username}</p>
             </Stack>
             <Stack
                 direction="row"
@@ -35,10 +35,10 @@ const VideoFooter = ({ post }: { post: Post }) => {
     ) : (
         <Stack className="relative text-white ml-3 mr-2 flex justify-start align-center flex-col bottom-[4rem] gap-1">
             <Stack direction="row" alignItems="center" className="gap-1">
-                <Avatar src={user.avatar ?? user.defaultAvatar}>
-                    {user.nameAcronym}
+                <Avatar src={user?.avatar ?? user?.defaultAvatar}>
+                    {user?.nameAcronym}
                 </Avatar>
-                <p className="font-bold">{user.displayName ?? user.username}</p>
+                <p className="font-bold">{user?.displayName ?? user?.username}</p>
             </Stack>
             <time className="text-xs" dateTime={post.createdAt}>
                 {moment(post.createdAt).fromNow()}

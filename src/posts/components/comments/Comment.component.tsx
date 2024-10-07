@@ -14,11 +14,11 @@ const CommentComponent = ({ comment }: { comment: Comment }) => {
             >
                 <Stack direction="row" alignItems="center" gap={4}>
                     <Avatar
-                        src={comment.user.avatar ?? comment.user.defaultAvatar}
-                        alt={comment.user.username}
+                        src={comment.user?.avatar ?? comment.user?.defaultAvatar}
+                        alt={comment.user?.username}
                     />
                     <span className="font-semibold">
-                        {comment.user.displayName ?? comment.user.username}
+                        {comment.user?.displayName ?? comment.user?.username}
                     </span>
                 </Stack>
                 <time
