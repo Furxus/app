@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@apollo/client": "^3.11.8",
+        "@emotion/cache": "^11.13.1",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "@fontsource/montserrat": "^5.1.0",
