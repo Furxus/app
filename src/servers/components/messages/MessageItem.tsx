@@ -288,9 +288,19 @@ const MessageItem = ({
             </Stack>
             {message.embeds && message.embeds.length > 0 && (
                 <Stack pb={1}>
-                    {message.embeds.map((embed, i) => (
-                        <MessageEmbed embed={embed} key={i} />
-                    ))}
+                    {message.embeds.map((embed, i) =>
+                        embed.media?.includes("spotify") ? (
+                            <iframe
+                                src={embed.media}
+                                width={400}
+                                height={80}
+                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            />
+                        ) : (
+                            <MessageEmbed embed={embed} key={i} />
+                        )
+                    )}
                 </Stack>
             )}
         </Stack>

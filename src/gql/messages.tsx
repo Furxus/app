@@ -29,6 +29,7 @@ export const CreateMessage = gql`
                 description
                 url
                 image
+                media
                 author {
                     name
                     url
@@ -80,6 +81,7 @@ export const EditMessage = gql`
                 description
                 url
                 image
+                media
                 author {
                     name
                     url
@@ -133,6 +135,7 @@ export const GetMessages = gql`
                 description
                 url
                 image
+                media
                 author {
                     name
                     url
@@ -174,6 +177,7 @@ export const OnMessageCreated = gql`
                 description
                 url
                 image
+                media
                 author {
                     name
                     url
@@ -215,6 +219,7 @@ export const OnMessageEdited = gql`
                 description
                 url
                 image
+                media
                 author {
                     name
                     url

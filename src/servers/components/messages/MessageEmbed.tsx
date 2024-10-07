@@ -27,7 +27,7 @@ const MessageEmbed = ({ embed }: { embed: MessageEmbedType }) => {
                 {embed.description && (
                     <span className="text-sm">{embed.description}</span>
                 )}
-                {embed.image && (
+                {embed.image && !embed.media && (
                     <Link
                         href={embed.url}
                         underline="hover"
@@ -36,6 +36,14 @@ const MessageEmbed = ({ embed }: { embed: MessageEmbedType }) => {
                     >
                         <img src={embed.image} alt={embed.title} />
                     </Link>
+                )}
+                {embed.media && !embed.media.includes("spotify") && (
+                    <iframe
+                        src={embed.media}
+                        className="w-full h-52"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    />
                 )}
             </Stack>
         </Box>
