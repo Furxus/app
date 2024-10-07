@@ -127,7 +127,11 @@ const MessageItem = ({
                     </time>
                 </Tooltip>
             )}
-            <Stack direction="row" alignItems="center" className="w-full">
+            <Stack
+                direction="column"
+                justifyContent="center"
+                className="w-full"
+            >
                 <Markdown
                     skipHtml={true}
                     remarkPlugins={[
