@@ -106,17 +106,26 @@ const MessageItem = ({
         if (e.key === "Escape") setMessageEditing(false);
     };
 
-    console.log(messageHovered);
-
     const renderMessage = () => (
         <Stack direction="column" position="relative">
             {messageHovered && (
-                <time
-                    className="absolute left-[-50px] top-[0.31rem] text-neutral-400 text-[10px]"
-                    dateTime={createdAt}
+                <Tooltip
+                    disableInteractive
+                    title={
+                        <time className="text-xs" dateTime={createdAt}>
+                            {moment(createdAt).calendar()} (
+                            {moment(createdAt).fromNow()})
+                        </time>
+                    }
+                    placement="top-start"
                 >
-                    {moment(createdAt).format("hh:mm A")}
-                </time>
+                    <time
+                        className="absolute left-[-50px] top-[0.31rem] text-neutral-400 text-[10px]"
+                        dateTime={createdAt}
+                    >
+                        {moment(createdAt).format("hh:mm A")}
+                    </time>
+                </Tooltip>
             )}
             <Stack direction="row" alignItems="center" className="w-full">
                 <Markdown
