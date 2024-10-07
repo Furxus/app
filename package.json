@@ -15,11 +15,11 @@
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "@fontsource/montserrat": "^5.1.0",
-        "@furxus/types": "^1.2.2",
+        "@furxus/types": "^1.2.3",
         "@mui/material": "^6.1.2",
         "@mui/x-date-pickers": "^7.19.0",
         "@reduxjs/toolkit": "^2.2.7",
-        "@tauri-apps/api": "^2.0.1",
+        "@tauri-apps/api": "^2.0.2",
         "@tauri-apps/plugin-log": "^2.0.0",
         "@tauri-apps/plugin-os": "^2.0.0",
         "@tauri-apps/plugin-shell": "^2.0.0",
@@ -70,7 +70,7 @@
         "yup": "^1.4.0"
     },
     "devDependencies": {
-        "@tauri-apps/cli": "^2.0.1",
+        "@tauri-apps/cli": "^2.0.2",
         "@types/apollo-upload-client": "^18.0.0",
         "@types/bun": "^1.1.10",
         "@types/lodash": "^4.17.10",
