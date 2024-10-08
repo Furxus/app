@@ -4,7 +4,7 @@ import { useAppMode } from "@hooks";
 import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const Sidebar = () => {
