@@ -16,6 +16,9 @@ export const LoginUser = gql`
             createdAt
             verified
             createdTimestamp
+            friends {
+                id
+            }
             updatedAt
             updatedTimestamp
             preferences {
@@ -65,6 +68,9 @@ export const RefreshUser = gql`
             createdTimestamp
             updatedAt
             updatedTimestamp
+            friends {
+                id
+            }
             preferences {
                 mode
                 theme

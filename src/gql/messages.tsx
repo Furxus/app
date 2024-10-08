@@ -44,6 +44,9 @@ export const CreateMessage = gql`
                     nameAcronym
                     avatar
                     defaultAvatar
+                    friends {
+                        id
+                    }
                 }
             }
         }
@@ -96,6 +99,9 @@ export const EditMessage = gql`
                     nameAcronym
                     avatar
                     defaultAvatar
+                    friends {
+                        id
+                    }
                 }
             }
         }
@@ -150,6 +156,9 @@ export const GetMessages = gql`
                     nameAcronym
                     avatar
                     defaultAvatar
+                    friends {
+                        id
+                    }
                 }
             }
         }
@@ -192,6 +201,9 @@ export const OnMessageCreated = gql`
                     nameAcronym
                     avatar
                     defaultAvatar
+                    friends {
+                        id
+                    }
                 }
             }
         }
@@ -234,6 +246,9 @@ export const OnMessageEdited = gql`
                     nameAcronym
                     avatar
                     defaultAvatar
+                    friends {
+                        id
+                    }
                 }
             }
         }

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useHover } from "usehooks-ts";
 import { Menu, useContextMenu, Item } from "react-contexify";
 import { useAuth } from "@/hooks";
-import { FaUserCircle, FaUserPlus } from "react-icons/fa";
+import { FaUserCircle, FaUserMinus, FaUserPlus } from "react-icons/fa";
 import { useMutation } from "@apollo/client";
 import { SendFriendRequest } from "@/gql/friends";
 
@@ -95,12 +95,18 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
                         <FaUserCircle className="mr-2" />
                         View profile
                     </Item>
-                    {auth?.id !== user.id && (
-                        <Item onClick={() => sendFriendRequest()}>
-                            <FaUserPlus className="mr-2" />
-                            Send friend request
-                        </Item>
-                    )}
+                    {auth?.id !== user.id &&
+                        (auth.friends?.some((f) => f.id === user.id) ? (
+                            <Item onClick={() => console.log("remove friend")}>
+                                <FaUserMinus className="mr-2" />
+                                Remove friend
+                            </Item>
+                        ) : (
+                            <Item onClick={() => sendFriendRequest()}>
+                                <FaUserPlus className="mr-2" />
+                                Add friend
+                            </Item>
+                        ))}
                 </Menu>
                 <Snackbar
                     open={snackbarVisible}

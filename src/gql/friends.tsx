@@ -12,6 +12,39 @@ export const GetFriends = gql`
     }
 `;
 
+export const GetFriendChannels = gql`
+    query getFriendChannels($userId: String!) {
+        getFriendChannels(userId: $userId) {
+            id
+            participants {
+                id
+                username
+                avatar
+                defaultAvatar
+            }
+            messages {
+                id
+                content
+                edited
+                createdAt
+                createdTimestamp
+                updatedAt
+                updatedTimestamp
+                member {
+                    user {
+                        id
+                        username
+                        displayName
+                        nameAcronym
+                        avatar
+                        defaultAvatar
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export const SendFriendRequest = gql`
     mutation sendFriendRequest($userId: String!) {
         sendFriendRequest(userId: $userId)
