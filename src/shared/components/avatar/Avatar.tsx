@@ -15,11 +15,6 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
     const [snackbarVisible, setSnackbarVisible] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const onClose = () => {
-        setSnackbarVisible(false);
-        setError(null);
-    };
-
     const [sendFriendRequest] = useMutation(SendFriendRequest, {
         variables: { userId: user?.id },
         onCompleted: () => {
@@ -29,6 +24,11 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
             setError(err.message);
         },
     });
+
+    const onClose = () => {
+        setSnackbarVisible(false);
+        setError(null);
+    };
 
     const hoverRef = useRef<HTMLDivElement>(null);
     const isHovered = useHover(hoverRef);
