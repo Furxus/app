@@ -1,4 +1,4 @@
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate } from "react-router-dom";
 

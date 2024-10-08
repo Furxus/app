@@ -5,7 +5,7 @@ import { MouseEvent, useState } from "react";
 
 import ProfileSettings from "@/shared/components/profile/ProfileSettings";
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -37,10 +37,7 @@ const SidebarProfile = () => {
                 gap={0.5}
                 className="text-ellipsis px-2 w-full h-[5.65rem] border-t border-green-500/60"
             >
-                <Avatar
-                    src={user.avatar ?? user.defaultAvatar}
-                    sx={{ width: 36, height: 36 }}
-                />
+                <Avatar user={user} />
                 <Stack direction="column" className="w-full">
                     <Typography variant="body1" className="truncate">
                         {user.displayName ?? user.username}

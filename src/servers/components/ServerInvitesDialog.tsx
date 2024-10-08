@@ -6,7 +6,8 @@ import { Dispatch, SetStateAction } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
+import MAvatar from "@mui/material/Avatar";
 import DialogContent from "@mui/material/DialogContent";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -35,16 +36,19 @@ const ServerInvitesDialog = ({
                 <Stack direction="row" alignItems="center">
                     {server.icon ? (
                         <Avatar
-                            src={server.icon}
+                            server={server}
                             className="mr-2"
                             sx={{ width: 32, height: 32 }}
                         />
                     ) : (
-                        <Avatar className="mr-2" sx={{ width: 32, height: 32 }}>
+                        <MAvatar
+                            className="mr-2"
+                            sx={{ width: 32, height: 32 }}
+                        >
                             <span className="text-xs">
                                 {server.nameAcronym}
                             </span>
-                        </Avatar>
+                        </MAvatar>
                     )}
                     <h2 className="text-xl font-semibold">
                         {server.name} Invites

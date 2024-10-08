@@ -2,7 +2,7 @@ import { useAppMode, useAuth } from "@/hooks";
 import { useState } from "react";
 import AvatarEditor from "../avatar/AvatarEditor";
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 import Typography from "@mui/material/Typography";
 
 const ProfileCustomization = () => {

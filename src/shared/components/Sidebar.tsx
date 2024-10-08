@@ -2,7 +2,7 @@ import SidebarPosts from "@/posts/components/SidebarPosts";
 import SidebarServers from "@servers/components/SidebarServers";
 import { useAppMode } from "@hooks";
 import classNames from "classnames";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
 import { Tooltip, Typography } from "@mui/material";
 import { useEffect, useState } from "react";

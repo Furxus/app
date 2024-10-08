@@ -8,7 +8,7 @@ import { useMutation } from "@apollo/client";
 import { UpdateAvatar } from "@/gql/auth";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 
 const AvatarUpload = ({
     setMainOpen,

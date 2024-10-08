@@ -8,7 +8,7 @@ import { useMutation } from "@apollo/client";
 import { LikePost, UnlikePost } from "@gql/posts";
 import CommentPopover from "./comments/CommentPopover";
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 
 const PostCard = ({ post }: { post: Post }) => {
     const { user } = post;

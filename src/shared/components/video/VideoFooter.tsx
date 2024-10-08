@@ -1,5 +1,5 @@
 import { Post } from "@furxus/types";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
 
 import moment from "moment";
@@ -18,7 +18,9 @@ const VideoFooter = ({ post }: { post: Post }) => {
                 <Avatar src={user?.avatar ?? user?.defaultAvatar}>
                     {user?.nameAcronym}
                 </Avatar>
-                <p className="font-bold">{user?.displayName ?? user?.username}</p>
+                <p className="font-bold">
+                    {user?.displayName ?? user?.username}
+                </p>
             </Stack>
             <Stack
                 direction="row"
@@ -38,7 +40,9 @@ const VideoFooter = ({ post }: { post: Post }) => {
                 <Avatar src={user?.avatar ?? user?.defaultAvatar}>
                     {user?.nameAcronym}
                 </Avatar>
-                <p className="font-bold">{user?.displayName ?? user?.username}</p>
+                <p className="font-bold">
+                    {user?.displayName ?? user?.username}
+                </p>
             </Stack>
             <time className="text-xs" dateTime={post.createdAt}>
                 {moment(post.createdAt).fromNow()}

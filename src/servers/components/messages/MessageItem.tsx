@@ -5,7 +5,7 @@ import { Item, Menu, useContextMenu } from "react-contexify";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 import { useMutation } from "@apollo/client";
 import { DeleteMessage, EditMessage } from "@gql/messages";
 import { useAuth } from "@hooks";
@@ -127,11 +127,7 @@ const MessageItem = ({
                     </time>
                 </Tooltip>
             )}
-            <Stack
-                direction="column"
-                justifyContent="center"
-                className="w-full"
-            >
+            <Stack direction="row" alignItems="flex-end" className="w-full">
                 <Markdown
                     skipHtml={true}
                     remarkPlugins={[
@@ -270,6 +266,7 @@ const MessageItem = ({
                             );
                         },
                     }}
+                    className="flex flex-col justify-center"
                 >
                     {content}
                 </Markdown>
@@ -321,11 +318,7 @@ const MessageItem = ({
                     gap={1}
                     mt={3}
                 >
-                    <Avatar
-                        src={
-                            member?.user?.avatar ?? member?.user?.defaultAvatar
-                        }
-                    />
+                    <Avatar user={member?.user} />
                     <Stack className="w-full">
                         <Stack gap={1} direction="row" alignItems="center">
                             <span className="font-bold">

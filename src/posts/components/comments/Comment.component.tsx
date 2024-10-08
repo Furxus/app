@@ -1,5 +1,5 @@
 import { Comment } from "@furxus/types";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
 import moment from "moment";
 
@@ -14,7 +14,9 @@ const CommentComponent = ({ comment }: { comment: Comment }) => {
             >
                 <Stack direction="row" alignItems="center" gap={4}>
                     <Avatar
-                        src={comment.user?.avatar ?? comment.user?.defaultAvatar}
+                        src={
+                            comment.user?.avatar ?? comment.user?.defaultAvatar
+                        }
                         alt={comment.user?.username}
                     />
                     <span className="font-semibold">

@@ -11,7 +11,8 @@ import { FaMailBulk, FaSignOutAlt, FaTrash } from "react-icons/fa";
 import { Menu, useContextMenu, Item } from "react-contexify";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
+import MAvatar from "@mui/material/Avatar";
 
 const ServerListItem = ({ server }: { server: Server }) => {
     const { user } = useAuth();
@@ -68,7 +69,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
             >
                 {server.icon ? (
                     <Avatar
-                        src={server.icon}
+                        server={server}
                         onClick={navigateToServer}
                         className="cursor-pointer hover:rounded-3xl"
                         onMouseEnter={() => setHover(true)}
@@ -79,7 +80,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
                         {server.nameAcronym}
                     </Avatar>
                 ) : (
-                    <Avatar
+                    <MAvatar
                         onClick={navigateToServer}
                         className="cursor-pointer hover:rounded-3xl"
                         onMouseEnter={() => setHover(true)}
@@ -93,7 +94,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
                         <span className="font-semibold">
                             {server.nameAcronym}
                         </span>
-                    </Avatar>
+                    </MAvatar>
                 )}
             </Tooltip>
             <Menu id={`server-menu-${server.id}`}>

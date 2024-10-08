@@ -6,7 +6,7 @@ import Avatars from "./Avatars";
 import AvatarUpload from "./AvatarUpload";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@/shared/components/avatar/Avatar";
 
 const AvatarEditor = ({
     open,
