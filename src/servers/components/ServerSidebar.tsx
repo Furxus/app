@@ -83,7 +83,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
                 alignItems="flex-start"
                 className="shadow-md h-dvh border-r w-60 border-green-500/60 bg-neutral-700/[.2]"
             >
-                <div className="flex h-[4.95rem] shadow-2xl border-green-500/60 border-b bg-neutral-800[0.5] px-3 py-2 w-full">
+                <div className="flex shadow-2xl border-green-500/60 border-b bg-neutral-800[0.5] px-3 py-3 w-full">
                     <span className="text-neutral-200 text-md truncate">
                         {server.name}
                     </span>

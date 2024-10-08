@@ -1,6 +1,6 @@
 import SidebarPosts from "@/posts/components/SidebarPosts";
 import SidebarServers from "@servers/components/SidebarServers";
-import { useAppMode } from "@hooks";
+import { useAppMode, useAuth } from "@hooks";
 import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
@@ -8,6 +8,7 @@ import { Typography } from "@mui/material";
 import SidebarFriends from "@/friends/components/SidebarFriends.component";
 
 const Sidebar = () => {
+    const { user } = useAuth();
     const { appMode, changeAppMode } = useAppMode();
 
     return (
@@ -16,9 +17,10 @@ const Sidebar = () => {
             alignItems="center"
             gap="0.25rem"
             pt={1}
-            className={classNames("h-dvh bg-neutral-700/[.2]", {
+            className={classNames("h-dvh bg-neutral-700/[.4]", {
                 "border-r border-blue-500/60": appMode === "posts",
                 "border-r border-green-500/60": appMode === "servers",
+                "gradient-sidebar": appMode === "friends",
             })}
         >
             <Avatar
@@ -36,13 +38,19 @@ const Sidebar = () => {
                 }
                 sx={{ width: 64, height: 64 }}
                 onClick={() =>
-                    changeAppMode(appMode === "servers" ? "posts" : "servers")
+                    changeAppMode(
+                        appMode === "friends"
+                            ? user.preferences?.mode ?? "servers"
+                            : appMode === "servers"
+                            ? "posts"
+                            : "servers"
+                    )
                 }
             />
             <Stack
                 alignItems="center"
                 className={classNames(
-                    "flex-grow w-full shadow-2xl bg-neutral-700/[.4] px-5 py-3 border-y gap-1",
+                    "flex-grow w-full shadow-2xl bg-neutral-700/[.4] px-5 py-3 gap-1",
                     {
                         "border-blue-500/60": appMode === "posts",
                         "border-green-500/60": appMode === "servers",
@@ -60,8 +68,12 @@ const Sidebar = () => {
                         width: 64,
                         height: 64,
                     }}
-                    className="gradient-button"
-                    onClick={() => changeAppMode("friends")}
+                    className="gradient-button cursor-pointer"
+                    onClick={() =>
+                        appMode === "friends"
+                            ? changeAppMode(user.preferences?.mode ?? "servers")
+                            : changeAppMode("friends")
+                    }
                 >
                     <Typography variant="caption">Friends</Typography>
                 </Avatar>

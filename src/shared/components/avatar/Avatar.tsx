@@ -21,6 +21,7 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
             setSnackbarVisible(true);
         },
         onError: (err) => {
+            setSnackbarVisible(true);
             setError(err.message);
         },
     });
