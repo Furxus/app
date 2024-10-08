@@ -8,7 +8,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 
-type AppModes = "servers" | "posts";
+type AppModes = "servers" | "posts" | "friends";
 
 export const AppModeContext = createContext<{
     appMode: AppModes;
@@ -56,6 +56,7 @@ export function AppModeProvider({ children }: PropsWithChildren) {
 
         if (location.pathname.includes("servers")) setAppMode("servers");
         if (location.pathname.includes("posts")) setAppMode("posts");
+        if (location.pathname.includes("friends")) setAppMode("friends");
 
         return () => {};
     }, [isLoggedIn, appMode, location.pathname, user]);

@@ -4,7 +4,7 @@ import { useAppMode } from "@hooks";
 import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
-import { Tooltip, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const Sidebar = () => {
@@ -38,6 +38,8 @@ const Sidebar = () => {
                 <Avatar
                     className={classNames("cursor-pointer", {
                         "animate-bounce": bounce,
+                        "gradient-logo-servers": appMode === "posts",
+                        "gradient-logo-posts": appMode === "servers",
                     })}
                     src={appMode === "servers" ? "/logo2.png" : "/logo.png"}
                     sx={{ width: 64, height: 64 }}
@@ -59,6 +61,18 @@ const Sidebar = () => {
                 )}
             >
                 {appMode === "posts" ? <SidebarPosts /> : <SidebarServers />}
+            </Stack>
+            <Stack pb={0.9} gap={1} alignItems="center">
+                <Avatar
+                    sx={{
+                        width: 64,
+                        height: 64,
+                    }}
+                    className="gradient-button"
+                    onClick={() => changeAppMode("friends")}
+                >
+                    <Typography variant="caption">Friends</Typography>
+                </Avatar>
             </Stack>
         </Stack>
     );

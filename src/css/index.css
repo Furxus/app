@@ -22,3 +22,42 @@ body {
 [data-twemoji] {
     @apply size-[1.4em] inline-block align-text-bottom;
 }
+
+.gradient-button {
+    border: 3px solid #0000;
+    border-radius: 999px;
+    background: linear-gradient(rgb(38 38 38), rgb(38 38 38)) padding-box,
+        linear-gradient(var(--angle), rgb(59 130 246), rgb(34 197 94))
+            border-box;
+    animation: 2s rotate linear infinite;
+}
+
+.gradient-logo-servers {
+    border: 3px solid #0000;
+    border-radius: 999px;
+    background: linear-gradient(rgb(38 38 38), rgb(38 38 38)) padding-box,
+        linear-gradient(var(--angle), rgb(38, 38, 38), rgb(34 197 94))
+            border-box;
+    animation: 2s rotate linear infinite;
+}
+
+.gradient-logo-posts {
+    border: 3px solid #0000;
+    border-radius: 999px;
+    background: linear-gradient(rgb(38 38 38), rgb(38 38 38)) padding-box,
+        linear-gradient(var(--angle), rgb(38, 38, 38), rgb(59 130 246))
+            border-box;
+    animation: 2s rotate linear infinite;
+}
+
+@keyframes rotate {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}

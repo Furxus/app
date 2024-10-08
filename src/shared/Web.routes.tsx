@@ -23,6 +23,7 @@ const WebRoutes = () => {
                     <Route path="following" element={<PostsFollowing />} />
                     <Route path=":postId" element={<PostPage />} />
                 </Route>
+                <Route path="/friends" element={<div>Friends</div>} />
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
