@@ -11,3 +11,21 @@ export const GetFriends = gql`
         }
     }
 `;
+
+export const SendFriendRequest = gql`
+    mutation sendFriendRequest($userId: String!) {
+        sendFriendRequest(userId: $userId)
+    }
+`;
+
+export const AcceptFriendRequest = gql`
+    mutation acceptFriendRequest($userId: String!) {
+        acceptFriendRequest(userId: $userId)
+    }
+`;
+
+export const RemoveFriend = gql`
+    mutation removeFriend($userId: String!) {
+        removeFriend(userId: $userId)
+    }
+`;
