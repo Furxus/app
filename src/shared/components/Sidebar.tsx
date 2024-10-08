@@ -4,16 +4,11 @@ import { useAppMode } from "@hooks";
 import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
-import { Tooltip, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Typography } from "@mui/material";
+import SidebarFriends from "@/friends/components/SidebarFriends.component";
 
 const Sidebar = () => {
     const { appMode, changeAppMode } = useAppMode();
-    const [bounce, setBounce] = useState(true);
-
-    useEffect(() => {
-        if (bounce) setTimeout(() => setBounce(false), 4500);
-    }, []);
 
     return (
         <Stack
@@ -26,30 +21,24 @@ const Sidebar = () => {
                 "border-r border-green-500/60": appMode === "servers",
             })}
         >
-            <Tooltip
-                placement="right"
-                color="gray"
-                title={
-                    <Typography>
-                        Switch to {appMode === "servers" ? "Posts" : "Servers"}
-                    </Typography>
+            <Avatar
+                className={classNames("cursor-pointer", {
+                    "gradient-logo-servers": appMode === "posts",
+                    "gradient-logo-posts": appMode === "servers",
+                    "gradient-logo-both": appMode === "friends",
+                })}
+                src={
+                    appMode === "friends"
+                        ? "/icon.png"
+                        : appMode === "servers"
+                        ? "/logo2.png"
+                        : "/logo.png"
                 }
-            >
-                <Avatar
-                    className={classNames("cursor-pointer", {
-                        "animate-bounce": bounce,
-                        "gradient-logo-servers": appMode === "posts",
-                        "gradient-logo-posts": appMode === "servers",
-                    })}
-                    src={appMode === "servers" ? "/logo2.png" : "/logo.png"}
-                    sx={{ width: 64, height: 64 }}
-                    onClick={() =>
-                        changeAppMode(
-                            appMode === "servers" ? "posts" : "servers"
-                        )
-                    }
-                />
-            </Tooltip>
+                sx={{ width: 64, height: 64 }}
+                onClick={() =>
+                    changeAppMode(appMode === "servers" ? "posts" : "servers")
+                }
+            />
             <Stack
                 alignItems="center"
                 className={classNames(
@@ -57,10 +46,13 @@ const Sidebar = () => {
                     {
                         "border-blue-500/60": appMode === "posts",
                         "border-green-500/60": appMode === "servers",
+                        "gradient-sidebar": appMode === "friends",
                     }
                 )}
             >
-                {appMode === "posts" ? <SidebarPosts /> : <SidebarServers />}
+                {appMode === "posts" && <SidebarPosts />}
+                {appMode === "servers" && <SidebarServers />}
+                {appMode === "friends" && <SidebarFriends />}
             </Stack>
             <Stack pb={0.9} gap={1} alignItems="center">
                 <Avatar

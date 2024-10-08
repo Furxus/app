@@ -8,6 +8,8 @@ import PostsFollowing from "@/posts/pages/PostsFollowing";
 import PostsTrending from "@/posts/pages/PostsTrending";
 import { LoginPage, RegisterPage, NotFound } from "./pages";
 import VerifyPage from "./pages/Verify.page";
+import FriendsLayout from "@/friends/FriendsLayout";
+import FriendChannelPage from "@/friends/FriendChannel.page";
 
 const WebRoutes = () => {
     return (
@@ -23,7 +25,12 @@ const WebRoutes = () => {
                     <Route path="following" element={<PostsFollowing />} />
                     <Route path=":postId" element={<PostPage />} />
                 </Route>
-                <Route path="/friends" element={<div>Friends</div>} />
+                <Route path="/friends" element={<FriendsLayout />}>
+                    <Route
+                        path=":friendChannelId"
+                        element={<FriendChannelPage />}
+                    />
+                </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
