@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { GetServerInvites } from "@gql/servers";
 import moment from "moment";
-import { Server } from "@furxus/types";
+import { Invite, Server } from "@furxus/types";
 import { Dispatch, SetStateAction } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -66,7 +66,7 @@ const ServerInvitesDialog = ({
                         <TableCell>Created</TableCell>
                     </TableHead>
                     <TableBody>
-                        {invites.map((invite: any, i: number) => (
+                        {invites.map((invite: Invite, i: number) => (
                             <>
                                 <TableCell key={i}>{invite.code}</TableCell>
                                 <TableCell>{invite.uses}</TableCell>
@@ -79,16 +79,13 @@ const ServerInvitesDialog = ({
                                 <TableCell>
                                     <div className="flex justify-center items-center">
                                         <Avatar
-                                            src={
-                                                invite.createdBy.avatar ??
-                                                invite.createdBy.defaultAvatar
-                                            }
+                                            user={invite.createdBy}
                                             sx={{ width: 32, height: 32 }}
                                             className="mr-1"
                                         />
                                         <span className="font-semibold">
-                                            {invite.createdBy.globalName ??
-                                                invite.createdBy.username}
+                                            {invite.createdBy?.displayName ??
+                                                invite.createdBy?.username}
                                         </span>
                                     </div>
                                 </TableCell>
@@ -107,49 +104,3 @@ const ServerInvitesDialog = ({
 };
 
 export default ServerInvitesDialog;
-
-/**!SECTION
- *     <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>Invite Code</Table.Th>
-                            <Table.Th>Uses</Table.Th>
-                            <Table.Th>Max Uses</Table.Th>
-                            <Table.Th>Expires</Table.Th>
-                            <Table.Th>Created by</Table.Th>
-                            <Table.Th>Created</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
-                        {invites.map((invite: any, i: number) => (
-                            <Table.Tr key={i}>
-                                <Table.Td>{invite.code}</Table.Td>
-                                <Table.Td>{invite.uses}</Table.Td>
-                                <Table.Td>{invite.maxUses}</Table.Td>
-                                <Table.Td>
-                                    {invite.expiresAt
-                                        ? moment(invite.expiresAt).fromNow()
-                                        : "Never"}
-                                </Table.Td>
-                                <Table.Td>
-                                    <div className="flex justify-center items-center">
-                                        <Avatar
-                                            src={
-                                                invite.createdBy.avatar ??
-                                                invite.createdBy.defaultAvatar
-                                            }
-                                            size="sm"
-                                            className="mr-1"
-                                        />
-                                        <span className="font-semibold">
-                                            {invite.createdBy.globalName ??
-                                                invite.createdBy.username}
-                                        </span>
-                                    </div>
-                                </Table.Td>
-                                <Table.Td>
-                                    {moment(invite.createdAt).fromNow()}
-                                </Table.Td>
-                            </Table.Tr>
-                        ))}
-                    </Table.Tbody>
- */

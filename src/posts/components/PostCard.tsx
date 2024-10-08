@@ -60,11 +60,7 @@ const PostCard = ({ post }: { post: Post }) => {
                     alignItems="center"
                     gap={0.5}
                 >
-                    <Avatar src={user?.avatar ?? user?.defaultAvatar}>
-                        <span className="font-semibold">
-                            {user?.nameAcronym}
-                        </span>
-                    </Avatar>
+                    <Avatar user={user} />
                     <p className="font-bold">{user?.displayName}</p>
                 </Stack>
                 <Stack justifyContent="center" alignItems="center">
