@@ -20,7 +20,8 @@ const Sidebar = () => {
             justifyContent="center"
             alignItems="center"
             gap="0.25rem"
-            className={classNames("h-screen bg-neutral-700/[.2]", {
+            pt={1}
+            className={classNames("h-dvh bg-neutral-700/[.2]", {
                 "border-r border-blue-500/60": appMode === "posts",
                 "border-r border-green-500/60": appMode === "servers",
             })}
@@ -36,8 +37,6 @@ const Sidebar = () => {
             >
                 <Avatar
                     className={classNames("cursor-pointer", {
-                        "border-2 border-blue-500/60": appMode === "posts",
-                        "border-2 border-green-500/60": appMode === "servers",
                         "animate-bounce": bounce,
                     })}
                     src={appMode === "servers" ? "/logo2.png" : "/logo.png"}

@@ -14,6 +14,7 @@ import ScrollableFeed from "react-scrollable-feed";
 import { OnUserUpdated } from "@/gql/users";
 
 import cloneDeep from "lodash/cloneDeep";
+import classNames from "classnames";
 
 const ChannelMessages = ({
     serverId,
@@ -147,7 +148,12 @@ const ChannelMessages = ({
     );
 
     return (
-        <Stack pl={2} className="flex-grow overflow-y-auto">
+        <Stack
+            pl={2}
+            className={classNames("flex-grow overflow-y-auto", {
+                "justify-center": messages.length === 0,
+            })}
+        >
             {loading ? (
                 <MessageSkeleton />
             ) : messages.length === 0 ? (

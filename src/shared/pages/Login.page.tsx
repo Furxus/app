@@ -31,7 +31,7 @@ const LoginPage = () => {
     if (isLoggedIn) return <></>;
 
     return (
-        <Stack justifyContent="center" alignItems="center" className="h-screen">
+        <Stack justifyContent="center" alignItems="center" className="h-dvh">
             <Stack
                 justifyContent="center"
                 alignItems="center"

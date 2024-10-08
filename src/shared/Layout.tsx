@@ -23,7 +23,7 @@ const Layout = () => {
             <Stack
                 justifyContent="center"
                 alignItems="center"
-                className="h-screen"
+                className="h-dvh"
             >
                 <Stack
                     justifyContent="center"
@@ -76,7 +76,7 @@ const Layout = () => {
     return (
         <Stack direction="row">
             <Sidebar />
-            <Stack className="w-full h-screen">
+            <Stack className="w-full h-dvh">
                 <Outlet />
             </Stack>
         </Stack>

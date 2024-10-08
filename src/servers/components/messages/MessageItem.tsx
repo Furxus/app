@@ -117,10 +117,9 @@ const MessageItem = ({
                             {moment(createdAt).fromNow()})
                         </time>
                     }
-                    placement="top-start"
                 >
                     <time
-                        className="absolute left-[-50px] top-[0.31rem] text-neutral-400 text-[10px]"
+                        className="absolute left-[-52px] top-[0.31rem] text-neutral-400 text-[10px]"
                         dateTime={createdAt}
                     >
                         {moment(createdAt).format("hh:mm A")}
@@ -321,12 +320,12 @@ const MessageItem = ({
                     <Avatar user={member?.user} />
                     <Stack className="w-full">
                         <Stack gap={1} direction="row" alignItems="center">
-                            <span className="font-bold">
+                            <Typography className="font-bold">
                                 {member?.user?.displayName ??
                                     member?.user?.username}
-                            </span>
+                            </Typography>
                             <time
-                                className="text-gray-500 text-xs"
+                                className="text-gray-400 text-xs"
                                 dateTime={createdAt}
                             >
                                 {moment(createdAt).calendar()} (

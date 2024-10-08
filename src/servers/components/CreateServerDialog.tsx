@@ -4,13 +4,11 @@ import { useMutation } from "@apollo/client";
 import { FaCamera } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import AvatarEditor from "react-avatar-edit";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import { CreateServer } from "@gql/servers";
+import { Avatar, Box, Link, Modal, Stack, Typography } from "@mui/material";
 
 const CreateServerDialog = ({
     visible,
@@ -85,6 +83,7 @@ const CreateServerDialog = ({
     };
 
     const onClose = () => {
+        setFile(null);
         setThumbnail("");
     };
 
@@ -98,81 +97,90 @@ const CreateServerDialog = ({
     };
 
     return (
-        <Dialog open={visible} onClose={() => closeModal()}>
-            <DialogTitle className="flex justify-center">
-                Create a server
-            </DialogTitle>
-            <DialogContent className="flex flex-col gap-4 justify-center items-center">
-                <div className="flex flex-col items-center px-10 justify-center gap-4">
-                    <div className="flex items-center w-full justify-center">
-                        {thumbnail ? (
-                            <div className="relative">
-                                <MdClose
-                                    className="absolute top-0 right-0"
-                                    onClick={() => setThumbnail(null)}
-                                />
-                                <img
-                                    className="w-[96px] h-[96px] rounded-full"
-                                    src={thumbnail}
-                                    alt="thumbnail"
-                                />
-                            </div>
-                        ) : (
-                            <AvatarEditor
-                                width={96}
-                                height={96}
-                                label={
-                                    <div className="text-white text-sm flex flex-col items-center">
-                                        <FaCamera size="1.5em" />
-                                        <span>Upload</span>
-                                    </div>
-                                }
-                                onFileLoad={onUpload}
-                                onClose={onClose}
-                                borderStyle={{
-                                    border: "dashed 1px #ccc",
-                                    borderRadius: "50%",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                                mimeTypes="image/*"
+        <Modal
+            className="flex items-center justify-center"
+            open={visible}
+            onClose={() => closeModal()}
+        >
+            <Stack
+                p={4}
+                gap={2}
+                direction="column"
+                alignItems="center"
+                className="bg-neutral-900 border rounded-lg w-1/4 border-green-500/60"
+            >
+                <Typography variant="h6">Create a server</Typography>
+                <Stack direction="column" gap={2} alignItems="center">
+                    {thumbnail ? (
+                        <Box position="relative">
+                            <MdClose
+                                className="absolute top-0 right-0 cursor-pointer"
+                                onClick={() => onClose()}
                             />
-                        )}
-                    </div>
-                    <div className="flex flex-col justify-start items-start gap-1">
-                        <TextField
-                            label="Server Name"
-                            error={!!errors.name}
-                            name="name"
-                            value={fields.name}
-                            onChange={onChange}
-                            className="mb-4"
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") onSubmit();
+                            <Avatar
+                                src={thumbnail}
+                                alt="thumbnail"
+                                sx={{
+                                    width: 96,
+                                    height: 96,
+                                }}
+                            />
+                        </Box>
+                    ) : (
+                        <AvatarEditor
+                            width={96}
+                            height={96}
+                            label={
+                                <div className="text-white text-sm flex flex-col items-center">
+                                    <FaCamera size="1.5em" />
+                                    <span>Upload</span>
+                                </div>
+                            }
+                            onFileLoad={onUpload}
+                            onClose={onClose}
+                            borderStyle={{
+                                border: "dashed 1px #ccc",
+                                borderRadius: "50%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
+                            mimeTypes="image/*"
                         />
-                    </div>
-                </div>
-                <div className="flex flex-col items-center justify-center gap-2">
+                    )}
+                </Stack>
+                <Stack direction="column">
+                    <TextField
+                        label="Server Name"
+                        error={!!errors.name}
+                        name="name"
+                        value={fields.name}
+                        onChange={onChange}
+                        className="mb-4"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") onSubmit();
+                        }}
+                    />
                     <Button
                         onClick={onSubmit}
                         variant="contained"
                         color="success"
-                        disabled={loading}
+                        disabled={loading || !!errors.name || !fields.name}
                     >
                         Create
                     </Button>
-                    <Button
-                        disabled={loading}
+                </Stack>
+                {!loading && (
+                    <Link
+                        variant="body2"
+                        className="cursor-pointer"
                         onClick={() => setModalType("join")}
-                        variant="text"
                     >
                         or join a server
-                    </Button>
-                </div>
-            </DialogContent>
-        </Dialog>
+                    </Link>
+                )}
+            </Stack>
+        </Modal>
     );
 };
 

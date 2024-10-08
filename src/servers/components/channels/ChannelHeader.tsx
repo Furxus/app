@@ -9,7 +9,7 @@ const ChannelHeader = ({ channel }: { channel: Channel }) => {
             justifyContent="space-between"
             position="relative"
             pl={2}
-            py={1}
+            py={2}
         >
             <Stack direction="row" alignItems="center" gap={0.5}>
                 <FaHashtag className="mb-0.5 text-neutral-400" />

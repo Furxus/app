@@ -10,7 +10,7 @@ const NotFound = () => {
         <Stack
             justifyContent="center"
             alignItems="center"
-            className="h-screen"
+            className="h-dvh"
             gap={2}
         >
             <ErrorMessage

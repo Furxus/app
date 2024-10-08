@@ -3,14 +3,12 @@ import { DeleteServer } from "@gql/servers";
 import { useNavigate } from "react-router-dom";
 import { Dispatch, SetStateAction, useState } from "react";
 
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 import { Server } from "@furxus/types";
+import { Modal, Typography } from "@mui/material";
 
 const ConfirmServerDeleteDialog = ({
     server,
@@ -55,6 +53,63 @@ const ConfirmServerDeleteDialog = ({
     };
 
     return (
+        <Modal
+            className="flex items-center justify-center"
+            open={visible}
+            onClose={() => closeModal()}
+        >
+            <Stack
+                p={4}
+                gap={2}
+                direction="column"
+                alignItems="center"
+                className="bg-neutral-900 border rounded-lg w-1/5 border-red-500/60"
+            >
+                <Typography variant="body2" className="font-bold">
+                    Are you sure you want to delete this server?
+                </Typography>
+                <Stack direction="column" alignItems="center" gap={2}>
+                    <TextField
+                        color="error"
+                        onChange={(e) => setConfirm(e.target.value)}
+                        name="confirm"
+                        label="Type CONFIRM to confirm"
+                        value={confirm}
+                        error={error !== null}
+                        helperText={error}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") deleteFunc();
+                        }}
+                    />
+                    <Typography
+                        variant="body2"
+                        className="font-semibold text-red-500"
+                    >
+                        This action is irreversible
+                    </Typography>
+                </Stack>
+                <Stack direction="row" gap={1}>
+                    <Button
+                        variant="contained"
+                        onClick={() => deleteFunc()}
+                        color="error"
+                        disabled={confirm !== "CONFIRM" || loading}
+                    >
+                        Confirm
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        onClick={() => closeModal()}
+                        color="secondary"
+                    >
+                        Cancel
+                    </Button>
+                </Stack>
+            </Stack>
+        </Modal>
+    );
+
+    /*return (
         <Dialog open={visible} onClose={() => closeModal()}>
             <DialogTitle className="flex justify-center text-lg">
                 Are you sure you want to delete this server?
@@ -83,7 +138,12 @@ const ConfirmServerDeleteDialog = ({
                         This action is irreversible
                     </span>
                 </Stack>
-                <Stack justifyContent="center" alignItems="center" gap={1}>
+                <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    gap={1}
+                >
                     <Button
                         onClick={() => {
                             deleteFunc();
@@ -104,7 +164,7 @@ const ConfirmServerDeleteDialog = ({
                 </Stack>
             </DialogContent>
         </Dialog>
-    );
+    );*/
 };
 
 export default ConfirmServerDeleteDialog;

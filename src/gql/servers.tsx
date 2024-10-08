@@ -147,8 +147,8 @@ export const GetServerSidebarInfo = gql`
 `;
 
 export const GetServerInvites = gql`
-    query getServerInvites($id: String!) {
-        getServerSettings(id: $id) {
+    query getServer($id: String!) {
+        getServer(id: $id) {
             invites {
                 code
                 uses

@@ -1,11 +1,9 @@
 import { useMutation } from "@apollo/client";
 import { JoinServer } from "@gql/servers";
 import { Dispatch, SetStateAction, useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { Link, Modal, Stack, Typography } from "@mui/material";
 
 const JoinServerDialog = ({
     visible,
@@ -40,44 +38,56 @@ const JoinServerDialog = ({
     };
 
     return (
-        <Dialog open={visible} onClose={() => closeModal()}>
-            <DialogTitle className="flex justify-center items-center">
-                Join a server
-            </DialogTitle>
-            <DialogContent className="flex justify-center flex-col gap-2 items-center">
-                <div className="flex flex-col justify-center px-10 items-start gap-1">
-                    <TextField
-                        onChange={(e) => setCode(e.target.value)}
-                        name="code"
-                        label="Invite Code/Link"
-                        className="mb-4"
-                        value={code}
-                        error={error !== null}
-                        helperText={error}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") joinServer();
-                        }}
-                    />
-                </div>
-                <div className="flex flex-col justify-center items-center gap-2">
-                    <Button
-                        variant="contained"
-                        onClick={() => joinServer()}
-                        color="success"
-                        disabled={loading}
-                    >
-                        Join
-                    </Button>
-                    <Button
-                        variant="text"
-                        onClick={() => setModalType("create")}
-                        disabled={loading}
-                    >
-                        or create a server
-                    </Button>
-                </div>
-            </DialogContent>
-        </Dialog>
+        <Modal
+            className="flex items-center justify-center"
+            open={visible}
+            onClose={() => closeModal()}
+        >
+            <Stack
+                p={4}
+                gap={2}
+                direction="column"
+                alignItems="center"
+                className="bg-neutral-900 border rounded-lg w-1/5 border-green-500/60"
+            >
+                <Typography variant="h6">Join a server</Typography>
+                <Stack direction="column" gap={2} alignItems="center">
+                    <Stack direction="column" gap={1}>
+                        <TextField
+                            color="success"
+                            onChange={(e) => setCode(e.target.value)}
+                            name="code"
+                            label="Invite Code/Link"
+                            value={code}
+                            error={error !== null}
+                            helperText={error}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") joinServer();
+                            }}
+                        />
+                        <Button
+                            variant="contained"
+                            onClick={() => joinServer()}
+                            color="success"
+                            disabled={loading || !code}
+                        >
+                            Join
+                        </Button>
+                    </Stack>
+                    <Stack direction="column" gap={1} alignItems="center">
+                        {!loading && (
+                            <Link
+                                variant="body2"
+                                className="cursor-pointer"
+                                onClick={() => setModalType("create")}
+                            >
+                                or create a server
+                            </Link>
+                        )}
+                    </Stack>
+                </Stack>
+            </Stack>
+        </Modal>
     );
 };
 
