@@ -10,7 +10,6 @@ import { Member, Server } from "@furxus/types";
 import { FaMailBulk, FaSignOutAlt, FaTrash } from "react-icons/fa";
 import { Menu, useContextMenu, Item } from "react-contexify";
 import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@/shared/components/avatar/Avatar";
 import MAvatar from "@mui/material/Avatar";
 
@@ -61,42 +60,37 @@ const ServerListItem = ({ server }: { server: Server }) => {
         <Stack justifyContent="center" position="relative">
             {isActive && <ActiveServerPill />}
             {hover && <HoverServerPill />}
-            <Tooltip
-                disableInteractive
-                color="gray"
-                title={<span className="text-sm">{server.name}</span>}
-                placement="right"
-            >
-                {server.icon ? (
-                    <Avatar
-                        server={server}
-                        onClick={navigateToServer}
-                        className="cursor-pointer hover:rounded-3xl"
-                        onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}
-                        onContextMenu={showMenu}
-                        sx={{ width: 56, height: 56, bgcolor: "transparent" }}
-                    >
-                        {server.nameAcronym}
-                    </Avatar>
-                ) : (
-                    <MAvatar
-                        onClick={navigateToServer}
-                        className="cursor-pointer hover:rounded-3xl"
-                        onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}
-                        onContextMenu={showMenu}
-                        sx={{
-                            width: 56,
-                            height: 56,
-                        }}
-                    >
-                        <span className="font-semibold">
-                            {server.nameAcronym}
-                        </span>
-                    </MAvatar>
-                )}
-            </Tooltip>
+            {server.icon ? (
+                <Avatar
+                    server={server}
+                    onClick={navigateToServer}
+                    className="cursor-pointer hover:rounded-3xl"
+                    onMouseEnter={() => setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                    onContextMenu={showMenu}
+                    sx={{
+                        width: 56,
+                        height: 56,
+                        bgcolor: "transparent",
+                    }}
+                >
+                    {server.nameAcronym}
+                </Avatar>
+            ) : (
+                <MAvatar
+                    onClick={navigateToServer}
+                    className="cursor-pointer hover:rounded-3xl"
+                    onMouseEnter={() => setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                    onContextMenu={showMenu}
+                    sx={{
+                        width: 56,
+                        height: 56,
+                    }}
+                >
+                    <span className="font-semibold">{server.nameAcronym}</span>
+                </MAvatar>
+            )}
             <Menu id={`server-menu-${server.id}`}>
                 {user?.id === server.owner?.id && (
                     <Item onClick={() => setInvitesDialogVisible(true)}>

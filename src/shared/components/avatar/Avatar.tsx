@@ -6,7 +6,7 @@ import { Menu, useContextMenu, Item } from "react-contexify";
 import { useAuth } from "@/hooks";
 import { FaUserCircle, FaUserMinus, FaUserPlus } from "react-icons/fa";
 import { useMutation } from "@apollo/client";
-import { SendFriendRequest } from "@/gql/friends";
+import { SendFriendRequest } from "@/gql/users";
 
 const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
     const { user: auth } = useAuth();
@@ -100,6 +100,13 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
                             <Item onClick={() => console.log("remove friend")}>
                                 <FaUserMinus className="mr-2" />
                                 Remove friend
+                            </Item>
+                        ) : auth.friendRequests?.some(
+                              (f) => f.id === user.id
+                          ) ? (
+                            <Item disabled>
+                                <FaUserPlus className="mr-2" />
+                                Friend request sent
                             </Item>
                         ) : (
                             <Item onClick={() => sendFriendRequest()}>

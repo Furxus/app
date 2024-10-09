@@ -22,7 +22,18 @@ export const CreateMessage = gql`
                 id
             }
             channel {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
+                ... on DMChannel {
+                    id
+                }
             }
             embeds {
                 title
@@ -45,6 +56,9 @@ export const CreateMessage = gql`
                     avatar
                     defaultAvatar
                     friends {
+                        id
+                    }
+                    friendRequests {
                         id
                     }
                 }
@@ -77,7 +91,18 @@ export const EditMessage = gql`
                 id
             }
             channel {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
+                ... on DMChannel {
+                    id
+                }
             }
             embeds {
                 title
@@ -100,6 +125,9 @@ export const EditMessage = gql`
                     avatar
                     defaultAvatar
                     friends {
+                        id
+                    }
+                    friendRequests {
                         id
                     }
                 }
@@ -134,7 +162,18 @@ export const GetMessages = gql`
                 id
             }
             channel {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
+                ... on DMChannel {
+                    id
+                }
             }
             embeds {
                 title
@@ -157,6 +196,9 @@ export const GetMessages = gql`
                     avatar
                     defaultAvatar
                     friends {
+                        id
+                    }
+                    friendRequests {
                         id
                     }
                 }
@@ -179,7 +221,18 @@ export const OnMessageCreated = gql`
                 id
             }
             channel {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
+                ... on DMChannel {
+                    id
+                }
             }
             embeds {
                 title
@@ -204,6 +257,9 @@ export const OnMessageCreated = gql`
                     friends {
                         id
                     }
+                    friendRequests {
+                        id
+                    }
                 }
             }
         }
@@ -224,7 +280,18 @@ export const OnMessageEdited = gql`
                 id
             }
             channel {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
+                ... on DMChannel {
+                    id
+                }
             }
             embeds {
                 title
@@ -247,6 +314,9 @@ export const OnMessageEdited = gql`
                     avatar
                     defaultAvatar
                     friends {
+                        id
+                    }
+                    friendRequests {
                         id
                     }
                 }

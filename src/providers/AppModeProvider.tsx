@@ -8,7 +8,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 
-type AppModes = "servers" | "posts" | "friends";
+type AppModes = "servers" | "posts" | "dms";
 
 export const AppModeContext = createContext<{
     appMode: AppModes;
@@ -31,7 +31,7 @@ export function AppModeProvider({ children }: PropsWithChildren) {
     useEffect(() => {
         if (
             user &&
-            parseInt(localStorage.getItem("refresh_in") ?? "") < Date.now()
+            parseInt(localStorage.getItem("refresh_in") ?? "0") < Date.now()
         ) {
             refresh();
 
@@ -56,7 +56,7 @@ export function AppModeProvider({ children }: PropsWithChildren) {
 
         if (location.pathname.includes("servers")) setAppMode("servers");
         if (location.pathname.includes("posts")) setAppMode("posts");
-        if (location.pathname.includes("friends")) setAppMode("friends");
+        if (location.pathname.includes("dms")) setAppMode("dms");
 
         return () => {};
     }, [isLoggedIn, appMode, location.pathname, user]);

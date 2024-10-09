@@ -5,7 +5,7 @@ import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
-import SidebarFriends from "@/friends/components/SidebarFriends.component";
+import SidebarDMs from "@/dms/components/SidebarDMs.component";
 
 const Sidebar = () => {
     const { user } = useAuth();
@@ -20,17 +20,17 @@ const Sidebar = () => {
             className={classNames("h-dvh bg-neutral-700/[.4]", {
                 "border-r border-blue-500/60": appMode === "posts",
                 "border-r border-green-500/60": appMode === "servers",
-                "gradient-sidebar": appMode === "friends",
+                "gradient-sidebar": appMode === "dms",
             })}
         >
             <Avatar
                 className={classNames("cursor-pointer", {
                     "gradient-logo-servers": appMode === "posts",
                     "gradient-logo-posts": appMode === "servers",
-                    "gradient-logo-both": appMode === "friends",
+                    "gradient-logo-both": appMode === "dms",
                 })}
                 src={
-                    appMode === "friends"
+                    appMode === "dms"
                         ? "/icon.png"
                         : appMode === "servers"
                         ? "/logo2.png"
@@ -39,7 +39,7 @@ const Sidebar = () => {
                 sx={{ width: 64, height: 64 }}
                 onClick={() =>
                     changeAppMode(
-                        appMode === "friends"
+                        appMode === "dms"
                             ? user.preferences?.mode ?? "servers"
                             : appMode === "servers"
                             ? "posts"
@@ -54,13 +54,13 @@ const Sidebar = () => {
                     {
                         "border-blue-500/60": appMode === "posts",
                         "border-green-500/60": appMode === "servers",
-                        "gradient-sidebar": appMode === "friends",
+                        "gradient-sidebar": appMode === "dms",
                     }
                 )}
             >
                 {appMode === "posts" && <SidebarPosts />}
                 {appMode === "servers" && <SidebarServers />}
-                {appMode === "friends" && <SidebarFriends />}
+                {appMode === "dms" && <SidebarDMs />}
             </Stack>
             <Stack pb={0.9} gap={1} alignItems="center">
                 <Avatar
@@ -70,12 +70,12 @@ const Sidebar = () => {
                     }}
                     className="gradient-button cursor-pointer"
                     onClick={() =>
-                        appMode === "friends"
+                        appMode === "dms"
                             ? changeAppMode(user.preferences?.mode ?? "servers")
-                            : changeAppMode("friends")
+                            : changeAppMode("dms")
                     }
                 >
-                    <Typography variant="caption">Friends</Typography>
+                    <Typography variant="button">DMs</Typography>
                 </Avatar>
             </Stack>
         </Stack>

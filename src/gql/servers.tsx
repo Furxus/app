@@ -11,7 +11,15 @@ export const CreateServer = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {
@@ -34,7 +42,15 @@ export const JoinServer = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {
@@ -57,7 +73,15 @@ export const LeaveServer = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {
@@ -88,7 +112,15 @@ export const GetUserServers = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {
@@ -111,7 +143,15 @@ export const GetUserServer = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {
@@ -134,7 +174,15 @@ export const GetServerSidebarInfo = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {
@@ -178,7 +226,15 @@ export const OnServerCreated = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {
@@ -201,7 +257,15 @@ export const OnServerJoined = gql`
                 id
             }
             channels {
-                id
+                ... on TextChannel {
+                    id
+                }
+                ... on VoiceChannel {
+                    id
+                }
+                ... on CategoryChannel {
+                    id
+                }
             }
             members {
                 user {

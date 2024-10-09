@@ -1,14 +1,14 @@
 import { Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import SidebarFriends from "./components/SidebarFriends.component";
+import SidebarDMs from "./components/SidebarDMs.component";
 
-const FriendsLayout = () => {
+const DMsLayout = () => {
     return (
         <Stack direction="row" className="w-full h-full">
-            <SidebarFriends />
+            <SidebarDMs />
             <Outlet />
         </Stack>
     );
 };
 
-export default FriendsLayout;
+export default DMsLayout;
