@@ -12,11 +12,18 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+type ServerError = {
+    usernameOrEmail?: string;
+    password?: string;
+};
+
 const LoginPage = () => {
     const navigate = useNavigate();
 
     const { isLoggedIn, login } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
+
+    const [srvErrors, setSrvErrors] = useState<ServerError>();
 
     useEffect(() => {
         if (isLoggedIn) navigate("/");
@@ -25,6 +32,15 @@ const LoginPage = () => {
     const [loginUser] = useMutation(LoginUser, {
         onCompleted: ({ loginUser: userData }) => {
             login(userData);
+        },
+        onError: (err) => {
+            const errors = err.graphQLErrors[0].extensions?.errors as any[];
+            errors?.forEach((error) => {
+                setSrvErrors({
+                    ...srvErrors,
+                    [error.type]: error.message,
+                });
+            });
         },
     });
 
@@ -38,7 +54,7 @@ const LoginPage = () => {
                 padding={4}
                 gap={4}
                 width={500}
-                className="border border-blue-500/60 rounded-xl bg-neutral-700/[0.05]"
+                className="border gradient-box rounded-xl bg-neutral-700/[0.05]"
             >
                 <Stack direction="row" className="text-xl">
                     <span>Login to&nbsp;</span>
@@ -69,12 +85,18 @@ const LoginPage = () => {
                                             onChange={handleChange}
                                             autoComplete="off"
                                             error={
-                                                !!errors.usernameOrEmail &&
+                                                (!!errors.usernameOrEmail ||
+                                                    !!srvErrors?.usernameOrEmail) &&
                                                 touched.usernameOrEmail
                                             }
                                             value={values.usernameOrEmail}
                                             required
                                             type="text"
+                                            helperText={
+                                                touched.usernameOrEmail &&
+                                                (errors.usernameOrEmail ||
+                                                    srvErrors?.usernameOrEmail)
+                                            }
                                         />
                                     </Stack>
                                     <Stack
@@ -93,8 +115,14 @@ const LoginPage = () => {
                                             }
                                             onChange={handleChange}
                                             error={
-                                                !!errors.password &&
+                                                (!!errors.password ||
+                                                    !!srvErrors?.password) &&
                                                 touched.password
+                                            }
+                                            helperText={
+                                                touched.password &&
+                                                (errors.password ||
+                                                    srvErrors?.password)
                                             }
                                             value={values.password}
                                             required

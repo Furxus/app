@@ -67,6 +67,9 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
             });
         };
 
+        console.log(auth.friendRequests);
+        console.log(user.friendRequests);
+
         return (
             <>
                 {isHovered ? (
@@ -95,25 +98,45 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
                         <FaUserCircle className="mr-2" />
                         View profile
                     </Item>
-                    {auth?.id !== user.id &&
-                        (auth.friends?.some((f) => f.id === user.id) ? (
-                            <Item onClick={() => console.log("remove friend")}>
-                                <FaUserMinus className="mr-2" />
-                                Remove friend
-                            </Item>
-                        ) : auth.friendRequests?.some(
-                              (f) => f.id === user.id
-                          ) ? (
-                            <Item disabled>
-                                <FaUserPlus className="mr-2" />
-                                Friend request sent
-                            </Item>
-                        ) : (
-                            <Item onClick={() => sendFriendRequest()}>
-                                <FaUserPlus className="mr-2" />
-                                Add friend
-                            </Item>
-                        ))}
+                    {auth?.id !== user.id && (
+                        <>
+                            {auth?.friends?.find((f) => f.id === user.id) ? (
+                                <Item
+                                    onClick={() => console.log("remove friend")}
+                                >
+                                    <FaUserMinus className="mr-2" />
+                                    Remove friend
+                                </Item>
+                            ) : auth?.friendRequests?.sent?.some(
+                                  (f) => f.id === user.id
+                              ) ? (
+                                <Item
+                                    onClick={() =>
+                                        console.log("cancel request")
+                                    }
+                                >
+                                    <FaUserMinus className="mr-2" />
+                                    Cancel request
+                                </Item>
+                            ) : auth?.friendRequests?.received?.some(
+                                  (f) => f.id === user.id
+                              ) ? (
+                                <Item
+                                    onClick={() =>
+                                        console.log("accept request")
+                                    }
+                                >
+                                    <FaUserPlus className="mr-2" />
+                                    Accept request
+                                </Item>
+                            ) : (
+                                <Item onClick={() => sendFriendRequest()}>
+                                    <FaUserPlus className="mr-2" />
+                                    Add friend
+                                </Item>
+                            )}
+                        </>
+                    )}
                 </Menu>
                 <Snackbar
                     open={snackbarVisible}

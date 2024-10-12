@@ -17,7 +17,12 @@ export const OnUserUpdated = gql`
                 id
             }
             friendRequests {
-                id
+                sent {
+                    id
+                }
+                received {
+                    id
+                }
             }
             avatar
             defaultAvatar

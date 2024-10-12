@@ -59,7 +59,12 @@ export const CreateMessage = gql`
                         id
                     }
                     friendRequests {
-                        id
+                        sent {
+                            id
+                        }
+                        received {
+                            id
+                        }
                     }
                 }
             }
@@ -128,7 +133,12 @@ export const EditMessage = gql`
                         id
                     }
                     friendRequests {
-                        id
+                        sent {
+                            id
+                        }
+                        received {
+                            id
+                        }
                     }
                 }
             }
@@ -199,7 +209,12 @@ export const GetMessages = gql`
                         id
                     }
                     friendRequests {
-                        id
+                        sent {
+                            id
+                        }
+                        received {
+                            id
+                        }
                     }
                 }
             }
@@ -258,7 +273,12 @@ export const OnMessageCreated = gql`
                         id
                     }
                     friendRequests {
-                        id
+                        sent {
+                            id
+                        }
+                        received {
+                            id
+                        }
                     }
                 }
             }
@@ -317,7 +337,12 @@ export const OnMessageEdited = gql`
                         id
                     }
                     friendRequests {
-                        id
+                        sent {
+                            id
+                        }
+                        received {
+                            id
+                        }
                     }
                 }
             }

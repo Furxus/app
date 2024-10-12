@@ -4,7 +4,7 @@ import { useAppMode, useAuth } from "@hooks";
 import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import SidebarDMs from "@/dms/components/SidebarDMs.component";
 
 const Sidebar = () => {
@@ -23,20 +23,10 @@ const Sidebar = () => {
                 "gradient-sidebar": appMode === "dms",
             })}
         >
-            <Avatar
-                className={classNames("cursor-pointer", {
-                    "gradient-logo-servers": appMode === "posts",
-                    "gradient-logo-posts": appMode === "servers",
-                    "gradient-logo-both": appMode === "dms",
-                })}
-                src={
-                    appMode === "dms"
-                        ? "/icon.png"
-                        : appMode === "servers"
-                        ? "/logo2.png"
-                        : "/logo.png"
-                }
+            <Button
                 sx={{ width: 64, height: 64 }}
+                className="rounded-full"
+                variant="text"
                 onClick={() =>
                     changeAppMode(
                         appMode === "dms"
@@ -46,7 +36,23 @@ const Sidebar = () => {
                             : "servers"
                     )
                 }
-            />
+            >
+                <Avatar
+                    className={classNames({
+                        "gradient-logo-servers": appMode === "posts",
+                        "gradient-logo-posts": appMode === "servers",
+                        "gradient-logo-both": appMode === "dms",
+                    })}
+                    src={
+                        appMode === "dms"
+                            ? "/icon.png"
+                            : appMode === "servers"
+                            ? "/logo2.png"
+                            : "/logo.png"
+                    }
+                    sx={{ width: 64, height: 64 }}
+                />
+            </Button>
             <Stack
                 alignItems="center"
                 className={classNames(
@@ -63,20 +69,24 @@ const Sidebar = () => {
                 {appMode === "dms" && <SidebarDMs />}
             </Stack>
             <Stack pb={0.9} gap={1} alignItems="center">
-                <Avatar
-                    sx={{
-                        width: 64,
-                        height: 64,
-                    }}
-                    className="gradient-button cursor-pointer"
-                    onClick={() =>
-                        appMode === "dms"
-                            ? changeAppMode(user.preferences?.mode ?? "servers")
-                            : changeAppMode("dms")
-                    }
-                >
-                    <Typography variant="button">DMs</Typography>
-                </Avatar>
+                <Button>
+                    <Avatar
+                        sx={{
+                            width: 64,
+                            height: 64,
+                        }}
+                        className="gradient-button cursor-pointer"
+                        onClick={() =>
+                            appMode === "dms"
+                                ? changeAppMode(
+                                      user.preferences?.mode ?? "servers"
+                                  )
+                                : changeAppMode("dms")
+                        }
+                    >
+                        <Typography variant="button">DMs</Typography>
+                    </Avatar>
+                </Button>
             </Stack>
         </Stack>
     );

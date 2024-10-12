@@ -20,7 +20,12 @@ export const LoginUser = gql`
                 id
             }
             friendRequests {
-                id
+                sent {
+                    id
+                }
+                received {
+                    id
+                }
             }
             updatedAt
             updatedTimestamp
@@ -75,7 +80,12 @@ export const RefreshUser = gql`
                 id
             }
             friendRequests {
-                id
+                sent {
+                    id
+                }
+                received {
+                    id
+                }
             }
             preferences {
                 mode

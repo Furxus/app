@@ -94,7 +94,7 @@ const RegisterPage = () => {
                 alignItems="center"
                 width="500px"
                 padding="2.5rem"
-                className="rounded-xl bg-neutral-700/[0.05] border border-blue-500/60"
+                className="rounded-xl gradient-box bg-neutral-700/[0.05] border border-blue-500/60"
             >
                 {successful ? (
                     <Stack justifyContent="center" alignItems="center" gap={2}>
