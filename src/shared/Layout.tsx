@@ -3,10 +3,9 @@ import Sidebar from "./components/Sidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks";
 import { Button } from "@mui/material";
-import { useMutation, useSubscription } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { ResendEmail } from "@/gql/auth";
-import { useEffect, useState } from "react";
-import { OnUserUpdated } from "@/gql/users";
+import { useState } from "react";
 
 const Layout = () => {
     const navigate = useNavigate();
@@ -16,12 +15,6 @@ const Layout = () => {
     const [resendEmail] = useMutation(ResendEmail, {
         onCompleted: () => {
             setEmailSent(true);
-        },
-    });
-
-    useSubscription(OnUserUpdated, {
-        onData: ({ client }) => {
-            client.resetStore();
         },
     });
 
