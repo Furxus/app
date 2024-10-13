@@ -34,6 +34,7 @@ import { KeyboardEvent, useRef, useState } from "react";
 import { TextField, Tooltip } from "@mui/material";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
 const MessageItem = ({
     messages,
@@ -317,7 +318,18 @@ const MessageItem = ({
                     gap={1}
                     mt={3}
                 >
-                    <Avatar user={member?.user} />
+                    <UserAvatar
+                        button={{
+                            btnClasses: "rounded-full",
+                            btnProps: {
+                                sx: {
+                                    width: 40,
+                                    height: 40,
+                                },
+                            },
+                        }}
+                        user={member?.user}
+                    />
                     <Stack className="w-full">
                         <Stack gap={1} direction="row" alignItems="center">
                             <Typography className="font-bold">

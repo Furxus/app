@@ -67,9 +67,6 @@ const Avatar = (props: AvatarProps & { user?: User; server?: Server }) => {
             });
         };
 
-        console.log(auth.friendRequests);
-        console.log(user.friendRequests);
-
         return (
             <>
                 {isHovered ? (

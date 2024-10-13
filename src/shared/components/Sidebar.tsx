@@ -30,7 +30,7 @@ const Sidebar = () => {
                 onClick={() =>
                     changeAppMode(
                         appMode === "dms"
-                            ? user.preferences?.mode ?? "servers"
+                            ? user?.preferences?.mode ?? "servers"
                             : appMode === "servers"
                             ? "posts"
                             : "servers"
@@ -68,26 +68,26 @@ const Sidebar = () => {
                 {appMode === "servers" && <SidebarServers />}
                 {appMode === "dms" && <SidebarDMs />}
             </Stack>
-            <Stack pb={0.9} gap={1} alignItems="center">
-                <Button>
-                    <Avatar
-                        sx={{
-                            width: 64,
-                            height: 64,
-                        }}
-                        className="gradient-button cursor-pointer"
-                        onClick={() =>
-                            appMode === "dms"
-                                ? changeAppMode(
-                                      user.preferences?.mode ?? "servers"
-                                  )
-                                : changeAppMode("dms")
-                        }
-                    >
-                        <Typography variant="button">DMs</Typography>
-                    </Avatar>
-                </Button>
-            </Stack>
+            <Button
+                sx={{ width: 64, height: 64 }}
+                className="rounded-full"
+                variant="text"
+                onClick={() =>
+                    appMode === "dms"
+                        ? changeAppMode(user?.preferences?.mode ?? "servers")
+                        : changeAppMode("dms")
+                }
+            >
+                <Avatar
+                    sx={{
+                        width: 64,
+                        height: 64,
+                    }}
+                    className="gradient-logo-both"
+                >
+                    <Typography variant="button">DMs</Typography>
+                </Avatar>
+            </Button>
         </Stack>
     );
 };

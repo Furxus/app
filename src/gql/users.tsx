@@ -6,6 +6,36 @@ export const SendFriendRequest = gql`
     }
 `;
 
+export const CancelFriendRequest = gql`
+    mutation cancelFriendRequest($userId: String!) {
+        cancelFriendRequest(userId: $userId)
+    }
+`;
+
+export const GetUser = gql`
+    query getUser($id: String!) {
+        getUser(id: $id) {
+            id
+            username
+            displayName
+            nameAcronym
+            friends {
+                id
+            }
+            friendRequests {
+                sent {
+                    id
+                }
+                received {
+                    id
+                }
+            }
+            avatar
+            defaultAvatar
+        }
+    }
+`;
+
 export const OnUserUpdated = gql`
     subscription userUpdated {
         userUpdated {

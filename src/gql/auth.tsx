@@ -1,5 +1,40 @@
 import { gql } from "@apollo/client";
 
+export const GetMe = gql`
+    query getMe {
+        getMe {
+            id
+            username
+            email
+            avatar
+            verified
+            defaultAvatar
+            displayName
+            bio
+            createdAt
+            createdTimestamp
+            updatedAt
+            updatedTimestamp
+            friends {
+                id
+            }
+            friendRequests {
+                sent {
+                    id
+                }
+                received {
+                    id
+                }
+            }
+            preferences {
+                mode
+                theme
+            }
+            type
+        }
+    }
+`;
+
 export const LoginUser = gql`
     mutation loginUser($usernameOrEmail: String!, $password: String!) {
         loginUser(

@@ -40,6 +40,7 @@ export type ProfileSettingsPages = "account" | "profile";
 export const Colors = {
     posts: "#3b82f6",
     servers: "#22C55E",
+    dms: "#367588",
 };
 
 export const useSyntaxHighlighterTheme = () => {

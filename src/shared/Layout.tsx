@@ -3,13 +3,14 @@ import Sidebar from "./components/Sidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks";
 import { Button } from "@mui/material";
-import { useMutation } from "@apollo/client";
+import { useMutation, useSubscription } from "@apollo/client";
 import { ResendEmail } from "@/gql/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { OnUserUpdated } from "@/gql/users";
 
 const Layout = () => {
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
+    const { user: auth, logout } = useAuth();
     const [emailSent, setEmailSent] = useState(false);
 
     const [resendEmail] = useMutation(ResendEmail, {
@@ -18,7 +19,13 @@ const Layout = () => {
         },
     });
 
-    if (!user.verified)
+    useSubscription(OnUserUpdated, {
+        onData: ({ client }) => {
+            client.resetStore();
+        },
+    });
+
+    if (!auth?.verified)
         return (
             <Stack
                 justifyContent="center"
