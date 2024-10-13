@@ -12,7 +12,6 @@ import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import ScrollableFeed from "react-scrollable-feed";
 
-import cloneDeep from "lodash/cloneDeep";
 import classNames from "classnames";
 
 const ChannelMessages = ({

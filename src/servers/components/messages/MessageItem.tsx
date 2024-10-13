@@ -5,7 +5,6 @@ import { Item, Menu, useContextMenu } from "react-contexify";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 
 import Stack from "@mui/material/Stack";
-import Avatar from "@/shared/components/avatar/Avatar";
 import { useMutation } from "@apollo/client";
 import { DeleteMessage, EditMessage } from "@gql/messages";
 import { useAuth } from "@hooks";
