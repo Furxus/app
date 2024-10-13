@@ -55,8 +55,8 @@ export const GetPaginatedComments = gql`
 `;
 
 export const OnCommentCreated = gql`
-    subscription commentCreated {
-        commentCreated {
+    subscription commentCreated($postId: String!) {
+        commentCreated(postId: $postId) {
             id
             content
             createdAt

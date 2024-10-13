@@ -67,8 +67,11 @@ const CommentPopover = ({
                 if (!newComment) return;
 
                 return {
-                    getComments: [...prev.getComments, newComment],
+                    getComments: [newComment, ...prev.getComments],
                 };
+            },
+            variables: {
+                postId: post.id,
             },
         });
 
