@@ -95,7 +95,7 @@ const CommentPopover = ({
                     direction="column"
                     width={{
                         sm: "100%",
-                        md: "600px",
+                        md: "500px",
                     }}
                 >
                     {called ? (
