@@ -80,7 +80,7 @@ const UserAvatar = ({
     return (
         <>
             <IconButton className={btnClasses} {...btnProps}>
-                {isHovered ? (
+                {!isHovered ? (
                     <Avatar
                         ref={hoverRef}
                         src={
