@@ -159,8 +159,18 @@ export const DeleteMessage = gql`
 `;
 
 export const GetMessages = gql`
-    query getMessages($serverId: String!, $channelId: String!) {
-        getMessages(serverId: $serverId, channelId: $channelId) {
+    query getMessages(
+        $serverId: String!
+        $channelId: String!
+        $limit: Int
+        $before: String
+    ) {
+        getMessages(
+            serverId: $serverId
+            channelId: $channelId
+            limit: $limit
+            before: $before
+        ) {
             id
             content
             edited

@@ -10,7 +10,8 @@ import MessageItem from "../messages/MessageItem";
 import { MessageSkeleton } from "@utils";
 import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";
-import ScrollableFeed from "react-scrollable-feed";
+
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import classNames from "classnames";
 
@@ -21,9 +22,10 @@ const ChannelMessages = ({
     serverId: string;
     channelId: string;
 }) => {
-    const scrollRef = useRef<ScrollableFeed>(null);
+    const scrollRef = useRef<VirtuosoHandle>(null);
 
     const {
+        fetchMore,
         loading,
         subscribeToMore,
         data: { getMessages: messages = [] } = {},
@@ -31,6 +33,7 @@ const ChannelMessages = ({
         variables: {
             serverId,
             channelId,
+            limit: 10,
         },
     });
 
@@ -46,6 +49,13 @@ const ChannelMessages = ({
                 const newMessage: Message =
                     subscriptionData.data.messageCreated;
                 if (!newMessage) return prev;
+
+                setTimeout(() => {
+                    scrollRef.current?.scrollToIndex({
+                        index: "LAST",
+                        behavior: "smooth",
+                    });
+                }, 500);
 
                 return {
                     getMessages: [...prev.getMessages, newMessage],
@@ -104,12 +114,6 @@ const ChannelMessages = ({
         return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        if (!loading) {
-            scrollRef.current?.scrollToBottom();
-        }
-    }, [messages, loading]);
-
     const EmptyMessage = () => (
         <Stack justifyContent="center" alignItems="center">
             <span className="text-xl">No messages</span>
@@ -119,31 +123,54 @@ const ChannelMessages = ({
         </Stack>
     );
 
+    const next = () => {
+        console.log("fetching more");
+        fetchMore({
+            variables: {
+                serverId,
+                channelId,
+                limit: 50,
+                before: messages[messages.length - 1].id,
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                return {
+                    getMessages: [
+                        ...fetchMoreResult.getMessages,
+                        ...prev.getMessages,
+                    ],
+                };
+            },
+        });
+    };
+
     return (
         <Stack
             pl={2}
-            className={classNames("flex-grow overflow-y-auto", {
+            className={classNames("flex-grow", {
                 "justify-center": messages.length === 0,
             })}
+            id="messages"
         >
             {loading ? (
                 <MessageSkeleton />
             ) : messages.length === 0 ? (
                 <EmptyMessage />
             ) : (
-                <ScrollableFeed
+                <Virtuoso
                     ref={scrollRef}
-                    className="flex flex-col overflow-y-auto"
-                >
-                    {messages.map((message: any, i: number) => (
+                    data={messages}
+                    startReached={next}
+                    initialTopMostItemIndex={messages.length - 1}
+                    itemContent={(i, message: Message) => (
                         <MessageItem
                             key={i}
                             message={message}
                             index={i}
                             messages={messages}
                         />
-                    ))}
-                </ScrollableFeed>
+                    )}
+                />
             )}
         </Stack>
     );
