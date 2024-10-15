@@ -158,7 +158,7 @@ const CreateServerDialog = ({
                         onChange={onChange}
                         className="mb-4"
                         onKeyDown={(e) => {
-                            if (e.key === "Enter") onSubmit();
+                            if (e.key === "Enter" && fields.name) onSubmit();
                         }}
                     />
                     <Button

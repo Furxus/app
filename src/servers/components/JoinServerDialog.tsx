@@ -62,7 +62,7 @@ const JoinServerDialog = ({
                             error={error !== null}
                             helperText={error}
                             onKeyDown={(e) => {
-                                if (e.key === "Enter") joinServer();
+                                if (e.key === "Enter" && code) joinServer();
                             }}
                         />
                         <Button
