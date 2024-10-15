@@ -25,7 +25,6 @@ const ChannelMessages = ({
     const scrollRef = useRef<VirtuosoHandle>(null);
 
     const {
-        fetchMore,
         loading,
         subscribeToMore,
         data: { getMessages: messages = [] } = {},
@@ -33,7 +32,6 @@ const ChannelMessages = ({
         variables: {
             serverId,
             channelId,
-            limit: 10,
         },
     });
 
@@ -123,27 +121,6 @@ const ChannelMessages = ({
         </Stack>
     );
 
-    const next = () => {
-        console.log("fetching more");
-        fetchMore({
-            variables: {
-                serverId,
-                channelId,
-                limit: 50,
-                before: messages[messages.length - 1].id,
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
-                return {
-                    getMessages: [
-                        ...fetchMoreResult.getMessages,
-                        ...prev.getMessages,
-                    ],
-                };
-            },
-        });
-    };
-
     return (
         <Stack
             pl={2}
@@ -160,7 +137,6 @@ const ChannelMessages = ({
                 <Virtuoso
                     ref={scrollRef}
                     data={messages}
-                    startReached={next}
                     initialTopMostItemIndex={messages.length - 1}
                     itemContent={(i, message: Message) => (
                         <MessageItem
