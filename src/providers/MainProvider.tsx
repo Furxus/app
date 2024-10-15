@@ -151,7 +151,6 @@ const theme = createTheme({
         MuiAvatar: {
             styleOverrides: {
                 root: {
-                    backgroundColor: "#444",
                     color: "white",
                 },
             },
