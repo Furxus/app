@@ -28,9 +28,6 @@ const ChannelTextListItem = ({
             serverId: server.id,
             id: channel.id,
         },
-        onCompleted: () => {
-            navigate(`/servers/${server.id}`);
-        },
     });
 
     const { show } = useContextMenu();

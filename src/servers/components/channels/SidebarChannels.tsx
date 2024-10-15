@@ -16,8 +16,10 @@ import {
     OnChannelCreated,
     OnChannelDeleted,
 } from "@/gql/channels";
+import { useNavigate } from "react-router-dom";
 
 const ServerSidebarChannels = ({ server }: { server: Server }) => {
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [visible, setVisible] = useState(false);
 
@@ -38,6 +40,9 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
                 const newChannel = subscriptionData.data.channelCreated;
+
+                navigate(`/servers/${server.id}/${newChannel.id}`);
+
                 return {
                     getChannels: [...prev.getChannels, newChannel],
                 };
@@ -54,6 +59,9 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
                 const deletedChannel = subscriptionData.data.channelDeleted;
+
+                navigate(`/servers/${server.id}`);
+
                 return {
                     getChannels: prev.getChannels.filter(
                         (channel: Channel) => channel.id !== deletedChannel.id
