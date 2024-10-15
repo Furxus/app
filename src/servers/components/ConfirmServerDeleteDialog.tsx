@@ -63,7 +63,7 @@ const ConfirmServerDeleteDialog = ({
                 gap={2}
                 direction="column"
                 alignItems="center"
-                className="bg-neutral-900 border rounded-lg w-1/5 border-red-500/60"
+                className="bg-neutral-900 border rounded-lg w-1/4 border-red-500/60"
             >
                 <Typography variant="body2" className="font-bold">
                     Are you sure you want to delete this server?
