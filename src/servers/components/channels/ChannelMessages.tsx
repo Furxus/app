@@ -145,8 +145,6 @@ const ChannelMessages = ({
         });
     };
 
-    console.log(messages.length);
-
     return (
         <Stack
             pl={2}
