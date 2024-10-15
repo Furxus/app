@@ -1,7 +1,6 @@
 import Button from "@mui/material/Button";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
-import { MdClose } from "react-icons/md";
 import AvatarEditor from "react-avatar-edit";
 import { useAppMode, useAuth } from "@/hooks";
 import { useMutation } from "@apollo/client";
@@ -20,7 +19,6 @@ const AvatarUpload = ({
 
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState<File | null>(null);
-    const [thumbnail, setThumbnail] = useState<string | null>(null);
 
     const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +29,7 @@ const AvatarUpload = ({
         update: () => {
             setOpen(false);
             setFile(null);
-            setThumbnail(null);
+
             setMainOpen(false);
             refresh();
         },
@@ -39,12 +37,11 @@ const AvatarUpload = ({
 
     const onUpload = (file: any) => {
         setFile(file);
-        setThumbnail(URL.createObjectURL(file));
     };
 
     const onClose = () => {
         setFile(null);
-        setThumbnail(null);
+
         setError(null);
         setOpen(false);
     };
@@ -83,40 +80,24 @@ const AvatarUpload = ({
                         direction="column"
                         gap={0.5}
                     >
-                        {thumbnail ? (
-                            <div className="relative">
-                                {!loading && (
-                                    <MdClose
-                                        className="absolute top-0 right-0"
-                                        onClick={() => setThumbnail(null)}
-                                    />
-                                )}
-                                <img
-                                    className="w-[96px] h-[96px] rounded-full"
-                                    src={thumbnail}
-                                    alt="thumbnail"
+                        <AvatarEditor
+                            width={512}
+                            height={512}
+                            label={
+                                <Avatar
+                                    src={user.avatar ?? user.defaultAvatar}
+                                    sx={{ width: 512, height: 512 }}
                                 />
-                            </div>
-                        ) : (
-                            <AvatarEditor
-                                width={96}
-                                height={96}
-                                label={
-                                    <Avatar
-                                        src={user.avatar ?? user.defaultAvatar}
-                                        sx={{ width: 96, height: 96 }}
-                                    />
-                                }
-                                onFileLoad={onUpload}
-                                onClose={onClose}
-                                borderStyle={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                                mimeTypes="image/*"
-                            />
-                        )}
+                            }
+                            onFileLoad={onUpload}
+                            onClose={onClose}
+                            borderStyle={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                            mimeTypes="image/*"
+                        />
                         <span className="text-red-500 text-sm">
                             {error ?? ""}
                         </span>
