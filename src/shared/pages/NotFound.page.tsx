@@ -33,6 +33,13 @@ const NotFound = () => {
                         Servers
                     </Button>
                     <Button
+                        onClick={() => navigate("/users")}
+                        variant="outlined"
+                        color="info"
+                    >
+                        DMs
+                    </Button>
+                    <Button
                         onClick={() => navigate("/posts")}
                         variant="outlined"
                         color="primary"
