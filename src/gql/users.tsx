@@ -12,6 +12,18 @@ export const CancelFriendRequest = gql`
     }
 `;
 
+export const AcceptFriendRequest = gql`
+    mutation acceptFriendRequest($userId: String!) {
+        acceptFriendRequest(userId: $userId)
+    }
+`;
+
+export const RemoveFriend = gql`
+    mutation removeFriend($userId: String!) {
+        removeFriend(userId: $userId)
+    }
+`;
+
 export const GetUser = gql`
     query getUser($id: String!) {
         getUser(id: $id) {

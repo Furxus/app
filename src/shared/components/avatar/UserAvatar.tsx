@@ -1,4 +1,9 @@
-import { CancelFriendRequest, SendFriendRequest } from "@/gql/users";
+import {
+    AcceptFriendRequest,
+    CancelFriendRequest,
+    RemoveFriend,
+    SendFriendRequest,
+} from "@/gql/users";
 import { useAuth } from "@/hooks";
 import { useMutation } from "@apollo/client";
 import { User } from "@furxus/types";
@@ -46,6 +51,40 @@ const UserAvatar = ({
         onCompleted: (data) => {
             if (!data.cancelFriendRequest) return;
             setMessage("Friend request cancelled");
+            setError(null);
+            setSnackbarVisible(true);
+        },
+        onError: (err) => {
+            setError(err.message);
+            setMessage(null);
+            setSnackbarVisible(true);
+        },
+    });
+
+    const [acceptFriendRequest] = useMutation(AcceptFriendRequest, {
+        variables: {
+            userId: user?.id,
+        },
+        onCompleted: (data) => {
+            if (!data.acceptFriendRequest) return;
+            setMessage("Friend request accepted");
+            setError(null);
+            setSnackbarVisible(true);
+        },
+        onError: (err) => {
+            setError(err.message);
+            setMessage(null);
+            setSnackbarVisible(true);
+        },
+    });
+
+    const [removeFriend] = useMutation(RemoveFriend, {
+        variables: {
+            userId: user?.id,
+        },
+        onCompleted: (data) => {
+            if (!data.removeFriend) return;
+            setMessage("Friend removed");
             setError(null);
             setSnackbarVisible(true);
         },
@@ -112,7 +151,7 @@ const UserAvatar = ({
                 {auth?.id !== user?.id && (
                     <>
                         {auth.friends?.some((f) => f.id === user?.id) && (
-                            <Item>
+                            <Item onClick={() => removeFriend()}>
                                 <FaUserMinus className="mr-2" />
                                 Remove Friend
                             </Item>
@@ -128,7 +167,7 @@ const UserAvatar = ({
                         {auth.friendRequests?.received.some(
                             (f) => f.id === user?.id
                         ) && (
-                            <Item>
+                            <Item onClick={() => acceptFriendRequest()}>
                                 <FaUserMinus className="mr-2" />
                                 Accept Request
                             </Item>
@@ -138,7 +177,8 @@ const UserAvatar = ({
                         ) &&
                             !auth.friendRequests?.received.some(
                                 (f) => f.id === user?.id
-                            ) && (
+                            ) &&
+                            !auth.friends?.some((f) => f.id === user?.id) && (
                                 <Item onClick={() => sendFriendRequest()}>
                                     <FaUserCircle className="mr-2" />
                                     Send Friend Request
