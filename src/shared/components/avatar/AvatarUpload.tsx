@@ -83,6 +83,8 @@ const AvatarUpload = ({
                         <AvatarEditor
                             width={512}
                             height={512}
+                            imageHeight={512}
+                            imageWidth={512}
                             label={
                                 <Avatar
                                     src={user.avatar ?? user.defaultAvatar}
