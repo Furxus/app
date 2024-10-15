@@ -11,7 +11,8 @@ import { Alert, ButtonProps, IconButton, Snackbar } from "@mui/material";
 import Avatar, { AvatarProps } from "@mui/material/Avatar";
 import { useRef, useState } from "react";
 import { Item, Menu, useContextMenu } from "react-contexify";
-import { FaUserCircle, FaUserMinus } from "react-icons/fa";
+import { FaUserCircle, FaUserMinus, FaUserPlus } from "react-icons/fa";
+import { MdMail } from "react-icons/md";
 import { useHover } from "usehooks-ts";
 
 const UserAvatar = ({
@@ -150,6 +151,10 @@ const UserAvatar = ({
                 </Item>
                 {auth?.id !== user?.id && (
                     <>
+                        <Item>
+                            <MdMail className="mr-2" />
+                            Message
+                        </Item>
                         {auth.friends?.some((f) => f.id === user?.id) && (
                             <Item onClick={() => removeFriend()}>
                                 <FaUserMinus className="mr-2" />
@@ -180,7 +185,7 @@ const UserAvatar = ({
                             ) &&
                             !auth.friends?.some((f) => f.id === user?.id) && (
                                 <Item onClick={() => sendFriendRequest()}>
-                                    <FaUserCircle className="mr-2" />
+                                    <FaUserPlus className="mr-2" />
                                     Send Friend Request
                                 </Item>
                             )}
