@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import ChannelHeader from "../components/channels/ChannelHeader";
 import { useQuery } from "@apollo/client";
 import { GetChannel } from "@gql/channels";
@@ -23,7 +23,7 @@ const ChannelPage = () => {
     if (!serverId) return <></>;
     if (!channelId) return <></>;
     if (loading) return <Skeleton />;
-    if (!channel) return <div>Channel not found</div>;
+    if (!channel) return <Navigate to={`/servers/${serverId}`} />;
 
     return (
         <Stack direction="column" className="w-full h-full overflow-x-hidden">
