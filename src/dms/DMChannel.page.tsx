@@ -11,9 +11,9 @@ const DMsChannelPage = () => {
         },
     });
 
-    console.log(dmChannel);
+    //console.log(dmChannel);
 
-    return <div key="recipient">{dmId}</div>;
+    return <></>;
 };
 
 export default DMsChannelPage;

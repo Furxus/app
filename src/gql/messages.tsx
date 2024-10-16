@@ -1,16 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const CreateMessage = gql`
-    mutation createMessage(
-        $serverId: String!
-        $channelId: String!
-        $content: String!
-    ) {
-        createMessage(
-            serverId: $serverId
-            channelId: $channelId
-            content: $content
-        ) {
+    mutation createMessage($channelId: String!, $content: String!) {
+        createMessage(channelId: $channelId, content: $content) {
             id
             content
             edited
@@ -18,9 +10,6 @@ export const CreateMessage = gql`
             createdTimestamp
             updatedAt
             updatedTimestamp
-            server {
-                id
-            }
             channel {
                 ... on TextChannel {
                     id
@@ -47,24 +36,22 @@ export const CreateMessage = gql`
                     iconUrl
                 }
             }
-            member {
-                user {
+            author {
+                id
+                username
+                displayName
+                nameAcronym
+                avatar
+                defaultAvatar
+                friends {
                     id
-                    username
-                    displayName
-                    nameAcronym
-                    avatar
-                    defaultAvatar
-                    friends {
+                }
+                friendRequests {
+                    sent {
                         id
                     }
-                    friendRequests {
-                        sent {
-                            id
-                        }
-                        received {
-                            id
-                        }
+                    received {
+                        id
                     }
                 }
             }
@@ -73,18 +60,8 @@ export const CreateMessage = gql`
 `;
 
 export const EditMessage = gql`
-    mutation editMessage(
-        $serverId: String!
-        $channelId: String!
-        $id: String!
-        $content: String!
-    ) {
-        editMessage(
-            serverId: $serverId
-            channelId: $channelId
-            id: $id
-            content: $content
-        ) {
+    mutation editMessage($channelId: String!, $id: String!, $content: String!) {
+        editMessage(channelId: $channelId, id: $id, content: $content) {
             id
             content
             edited
@@ -92,9 +69,6 @@ export const EditMessage = gql`
             createdTimestamp
             updatedAt
             updatedTimestamp
-            server {
-                id
-            }
             channel {
                 ... on TextChannel {
                     id
@@ -121,24 +95,22 @@ export const EditMessage = gql`
                     iconUrl
                 }
             }
-            member {
-                user {
+            author {
+                id
+                username
+                displayName
+                nameAcronym
+                avatar
+                defaultAvatar
+                friends {
                     id
-                    username
-                    displayName
-                    nameAcronym
-                    avatar
-                    defaultAvatar
-                    friends {
+                }
+                friendRequests {
+                    sent {
                         id
                     }
-                    friendRequests {
-                        sent {
-                            id
-                        }
-                        received {
-                            id
-                        }
+                    received {
+                        id
                     }
                 }
             }
@@ -147,30 +119,16 @@ export const EditMessage = gql`
 `;
 
 export const DeleteMessage = gql`
-    mutation deleteMessage(
-        $serverId: String!
-        $channelId: String!
-        $id: String!
-    ) {
-        deleteMessage(serverId: $serverId, channelId: $channelId, id: $id) {
+    mutation deleteMessage($channelId: String!, $id: String!) {
+        deleteMessage(channelId: $channelId, id: $id) {
             id
         }
     }
 `;
 
 export const GetMessages = gql`
-    query getMessages(
-        $serverId: String!
-        $channelId: String!
-        $limit: Int
-        $cursor: String
-    ) {
-        getMessages(
-            serverId: $serverId
-            channelId: $channelId
-            limit: $limit
-            cursor: $cursor
-        ) {
+    query getMessages($channelId: String!, $limit: Int, $cursor: String) {
+        getMessages(channelId: $channelId, limit: $limit, cursor: $cursor) {
             id
             content
             edited
@@ -178,9 +136,6 @@ export const GetMessages = gql`
             createdTimestamp
             updatedAt
             updatedTimestamp
-            server {
-                id
-            }
             channel {
                 ... on TextChannel {
                     id
@@ -207,24 +162,22 @@ export const GetMessages = gql`
                     iconUrl
                 }
             }
-            member {
-                user {
+            author {
+                id
+                username
+                displayName
+                nameAcronym
+                avatar
+                defaultAvatar
+                friends {
                     id
-                    username
-                    displayName
-                    nameAcronym
-                    avatar
-                    defaultAvatar
-                    friends {
+                }
+                friendRequests {
+                    sent {
                         id
                     }
-                    friendRequests {
-                        sent {
-                            id
-                        }
-                        received {
-                            id
-                        }
+                    received {
+                        id
                     }
                 }
             }
@@ -233,8 +186,8 @@ export const GetMessages = gql`
 `;
 
 export const OnMessageCreated = gql`
-    subscription messageCreated($serverId: String!, $channelId: String!) {
-        messageCreated(serverId: $serverId, channelId: $channelId) {
+    subscription messageCreated($channelId: String!) {
+        messageCreated(channelId: $channelId) {
             id
             content
             edited
@@ -242,9 +195,6 @@ export const OnMessageCreated = gql`
             createdTimestamp
             updatedAt
             updatedTimestamp
-            server {
-                id
-            }
             channel {
                 ... on TextChannel {
                     id
@@ -271,24 +221,22 @@ export const OnMessageCreated = gql`
                     iconUrl
                 }
             }
-            member {
-                user {
+            author {
+                id
+                username
+                displayName
+                nameAcronym
+                avatar
+                defaultAvatar
+                friends {
                     id
-                    username
-                    displayName
-                    nameAcronym
-                    avatar
-                    defaultAvatar
-                    friends {
+                }
+                friendRequests {
+                    sent {
                         id
                     }
-                    friendRequests {
-                        sent {
-                            id
-                        }
-                        received {
-                            id
-                        }
+                    received {
+                        id
                     }
                 }
             }
@@ -297,8 +245,8 @@ export const OnMessageCreated = gql`
 `;
 
 export const OnMessageEdited = gql`
-    subscription messageEdited($serverId: String!, $channelId: String!) {
-        messageEdited(serverId: $serverId, channelId: $channelId) {
+    subscription messageEdited($channelId: String!) {
+        messageEdited(channelId: $channelId) {
             id
             content
             edited
@@ -306,9 +254,7 @@ export const OnMessageEdited = gql`
             createdTimestamp
             updatedAt
             updatedTimestamp
-            server {
-                id
-            }
+
             channel {
                 ... on TextChannel {
                     id
@@ -335,24 +281,22 @@ export const OnMessageEdited = gql`
                     iconUrl
                 }
             }
-            member {
-                user {
+            author {
+                id
+                username
+                displayName
+                nameAcronym
+                avatar
+                defaultAvatar
+                friends {
                     id
-                    username
-                    displayName
-                    nameAcronym
-                    avatar
-                    defaultAvatar
-                    friends {
+                }
+                friendRequests {
+                    sent {
                         id
                     }
-                    friendRequests {
-                        sent {
-                            id
-                        }
-                        received {
-                            id
-                        }
+                    received {
+                        id
                     }
                 }
             }
@@ -361,8 +305,8 @@ export const OnMessageEdited = gql`
 `;
 
 export const OnMessageDeleted = gql`
-    subscription messageDeleted($serverId: String!, $channelId: String!) {
-        messageDeleted(serverId: $serverId, channelId: $channelId) {
+    subscription messageDeleted($channelId: String!) {
+        messageDeleted(channelId: $channelId) {
             id
         }
     }

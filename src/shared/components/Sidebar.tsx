@@ -53,17 +53,7 @@ const Sidebar = () => {
                     sx={{ width: 64, height: 64 }}
                 />
             </Button>
-            <Stack
-                alignItems="center"
-                className={classNames(
-                    "flex-grow w-full shadow-2xl bg-neutral-700/[.4] px-5 py-3 gap-1",
-                    {
-                        "border-blue-500/60": appMode === "posts",
-                        "border-green-500/60": appMode === "servers",
-                        "gradient-sidebar": appMode === "dms",
-                    }
-                )}
-            >
+            <Stack flexGrow={1}>
                 {appMode === "posts" && <SidebarPosts />}
                 {appMode === "servers" && <SidebarServers />}
                 {appMode === "dms" && <SidebarDMs />}

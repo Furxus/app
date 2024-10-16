@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 
 import { CreateMessage } from "@gql/messages";
 import { useState, KeyboardEvent } from "react";
-import { Channel } from "@furxus/types";
+import { BaseServerChannel } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -11,7 +11,7 @@ const ChannelTextInput = ({
     channel,
 }: {
     serverId: string;
-    channel: Channel;
+    channel: BaseServerChannel;
 }) => {
     const [message, setMessage] = useState("");
     const [createMessage] = useMutation(CreateMessage, {

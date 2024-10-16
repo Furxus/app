@@ -54,7 +54,6 @@ const MessageItem = ({
     // "m" implies it is a mutation function
     const [mEditMessage] = useMutation(EditMessage, {
         variables: {
-            serverId: message.server?.id,
             channelId: message.channel?.id,
             id: message.id,
             content: newContent,
@@ -63,7 +62,6 @@ const MessageItem = ({
 
     const [deleteMessage] = useMutation(DeleteMessage, {
         variables: {
-            serverId: message.server?.id,
             channelId: message.channel?.id,
             id: message.id,
         },
@@ -92,10 +90,10 @@ const MessageItem = ({
         });
     };
 
-    const { member, content, createdAt, updatedAt } = message;
+    const { author, content, createdAt, updatedAt } = message;
 
     const sameUser = (i: number, message: Message) =>
-        messages[i - 1]?.member?.user?.id !== message.member?.user?.id;
+        messages[i - 1]?.author?.id !== message.author?.id;
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -327,13 +325,12 @@ const MessageItem = ({
                                 },
                             },
                         }}
-                        user={member?.user}
+                        user={author}
                     />
                     <Stack className="w-full">
                         <Stack gap={1} direction="row" alignItems="center">
                             <Typography className="font-bold">
-                                {member?.user?.displayName ??
-                                    member?.user?.username}
+                                {author?.displayName ?? author?.username}
                             </Typography>
                             <time
                                 className="text-gray-400 text-xs"
@@ -434,7 +431,7 @@ const MessageItem = ({
                 </Stack>
             )}
             <Menu id={`message-menu-${message.id}`}>
-                {auth.id === member?.user?.id && (
+                {auth.id === author?.id && (
                     <Item onClick={() => setMessageEditing(true)}>
                         <FaEdit className="mr-2" />
                         Edit Message
@@ -448,7 +445,7 @@ const MessageItem = ({
                     <FaCopy className="mr-2" />
                     Copy Text
                 </Item>
-                {auth.id === member?.user?.id && (
+                {auth.id === author?.id && (
                     <Item
                         onClick={() => deleteMessage()}
                         className="text-red-500"

@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { useMutation } from "@apollo/client";
 import { DeleteChannel } from "@gql/channels";
-import { Channel, Server } from "@furxus/types";
+import { BaseServerChannel, Server } from "@furxus/types";
 import { useAuth } from "@hooks";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import Stack from "@mui/material/Stack";
@@ -15,7 +15,7 @@ const ChannelTextListItem = ({
     channel,
 }: {
     server: Server;
-    channel: Channel;
+    channel: BaseServerChannel;
 }) => {
     const { user } = useAuth();
 

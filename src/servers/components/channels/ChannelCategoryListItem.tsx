@@ -1,6 +1,6 @@
 import { ChannelTypeIcons } from "@utils";
 import classNames from "classnames";
-import { Channel } from "@furxus/types";
+import { CategoryChannel } from "@furxus/types";
 import { ReactNode } from "react";
 import Stack from "@mui/material/Stack";
 
@@ -9,7 +9,7 @@ const ChannelCategoryListItem = ({
     channel,
 }: {
     children: ReactNode;
-    channel: Channel;
+    channel: CategoryChannel;
 }) => {
     if (!channel) return <></>;
 

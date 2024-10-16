@@ -15,13 +15,7 @@ import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import classNames from "classnames";
 
-const ChannelMessages = ({
-    serverId,
-    channelId,
-}: {
-    serverId: string;
-    channelId: string;
-}) => {
+const ChannelMessages = ({ channelId }: { channelId: string }) => {
     const scrollRef = useRef<VirtuosoHandle>(null);
 
     const {
@@ -31,7 +25,6 @@ const ChannelMessages = ({
         data: { getMessages: messages = [] } = {},
     } = useQuery(GetMessages, {
         variables: {
-            serverId,
             channelId,
             limit: 50,
         },
@@ -41,7 +34,6 @@ const ChannelMessages = ({
         const unsubscribe = subscribeToMore({
             document: OnMessageCreated,
             variables: {
-                serverId,
                 channelId,
             },
             updateQuery: (prev, { subscriptionData }) => {
@@ -70,7 +62,6 @@ const ChannelMessages = ({
         const unsubscribe = subscribeToMore({
             document: OnMessageEdited,
             variables: {
-                serverId,
                 channelId,
             },
             updateQuery: (prev, { subscriptionData }) => {
@@ -94,7 +85,6 @@ const ChannelMessages = ({
         const unsubscribe = subscribeToMore({
             document: OnMessageDeleted,
             variables: {
-                serverId,
                 channelId,
             },
             updateQuery: (prev, { subscriptionData }) => {
@@ -126,7 +116,6 @@ const ChannelMessages = ({
     const next = () => {
         fetchMore({
             variables: {
-                serverId,
                 channelId,
                 limit: 25,
                 cursor: messages[0].createdTimestamp.toString(),

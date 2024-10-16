@@ -1,4 +1,5 @@
 import SidebarIcon from "@/shared/components/sidebar/SidebarIcon";
+import { Stack } from "@mui/material";
 
 const SidebarPosts = () => {
     const mockData: any[] = [
@@ -29,7 +30,17 @@ const SidebarPosts = () => {
         },
     ];
 
-    return mockData.map((user) => <SidebarIcon key={user.id} user={user} />);
+    return (
+        <Stack
+            direction="column"
+            flexGrow={1}
+            className="shadow-2xl bg-neutral-700[.4]"
+        >
+            {mockData.map((user) => (
+                <SidebarIcon key={user.id} user={user} />
+            ))}
+        </Stack>
+    );
 };
 
 export default SidebarPosts;
