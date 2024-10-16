@@ -26,7 +26,7 @@ const WebRoutes = () => {
                     <Route path=":postId" element={<PostPage />} />
                 </Route>
                 <Route path="/dms" element={<DMsLayout />}>
-                    <Route path=":dmChannelId" element={<DMChannelPage />} />
+                    <Route path=":dmId" element={<DMChannelPage />} />
                 </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />

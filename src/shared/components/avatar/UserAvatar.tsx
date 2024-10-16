@@ -1,10 +1,11 @@
+import { OpenDMChannel } from "@/gql/dms";
 import {
     AcceptFriendRequest,
     CancelFriendRequest,
     RemoveFriend,
     SendFriendRequest,
 } from "@/gql/users";
-import { useAuth } from "@/hooks";
+import { useAppMode, useAuth } from "@/hooks";
 import { useMutation } from "@apollo/client";
 import { User } from "@furxus/types";
 import { Alert, ButtonProps, IconButton, Snackbar } from "@mui/material";
@@ -13,6 +14,7 @@ import { useRef, useState } from "react";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { FaUserCircle, FaUserMinus, FaUserPlus } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { useHover } from "usehooks-ts";
 
 const UserAvatar = ({
@@ -24,6 +26,8 @@ const UserAvatar = ({
     button?: { btnProps?: ButtonProps; btnClasses?: string };
     user?: User;
 }) => {
+    const navigate = useNavigate();
+    const { changeAppMode } = useAppMode();
     const { avatarProps, avatarClasses } = avatar ?? {};
     const { btnProps, btnClasses } = button ?? {};
     const { user: auth } = useAuth();
@@ -96,6 +100,20 @@ const UserAvatar = ({
         },
     });
 
+    const [openDM] = useMutation(OpenDMChannel, {
+        variables: {
+            recipient: user?.id,
+        },
+        onCompleted: ({ openDMChannel }) => {
+            if (!openDMChannel) return;
+            changeAppMode("dms");
+            navigate(`/dms/${openDMChannel.id}`);
+        },
+        onError: (err) => {
+            console.error(err);
+        },
+    });
+
     const hoverRef = useRef<HTMLDivElement>(null);
     const isHovered = useHover(hoverRef);
 
@@ -151,7 +169,7 @@ const UserAvatar = ({
                 </Item>
                 {auth?.id !== user?.id && (
                     <>
-                        <Item>
+                        <Item onClick={() => openDM()}>
                             <MdMail className="mr-2" />
                             Message
                         </Item>

@@ -1,9 +1,19 @@
+import { getDM } from "@/gql/dms";
+import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 
 const DMsChannelPage = () => {
-    const { dmChannelId } = useParams();
+    const { dmId } = useParams();
 
-    return <div key="friend-channel-page">{dmChannelId}</div>;
+    const { data: { getDM: dmChannel } = {} } = useQuery(getDM, {
+        variables: {
+            id: dmId,
+        },
+    });
+
+    console.log(dmChannel);
+
+    return <div key="recipient">{dmId}</div>;
 };
 
 export default DMsChannelPage;
