@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { BaseServerChannel, Channel, Server } from "@furxus/types";
+import { BaseServerChannel, Server } from "@furxus/types";
 import { useAuth } from "@hooks";
 import { FaPlus } from "react-icons/fa";
 
@@ -64,7 +64,8 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
 
                 return {
                     getChannels: prev.getChannels.filter(
-                        (channel: Channel) => channel.id !== deletedChannel.id
+                        (channel: BaseServerChannel) =>
+                            channel.id !== deletedChannel.id
                     ),
                 };
             },
