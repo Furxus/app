@@ -48,8 +48,10 @@ const ChannelTextListItem = ({
             <Stack
                 direction="row"
                 justifyContent="flex-start"
-                paddingY={0.5}
-                paddingX={1}
+                mt={1}
+                py={0.5}
+                alignItems="center"
+                px={1}
                 onContextMenu={showMenu}
                 className={classNames(
                     "w-full",
@@ -62,8 +64,7 @@ const ChannelTextListItem = ({
                         "cursor-pointer": !isActive && channel.type === "text",
                     }
                 )}
-                alignItems="center"
-                gap={1}
+                gap={0.5}
                 onClick={() => {
                     if (!isActive && channel.type === "text")
                         navigate(`/servers/${server.id}/${channel.id}`);

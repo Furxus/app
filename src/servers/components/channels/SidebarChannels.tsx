@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { Channel, Server } from "@furxus/types";
+import { BaseServerChannel, Channel, Server } from "@furxus/types";
 import { useAuth } from "@hooks";
 import { FaPlus } from "react-icons/fa";
 
-import ScrollableFeed from "react-scrollable-feed";
+import { Virtuoso } from "react-virtuoso";
 import CreateChannelModal from "./CreateChannelModal";
 import ChannelTextListItem from "./ChannelTextListItem";
 
@@ -60,7 +60,7 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
                 if (!subscriptionData.data) return prev;
                 const deletedChannel = subscriptionData.data.channelDeleted;
 
-                navigate(`/servers/${server.id}`);
+                navigate(`/servers/${server.id}/${channels[0].id}`);
 
                 return {
                     getChannels: prev.getChannels.filter(
@@ -86,24 +86,25 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
 
     return (
         <>
-            <ScrollableFeed className="w-full">
-                <Stack
-                    px="0.5rem"
-                    alignItems="flex-start"
-                    justifyContent="flex-start"
-                    gap={1}
-                    onContextMenu={showMenu}
-                    className="w-full h-full flex-grow pt-14"
-                >
-                    {channels.map((channel: Channel) => (
+            <Stack
+                px="0.5rem"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                onContextMenu={showMenu}
+                className="w-full h-full flex-grow pt-14"
+            >
+                <Virtuoso
+                    data={channels}
+                    itemContent={(i, channel: BaseServerChannel) => (
                         <ChannelTextListItem
-                            key={channel.id}
+                            key={i}
                             channel={channel}
                             server={server}
                         />
-                    ))}
-                </Stack>
-            </ScrollableFeed>
+                    )}
+                    className="w-full"
+                />
+            </Stack>
             <Menu id="sidebar-channels-menu">
                 {user?.id === server.owner?.id && (
                     <Item onClick={() => setVisible(true)}>
