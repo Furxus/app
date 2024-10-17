@@ -37,7 +37,17 @@ const SidebarProfile = () => {
                 gap={0.5}
                 className="text-ellipsis px-2 w-full h-[5.65rem] border-t border-green-500/60"
             >
-                <UserAvatar user={user} />
+                <UserAvatar
+                    button={{
+                        btnProps: {
+                            sx: {
+                                width: "2.5rem",
+                                height: "2.5rem",
+                            },
+                        },
+                    }}
+                    user={user}
+                />
                 <Stack direction="column" className="w-full">
                     <Typography variant="body1" className="truncate">
                         {user.displayName ?? user.username}
