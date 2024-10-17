@@ -9,8 +9,6 @@ const ChannelMemberList = ({ serverId }: { serverId: string }) => {
         },
     });
 
-    console.log(members);
-
     return (
         <Stack direction="column">
             {members?.map((member: any) => (

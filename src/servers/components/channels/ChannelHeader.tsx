@@ -1,8 +1,8 @@
-import { Channel } from "@furxus/types";
+import { BaseServerChannel } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import { FaHashtag } from "react-icons/fa";
 
-const ChannelHeader = ({ channel }: { channel: Channel }) => {
+const ChannelHeader = ({ channel }: { channel: BaseServerChannel }) => {
     return (
         <Stack
             className="w-full bg-neutral-800[0.6] shadow-2xl "

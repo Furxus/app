@@ -8,7 +8,7 @@ import { useMutation } from "@apollo/client";
 import { LikePost, UnlikePost } from "@gql/posts";
 import CommentPopover from "./comments/CommentPopover";
 import Stack from "@mui/material/Stack";
-import Avatar from "@/shared/components/avatar/Avatar";
+import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
 const PostCard = ({ post }: { post: Post }) => {
     const { user } = post;
@@ -60,7 +60,7 @@ const PostCard = ({ post }: { post: Post }) => {
                     alignItems="center"
                     gap={0.5}
                 >
-                    <Avatar user={user} />
+                    <UserAvatar user={user} />
                     <p className="font-bold">{user?.displayName}</p>
                 </Stack>
                 <Stack justifyContent="center" alignItems="center">

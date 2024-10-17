@@ -53,7 +53,7 @@ const Sidebar = () => {
                     sx={{ width: 64, height: 64 }}
                 />
             </Button>
-            <Stack flexGrow={1}>
+            <Stack className="h-full w-full" flexGrow={1}>
                 {appMode === "posts" && <SidebarPosts />}
                 {appMode === "servers" && <SidebarServers />}
                 {appMode === "dms" && <SidebarDMs />}

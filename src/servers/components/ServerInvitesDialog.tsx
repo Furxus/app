@@ -10,6 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import { Modal, Tooltip, Typography } from "@mui/material";
+import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
 const ServerInvitesDialog = ({
     server,
@@ -105,10 +106,24 @@ const ServerInvitesDialog = ({
                                 </TableCell>
                                 <TableCell>
                                     <Stack direction="row" alignItems="center">
-                                        <Avatar
+                                        <UserAvatar
                                             user={invite.createdBy}
-                                            sx={{ width: 32, height: 32 }}
-                                            className="mr-1"
+                                            avatar={{
+                                                avatarProps: {
+                                                    sx: {
+                                                        width: 32,
+                                                        height: 32,
+                                                    },
+                                                },
+                                            }}
+                                            button={{
+                                                btnProps: {
+                                                    sx: {
+                                                        width: 32,
+                                                        height: 32,
+                                                    },
+                                                },
+                                            }}
                                         />
                                         <span className="font-semibold">
                                             {invite.createdBy?.displayName ??

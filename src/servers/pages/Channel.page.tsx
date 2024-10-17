@@ -28,8 +28,8 @@ const ChannelPage = () => {
     return (
         <Stack direction="column" className="w-full h-full overflow-x-hidden">
             <ChannelHeader channel={channel} />
-            <ChannelMessages serverId={serverId} channelId={channelId} />
-            <ChannelTextInput serverId={serverId} channel={channel} />
+            <ChannelMessages channelId={channelId} />
+            <ChannelTextInput channel={channel} />
         </Stack>
     );
 };

@@ -1,7 +1,7 @@
 import { Comment } from "@furxus/types";
-import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
 import moment from "moment";
+import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
 const CommentComponent = ({ comment }: { comment: Comment }) => {
     return (
@@ -13,7 +13,7 @@ const CommentComponent = ({ comment }: { comment: Comment }) => {
                 justifyContent="space-between"
             >
                 <Stack direction="row" alignItems="center" gap={4}>
-                    <Avatar user={comment.user} />
+                    <UserAvatar user={comment.user} />
                     <span className="font-semibold">
                         {comment.user?.displayName ?? comment.user?.username}
                     </span>

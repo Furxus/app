@@ -6,17 +6,10 @@ import { BaseServerChannel } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
-const ChannelTextInput = ({
-    serverId,
-    channel,
-}: {
-    serverId: string;
-    channel: BaseServerChannel;
-}) => {
+const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
     const [message, setMessage] = useState("");
     const [createMessage] = useMutation(CreateMessage, {
         variables: {
-            serverId,
             channelId: channel.id,
             content: message,
         },

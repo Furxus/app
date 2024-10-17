@@ -20,14 +20,14 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
     return (
         <Stack
             direction="row"
-            justifyContent="center"
-            alignItems="center"
             gap={1}
+            alignItems="center"
+            justifyContent="flex-start"
             onClick={() => {
                 if (!isActive) navigate(`/dms/${channel.id}`);
             }}
-            className={classNames("px-4 w-full flex-grow", {
-                "bg-neutral-950": isActive,
+            className={classNames("px-6 py-1 rounded-lg w-full", {
+                "bg-neutral-900": isActive,
                 "cursor-pointer": !isActive,
             })}
         >
@@ -36,15 +36,24 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
                     btnClasses: "rounded-full",
                     btnProps: {
                         sx: {
-                            width: 40,
-                            height: 40,
+                            width: 32,
+                            height: 32,
+                        },
+                    },
+                }}
+                avatar={{
+                    avatarClasses: "rounded-full",
+                    avatarProps: {
+                        sx: {
+                            width: 32,
+                            height: 32,
                         },
                     },
                 }}
                 user={recipient}
             />
-            <Stack className="p-1" direction="column" justifyContent="center">
-                <Typography variant="caption">
+            <Stack direction="column" justifyContent="center">
+                <Typography variant="caption" className="truncate">
                     {recipient?.displayName ?? recipient?.username}
                 </Typography>
                 {channel.messages ? (
