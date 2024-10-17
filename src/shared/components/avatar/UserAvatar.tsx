@@ -149,6 +149,10 @@ const UserAvatar = ({
                         alt={user?.username}
                         className={avatarClasses}
                         onContextMenu={showUserMenu}
+                        sx={{
+                            width: "2.5rem",
+                            height: "2.5rem",
+                        }}
                         {...avatarProps}
                     />
                 ) : (
@@ -158,6 +162,10 @@ const UserAvatar = ({
                         alt={user?.username}
                         className={avatarClasses}
                         onContextMenu={showUserMenu}
+                        sx={{
+                            width: "2.5rem",
+                            height: "2.5rem",
+                        }}
                         {...avatarProps}
                     />
                 )}
