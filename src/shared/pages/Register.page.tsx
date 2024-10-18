@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { RegisterUser } from "../../gql/auth";
 import { Form, Formik } from "formik";
 import { RegisterSchema } from "../../ValidationSchemas";
 
@@ -12,6 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { useMutation } from "@tanstack/react-query";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -37,7 +36,7 @@ const RegisterPage = () => {
         dateOfBirth: null,
     });
 
-    const [registerUser] = useMutation(RegisterUser, {
+    /*const [registerUser] = useMutation(RegisterUser, {
         onCompleted: () => {
             setSuccessful(true);
         },
@@ -52,7 +51,9 @@ const RegisterPage = () => {
                 });
             }
         },
-    });
+    });*/
+
+    const mutate = useMutation({});
 
     if (isLoggedIn) return <></>;
 

@@ -36,7 +36,7 @@ const LoginPage = () => {
         mutationFn: (userCreds: any) =>
             axios.post(apiUrl + "/auth/login", userCreds),
         onError: (error: any) => {
-            setSrvErrors(error.response.data.message);
+            setSrvErrors(error.response.data.errors);
         },
         onSuccess: (data: any) => {
             console.log(data);
@@ -44,6 +44,8 @@ const LoginPage = () => {
     });
 
     if (isLoggedIn) return <></>;
+
+    console.log(srvErrors);
 
     return (
         <Stack justifyContent="center" alignItems="center" className="h-dvh">
