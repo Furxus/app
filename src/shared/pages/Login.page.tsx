@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { LoginUser } from "../../gql/auth";
 
 import { LoginSchema } from "../../ValidationSchemas";
 import { Form, Formik } from "formik";
@@ -11,6 +9,10 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { apiUrl } from "@/utils";
 
 type ServerError = {
     usernameOrEmail?: string;
@@ -29,18 +31,15 @@ const LoginPage = () => {
         if (isLoggedIn) navigate("/");
     }, [isLoggedIn]);
 
-    const [loginUser] = useMutation(LoginUser, {
-        onCompleted: ({ loginUser: userData }) => {
-            login(userData);
+    const mutation = useMutation({
+        mutationKey: ["login"],
+        mutationFn: (userCreds: any) =>
+            axios.post(apiUrl + "/auth/login", userCreds),
+        onError: (error: any) => {
+            setSrvErrors(error.response.data.message);
         },
-        onError: (err) => {
-            const errors = err.graphQLErrors[0].extensions?.errors as any[];
-            errors?.forEach((error) => {
-                setSrvErrors({
-                    ...srvErrors,
-                    [error.type]: error.message,
-                });
-            });
+        onSuccess: (data: any) => {
+            console.log(data);
         },
     });
 
@@ -67,7 +66,7 @@ const LoginPage = () => {
                             password: "",
                         }}
                         validationSchema={LoginSchema}
-                        onSubmit={(values) => loginUser({ variables: values })}
+                        onSubmit={(values) => mutation.mutate(values)}
                     >
                         {({ errors, handleChange, touched, values }) => (
                             <Form className="w-full">

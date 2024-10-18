@@ -1,57 +1,25 @@
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, logout } from "../reducers/auth";
-import { useMutation, useSubscription } from "@apollo/client";
-import { RefreshUser } from "../gql/auth";
 import { User, UserWithToken } from "@furxus/types";
 import { useNavigate } from "react-router-dom";
-import { OnUserUpdated } from "@/gql/users";
 
 export const AuthContext = createContext<{
     user: User;
     isLoggedIn: boolean;
-    error?: string | null;
     login: (userData: any) => void;
     logout: () => void;
-    refresh: () => void;
 }>({
     user: {} as User,
     isLoggedIn: false,
-    error: null,
     login: (_userData: any) => void 0,
     logout: () => void 0,
-    refresh: () => void 0,
 });
 
 export function AuthProvider({ children }: PropsWithChildren) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state: any) => state.auth.user);
-    const [error, setError] = useState<string | null>(null);
-
-    const [refreshFunc] = useMutation(RefreshUser, {
-        onCompleted: ({ refreshUser }: { refreshUser: UserWithToken }) => {
-            const { token, ...user }: UserWithToken = refreshUser;
-            localStorage.setItem("fx-token", token);
-            dispatch(updateUser(user));
-            localStorage.setItem(
-                "refresh_in",
-                (Date.now() + 1000 * 60 * 60).toString()
-            );
-        },
-        variables: {
-            token: localStorage.getItem("fx-token"),
-        },
-        onError: (error) => {
-            setError(error.message);
-        },
-    });
-
-    useSubscription(OnUserUpdated, {
-        onData: () => {
-            refreshFunc();
-        },
-    });
 
     const loginUser = (userData: UserWithToken) => {
         const { token, ...user }: UserWithToken = userData;
@@ -71,10 +39,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
         localStorage.removeItem("refresh_in");
     };
 
-    const refreshUser = () => {
-        refreshFunc();
-    };
-
     return (
         <AuthContext.Provider
             value={{
@@ -82,8 +46,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
                 isLoggedIn: !!user,
                 login: loginUser,
                 logout: logoutUser,
-                refresh: refreshUser,
-                error,
             }}
         >
             {children}

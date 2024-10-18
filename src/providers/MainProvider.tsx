@@ -1,19 +1,3 @@
-import {
-    ApolloClient,
-    ApolloLink,
-    ApolloProvider,
-    InMemoryCache,
-    split,
-} from "@apollo/client";
-import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
-
-import { setContext } from "@apollo/client/link/context";
-import { onError } from "@apollo/client/link/error";
-import { RetryLink } from "@apollo/client/link/retry";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
-import { getMainDefinition } from "@apollo/client/utilities";
-
 import { BrowserRouter as Router } from "react-router-dom";
 
 import { createTheme, StyledEngineProvider } from "@mui/material/styles";
@@ -33,107 +17,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 
-let restartRequestedBeforeConnected = false;
-let gracefullyRestart = () => {
-    restartRequestedBeforeConnected = true;
-};
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const httpLink = createUploadLink({
-    uri: import.meta.env.VITE_APP_URL,
-});
-
-const wsUrl = import.meta.env.VITE_APP_URL?.replace("http", "ws").replace(
-    "https",
-    "wss"
-);
-
-const wsLink = new GraphQLWsLink(
-    createClient({
-        url: wsUrl,
-        connectionParams: async () => {
-            const token = localStorage.getItem("fx-token")
-                ? `Bearer ${localStorage.getItem("fx-token")}`
-                : undefined;
-            if (!token) {
-                return {};
-            }
-            return {
-                Authorization: token,
-            };
-        },
-        keepAlive: 10000,
-        on: {
-            connected: (socket: any) => {
-                gracefullyRestart = () => {
-                    if (socket.readyState === WebSocket.OPEN) {
-                        socket.close(4205, "Restarting");
-                    }
-                };
-
-                if (restartRequestedBeforeConnected) {
-                    restartRequestedBeforeConnected = false;
-                    gracefullyRestart();
-                }
-            },
-        },
-    })
-);
-
-const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem("fx-token");
-    return {
-        headers: {
-            ...headers,
-            authorization: token ? `Bearer ${token}` : "",
-            "apollo-require-preflight": true,
-        },
-    };
-});
-
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (!import.meta.env.DEV) return;
-    if (graphQLErrors) {
-        graphQLErrors.forEach(({ message, locations, path }) => {
-            console.log(
-                `[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-            );
-        });
-    }
-    if (networkError) console.log(`[Network Error]: ${networkError}`);
-});
-
-const retryLink = new RetryLink({
-    delay: {
-        initial: 300,
-        max: Infinity,
-        jitter: true,
-    },
-    attempts: {
-        max: Infinity,
-        retryIf: (error) => !!error,
-    },
-});
-
-const splitLink = split(
-    ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-            definition.kind === "OperationDefinition" &&
-            definition.operation === "subscription"
-        );
-    },
-    wsLink,
-    httpLink as any
-);
-
-const link = ApolloLink.from([retryLink, errorLink, authLink, splitLink]);
-
-const cache = new InMemoryCache();
-
-const client = new ApolloClient({
-    link,
-    cache,
-});
+const client = new QueryClient();
 
 const emotionCache = createCache({
     key: "css",
@@ -190,7 +76,7 @@ export default function MainProvider() {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <ApolloProvider client={client}>
+                <QueryClientProvider client={client}>
                     <Router>
                         <ThemeProvider theme={theme}>
                             <StyledEngineProvider injectFirst>
@@ -211,7 +97,7 @@ export default function MainProvider() {
                             </StyledEngineProvider>
                         </ThemeProvider>
                     </Router>
-                </ApolloProvider>
+                </QueryClientProvider>
             </PersistGate>
         </Provider>
     );

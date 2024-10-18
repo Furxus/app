@@ -9,7 +9,7 @@ import WebRoutes from "./shared/Web.routes";
 
 const App = () => {
     const { appMode } = useAppMode();
-    const [apiStatus, setApiStatus] = useState(false);
+    /*const [apiStatus, setApiStatus] = useState(false);
 
     const { loading, error } = useQuery(APIStatus, {
         pollInterval: apiStatus ? 50000 : 1000,
@@ -20,7 +20,7 @@ const App = () => {
         if (!error) setApiStatus(true);
     }, [error]);
 
-    if (loading) return <APILoading />;
+    if (loading) return <APILoading />;*/
 
     return (
         <>
