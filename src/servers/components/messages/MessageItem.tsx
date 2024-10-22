@@ -31,9 +31,10 @@ import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import MessageEmbed from "./MessageEmbed";
 import { KeyboardEvent, useRef, useState } from "react";
 import { TextField, Tooltip } from "@mui/material";
+import UserAvatar from "@/shared/components/avatar/UserAvatar";
+
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
-import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
 const MessageItem = ({
     messages,

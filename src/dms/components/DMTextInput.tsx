@@ -39,35 +39,33 @@ const DMTextInput = ({
     };
 
     return (
-        <>
-            <Stack
-                position="sticky"
-                direction="row"
-                bottom={0}
-                alignItems="center"
-                className="w-full bg-neutral-800"
-                p={2}
-            >
-                <TextField
-                    className="w-full"
-                    color="info"
-                    sx={{
-                        "& .MuiInputBase-root": {
-                            borderRadius: 4,
-                            backgroundColor: "rgb(0 0 0 / 8%)",
-                        },
-                    }}
-                    placeholder={`Message @${
-                        recipient.displayName ?? recipient.username
-                    }`}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={onKeyDown}
-                    multiline
-                    autoComplete="off"
-                    value={message}
-                />
-            </Stack>
-        </>
+        <Stack
+            position="sticky"
+            direction="row"
+            bottom={0}
+            alignItems="center"
+            className="w-full bg-neutral-800"
+            p={2}
+        >
+            <TextField
+                className="w-full"
+                color="info"
+                sx={{
+                    "& .MuiInputBase-root": {
+                        borderRadius: 4,
+                        backgroundColor: "rgb(0 0 0 / 8%)",
+                    },
+                }}
+                placeholder={`Message @${
+                    recipient.displayName ?? recipient.username
+                }`}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={onKeyDown}
+                multiline
+                autoComplete="off"
+                value={message}
+            />
+        </Stack>
     );
 };
 
