@@ -4,21 +4,23 @@ import { CreateMessage } from "@gql/messages";
 import { useState, KeyboardEvent } from "react";
 import { BaseServerChannel } from "@furxus/types";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import MDEditor from "@uiw/react-md-editor";
 
 // Markdown imports
-import Markdown from "react-markdown";
-import remarkEmoji from "remark-emoji";
-import remarkGfm from "remark-gfm";
-import remarkBreaks from "remark-breaks";
-import remarkParse from "remark-parse";
-import { rehypeTwemoji, RehypeTwemojiOptions } from "rehype-twemoji";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
+import {
+    BubbleMenu,
+    EditorContent,
+    EditorProvider,
+    FloatingMenu,
+    useEditor,
+} from "@tiptap/react";
+
+import StarterKit from "@tiptap/starter-kit";
+import { Markdown } from "tiptap-markdown";
+
+import "@css/tiptap.css";
+
+const extensions = [StarterKit, Markdown];
 
 const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
     const [message, setMessage] = useState("");
@@ -38,6 +40,8 @@ const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
 
+            console.log("Enter pressed");
+
             if (message.startsWith("```") && !message.endsWith("```")) {
                 setMessage(`${message}\n`);
                 return;
@@ -47,40 +51,29 @@ const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
         }
     };
 
+    const editor = useEditor({
+        extensions,
+        content: message,
+        onUpdate({ editor }) {
+            console.log("content", editor.storage.markdown.getMarkdown());
+            setMessage(editor.storage.markdown.getMarkdown());
+        },
+    });
+
     return (
         <Stack
             position="sticky"
-            direction="row"
+            direction="column"
             bottom={0}
             alignItems="center"
-            className="w-full bg-neutral-800"
+            className="w-full"
             p={2}
         >
-            <MDEditor
-                value={message}
-                onChange={(value) => setMessage(value || "")}
+            <EditorContent
                 onKeyDown={onKeyDown}
-                preview="preview"
-                height={100}
                 className="w-full"
-                previewOptions={{
-                    remarkPlugins: [
-                        remarkParse,
-                        remarkGfm,
-                        remarkBreaks,
-                        remarkEmoji,
-                    ],
-                    rehypePlugins: [
-                        rehypeSanitize,
-                        rehypeRaw,
-                        [
-                            rehypeTwemoji,
-                            {
-                                format: "svg",
-                            } satisfies RehypeTwemojiOptions,
-                        ],
-                    ],
-                }}
+                editor={editor}
+                placeholder={`Message #${channel.name}`}
             />
         </Stack>
     );
