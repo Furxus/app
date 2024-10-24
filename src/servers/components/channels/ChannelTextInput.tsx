@@ -16,11 +16,12 @@ import {
 } from "@tiptap/react";
 
 import StarterKit from "@tiptap/starter-kit";
+import Emoji from "@tiptap-pro/extension-emoji";
 import { Markdown } from "tiptap-markdown";
 
 import "@css/tiptap.css";
 
-const extensions = [StarterKit, Markdown];
+const extensions = [StarterKit, Markdown, Emoji];
 
 const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
     const [message, setMessage] = useState("");
@@ -39,8 +40,6 @@ const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
-
-            console.log("Enter pressed");
 
             if (message.startsWith("```") && !message.endsWith("```")) {
                 setMessage(`${message}\n`);
