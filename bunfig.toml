@@ -1,2 +1,0 @@
-[install]
-registry = { url = "https://registry.tiptap.dev", token = "$TIPTAP_PRO_TOKEN" }
