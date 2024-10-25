@@ -1,4 +1,3 @@
 .tiptap {
-    @apply bg-neutral-900 px-2 py-1 rounded-xl w-full;
-    font-family: "Montserrat", sans-serif;
+    @apply bg-neutral-900 p-2 rounded-xl w-full text-white;
 }

@@ -24,6 +24,7 @@ import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import remarkParse from "remark-parse";
+
 import { rehypeTwemoji, RehypeTwemojiOptions } from "rehype-twemoji";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
