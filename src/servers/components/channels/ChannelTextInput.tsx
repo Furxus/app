@@ -15,7 +15,7 @@ import BulletList from "@tiptap/extension-bullet-list";
 import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
 import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
-import Emoji from "@tiptap-pro/extension-emoji";
+import Emoji, { gitHubEmojis } from "@tiptap-pro/extension-emoji";
 import HardBreak from "@tiptap/extension-hard-break";
 import Heading from "@tiptap/extension-heading";
 import Mention from "@tiptap/extension-mention";
@@ -51,6 +51,7 @@ const extensions = [
     Emoji.configure({
         enableEmoticons: true,
         suggestion: emojiSuggestion,
+        emojis: gitHubEmojis,
     }),
     ListItem,
     OrderedList,
