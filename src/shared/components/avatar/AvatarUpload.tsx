@@ -15,7 +15,7 @@ const AvatarUpload = ({
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
     const { appMode } = useAppMode();
-    const { user, refresh } = useAuth();
+    const { user, fetchMe } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState<File | null>(null);
@@ -31,7 +31,7 @@ const AvatarUpload = ({
             setFile(null);
 
             setMainOpen(false);
-            refresh();
+            fetchMe();
         },
     });
 

@@ -23,24 +23,10 @@ export const AppModeContext = createContext<{
 export function AppModeProvider({ children }: PropsWithChildren) {
     const location = useLocation();
     const navigate = useNavigate();
-    const { isLoggedIn, user, refresh } = useContext(AuthContext);
+    const { isLoggedIn, user } = useContext(AuthContext);
     const [appMode, setAppMode] = useState<AppModes>(
         user?.preferences?.mode ?? "servers"
     );
-
-    useEffect(() => {
-        if (
-            user &&
-            parseInt(localStorage.getItem("refresh_in") ?? "0") < Date.now()
-        ) {
-            refresh();
-
-            localStorage.setItem(
-                "refresh_in",
-                (Date.now() + 1000 * 60 * 60).toString()
-            );
-        }
-    }, [location.pathname]);
 
     useEffect(() => {
         if (isLoggedIn && location.pathname === "/" && user)

@@ -1,8 +1,8 @@
 import { createContext, PropsWithChildren, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, logout } from "../reducers/auth";
-import { useMutation, useSubscription } from "@apollo/client";
-import { RefreshUser } from "../gql/auth";
+import { useLazyQuery, useSubscription } from "@apollo/client";
+import { FetchMe } from "../gql/auth";
 import { User, UserWithToken } from "@furxus/types";
 import { useNavigate } from "react-router-dom";
 import { OnUserUpdated } from "@/gql/users";
@@ -13,14 +13,14 @@ export const AuthContext = createContext<{
     error?: string | null;
     login: (userData: any) => void;
     logout: () => void;
-    refresh: () => void;
+    fetchMe: () => void;
 }>({
     user: {} as User,
     isLoggedIn: false,
     error: null,
     login: (_userData: any) => void 0,
     logout: () => void 0,
-    refresh: () => void 0,
+    fetchMe: () => void 0,
 });
 
 export function AuthProvider({ children }: PropsWithChildren) {
@@ -29,50 +29,33 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const user = useSelector((state: any) => state.auth.user);
     const [error, setError] = useState<string | null>(null);
 
-    const [refreshFunc] = useMutation(RefreshUser, {
-        onCompleted: ({ refreshUser }: { refreshUser: UserWithToken }) => {
-            const { token, ...user }: UserWithToken = refreshUser;
-            localStorage.setItem("fx-token", token);
-            dispatch(updateUser(user));
-            localStorage.setItem(
-                "refresh_in",
-                (Date.now() + 1000 * 60 * 60).toString()
-            );
-        },
-        variables: {
-            token: localStorage.getItem("fx-token"),
+    const [fetchMe] = useLazyQuery(FetchMe, {
+        onCompleted: ({ me }: { me: User }) => {
+            dispatch(updateUser(me));
         },
         onError: (error) => {
             setError(error.message);
         },
+        pollInterval: 10000,
     });
 
     useSubscription(OnUserUpdated, {
         onData: () => {
-            refreshFunc();
+            fetchMe();
         },
     });
 
     const loginUser = (userData: UserWithToken) => {
-        const { token, ...user }: UserWithToken = userData;
+        const { token, ...user } = userData;
         localStorage.setItem("fx-token", token);
         navigate(user.preferences?.mode ?? "servers");
         dispatch(updateUser(user));
-        localStorage.setItem(
-            "refresh_in",
-            (Date.now() + 1000 * 60 * 60).toString()
-        );
     };
 
     const logoutUser = () => {
         localStorage.removeItem("fx-token");
         navigate("/login");
         dispatch(logout());
-        localStorage.removeItem("refresh_in");
-    };
-
-    const refreshUser = () => {
-        refreshFunc();
     };
 
     return (
@@ -82,7 +65,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
                 isLoggedIn: !!user,
                 login: loginUser,
                 logout: logoutUser,
-                refresh: refreshUser,
+                fetchMe,
                 error,
             }}
         >

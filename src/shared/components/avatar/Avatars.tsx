@@ -29,7 +29,7 @@ const Avatars = ({
 }: {
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { refresh } = useAuth();
+    const { fetchMe } = useAuth();
     const { appMode } = useAppMode();
 
     const [open, setOpen] = useState(false);
@@ -47,7 +47,7 @@ const Avatars = ({
             update: () => {
                 setOpen(false);
                 setMainOpen(false);
-                refresh();
+                fetchMe();
                 setCurrentAvatar("");
             },
         }
@@ -62,7 +62,7 @@ const Avatars = ({
             update: () => {
                 setOpen(false);
                 setMainOpen(false);
-                refresh();
+                fetchMe();
                 setCurrentAvatar("");
             },
         }

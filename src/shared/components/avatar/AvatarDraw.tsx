@@ -23,7 +23,7 @@ const AvatarDraw = ({
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
     const { appMode } = useAppMode();
-    const { refresh } = useAuth();
+    const { fetchMe } = useAuth();
 
     const [open, setOpen] = useState(false);
 
@@ -41,7 +41,7 @@ const AvatarDraw = ({
             setOpen(false);
             canvasRef.current?.clearCanvas();
             setMainOpen(false);
-            refresh();
+            fetchMe();
         },
     });
 

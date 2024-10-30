@@ -123,7 +123,7 @@ const splitLink = split(
         );
     },
     wsLink,
-    httpLink as any
+    httpLink
 );
 
 const link = ApolloLink.from([retryLink, errorLink, authLink, splitLink]);
