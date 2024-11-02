@@ -17,7 +17,7 @@ const SidebarDMs = () => {
 
     return (
         <Stack
-            className="py-6 px-1 w-full h-full shadow-2xl bg-neutral-700[.4]"
+            className="py-6 px-1 w-full h-full shadow-2xl"
             alignItems="center"
             gap={1}
         >

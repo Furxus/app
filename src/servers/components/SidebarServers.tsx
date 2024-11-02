@@ -116,15 +116,12 @@ const SidebarServers = () => {
     if (!serverId) return <Navigate to={`/servers/${servers[0].id}`} />;
 
     return (
-        <Stack
-            className="w-full shadow-2xl bg-neutral-700[.4] p-4"
-            flexGrow={1}
-            alignItems="center"
-            gap={1}
-        >
-            {servers.map((server: any, i: number) => (
-                <ServerListItem server={server} key={i} />
-            ))}
+        <Stack direction="column" className="p-4" gap={1}>
+            <Stack direction="column">
+                {servers.map((server: Server, i: number) => (
+                    <ServerListItem server={server} key={i} />
+                ))}
+            </Stack>
             <SidebarAddServerIcon />
         </Stack>
     );

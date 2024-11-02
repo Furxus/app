@@ -9,7 +9,7 @@ import WebRoutes from "./shared/Web.routes";
 
 const App = () => {
     const { appMode } = useAppMode();
-    const [apiStatus, setApiStatus] = useState(false);
+    const [apiStatus, setApiStatus] = useState(true);
 
     const { loading, error } = useQuery(APIStatus, {
         pollInterval: apiStatus ? 50000 : 1000,
@@ -17,29 +17,35 @@ const App = () => {
     });
 
     useEffect(() => {
+        if (loading) setApiStatus(false);
         if (!error) setApiStatus(true);
-    }, [error]);
+    }, [error, loading]);
 
     if (loading) return <APILoading />;
 
+    let title = "Furxus - Furry Nexus";
+    let favicon = "/favicon.ico";
+
+    switch (appMode) {
+        case "servers":
+            title = "Furxus - Servers";
+            favicon = "/logo2.png";
+            break;
+        case "posts":
+            title = "Furxus - Posts";
+            favicon = "/logo.png";
+            break;
+        case "dms":
+            title = "Furxus - Direct Messages";
+            favicon = "/favicon.ico";
+            break;
+        default:
+            break;
+    }
+
     return (
         <>
-            <SEO
-                title={
-                    appMode
-                        ? appMode === "servers"
-                            ? "Furxus - Servers"
-                            : "Furxus - Posts"
-                        : "Furxus - Furry Nexus"
-                }
-                image={
-                    appMode
-                        ? appMode === "servers"
-                            ? "/logo2.png"
-                            : "/logo.png"
-                        : "/logo.png"
-                }
-            />
+            <SEO title={title} image={favicon} />
             <WebRoutes />
         </>
     );

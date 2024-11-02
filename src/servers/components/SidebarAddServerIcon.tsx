@@ -32,9 +32,10 @@ const SidebarAddServerButton = () => {
                     setVisible(true);
                 }}
                 color="success"
-                size="large"
                 sx={{
                     border: "1px solid #4caf50",
+                    width: 56,
+                    height: 56,
                 }}
             >
                 <BiPlus />

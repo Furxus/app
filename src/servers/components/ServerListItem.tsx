@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ServerInvitesDialog from "./ServerInvitesDialog";
 import { useAuth } from "@hooks";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { LeaveServer } from "@gql/servers";
 import { useMutation } from "@apollo/client";
 import { ActiveServerPill, HoverServerPill } from "./ServerPills";
 import ConfirmServerDeleteDialog from "./ConfirmServerDeleteDialog";
-import { Member, Server } from "@furxus/types";
+import { Server } from "@furxus/types";
 import { FaMailBulk, FaSignOutAlt, FaTrash } from "react-icons/fa";
 import { Menu, useContextMenu, Item } from "react-contexify";
 import Stack from "@mui/material/Stack";
@@ -18,7 +18,6 @@ const ServerListItem = ({ server }: { server: Server }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const isActive = location.pathname.includes(server.id);
-    const [member, setMember] = useState<Member | null>(null);
 
     const [hover, setHover] = useState(false);
     const [invitesDialogVisible, setInvitesDialogVisible] = useState(false);
@@ -33,12 +32,8 @@ const ServerListItem = ({ server }: { server: Server }) => {
         },
     });
 
-    useEffect(() => {
-        if (!member)
-            setMember(
-                server.members?.find((m) => m.user?.id === user.id) || null
-            );
-    });
+    console.log("user", user);
+    console.log("server", server.owner);
 
     const { show } = useContextMenu();
 
@@ -59,7 +54,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
     return (
         <Stack justifyContent="center" position="relative">
             {isActive && <ActiveServerPill />}
-            {hover && <HoverServerPill />}
+            {hover && !isActive && <HoverServerPill />}
             {server.icon ? (
                 <Avatar
                     server={server}
@@ -79,13 +74,14 @@ const ServerListItem = ({ server }: { server: Server }) => {
             ) : (
                 <MAvatar
                     onClick={navigateToServer}
-                    className="cursor-pointer hover:rounded-3xl"
+                    className="cursor-pointer hover:rounded-3xl bg-neutral-700"
                     onMouseEnter={() => setHover(true)}
                     onMouseLeave={() => setHover(false)}
                     onContextMenu={showMenu}
                     sx={{
                         width: 56,
                         height: 56,
+                        bgcolor: "transparent",
                     }}
                 >
                     <span className="font-semibold">{server.nameAcronym}</span>

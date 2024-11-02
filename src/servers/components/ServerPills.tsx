@@ -43,7 +43,7 @@ export const ActiveServerPill: FC = () => (
 export const HoverServerPill: FC = () => (
     <Box
         width="8px"
-        height="40px"
+        height="20px"
         className="bg-green-500/80"
         position="absolute"
         style={{ borderRadius: "0 4px 4px 0" }}

@@ -26,9 +26,9 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
             onClick={() => {
                 if (!isActive) navigate(`/dms/${channel.id}`);
             }}
-            className={classNames("px-6 py-1 rounded-lg w-full", {
-                "bg-neutral-900": isActive,
-                "cursor-pointer": !isActive,
+            className={classNames("px-6 py-1 rounded-lg w-full ", {
+                "bg-neutral-700": isActive,
+                "cursor-pointer hover:bg-neutral-700": !isActive,
             })}
         >
             <UserAvatar
@@ -52,11 +52,12 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
                 }}
                 user={recipient}
             />
-            <Stack direction="column" justifyContent="center">
+            {console.log(channel.messages)}
+            <Stack direction="column">
                 <Typography variant="caption" className="truncate">
                     {recipient?.displayName ?? recipient?.username}
                 </Typography>
-                {channel.messages ? (
+                {channel.messages && channel.messages.length > 0 ? (
                     channel.messages[channel.messages.length - 1] && (
                         <Typography
                             variant="caption"

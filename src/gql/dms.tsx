@@ -20,6 +20,9 @@ export const getDMs = gql`
                 avatar
                 defaultAvatar
             }
+            messages {
+                content
+            }
             createdAt
             createdTimestamp
         }
