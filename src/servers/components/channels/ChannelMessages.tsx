@@ -6,7 +6,7 @@ import {
     OnMessageEdited,
 } from "@gql/messages";
 import { useEffect, useRef } from "react";
-import MessageItem from "../messages/MessageItem";
+import MessageItem from "../../../shared/components/messages/MessageItem";
 import { MessageSkeleton } from "@utils";
 import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";

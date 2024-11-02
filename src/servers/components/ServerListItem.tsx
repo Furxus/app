@@ -32,9 +32,6 @@ const ServerListItem = ({ server }: { server: Server }) => {
         },
     });
 
-    console.log("user", user);
-    console.log("server", server.owner);
-
     const { show } = useContextMenu();
 
     // Keep this for now since they are no permission system created
@@ -45,6 +42,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
             event,
         });
     };
+    1;
 
     const navigateToServer = () => {
         if (isActive) return;

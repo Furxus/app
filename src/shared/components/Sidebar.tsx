@@ -23,36 +23,43 @@ const Sidebar = () => {
                 "gradient-sidebar": appMode === "dms",
             })}
         >
-            <Button
-                sx={{ width: 64, height: 64 }}
-                className="rounded-full"
-                variant="text"
-                onClick={() =>
-                    changeAppMode(
-                        appMode === "dms"
-                            ? user?.preferences?.mode ?? "servers"
-                            : appMode === "servers"
-                            ? "posts"
-                            : "servers"
-                    )
-                }
+            <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                className="w-full"
             >
-                <Avatar
-                    className={classNames({
-                        "gradient-logo-servers": appMode === "posts",
-                        "gradient-logo-posts": appMode === "servers",
-                        "gradient-logo-both": appMode === "dms",
-                    })}
-                    src={
-                        appMode === "dms"
-                            ? "/icon.png"
-                            : appMode === "servers"
-                            ? "/logo2.png"
-                            : "/logo.png"
-                    }
+                <Button
                     sx={{ width: 64, height: 64 }}
-                />
-            </Button>
+                    className="rounded-full"
+                    variant="text"
+                    onClick={() =>
+                        changeAppMode(
+                            appMode === "dms"
+                                ? user?.preferences?.mode ?? "servers"
+                                : appMode === "servers"
+                                ? "posts"
+                                : "servers"
+                        )
+                    }
+                >
+                    <Avatar
+                        className={classNames({
+                            "gradient-logo-servers": appMode === "posts",
+                            "gradient-logo-posts": appMode === "servers",
+                            "gradient-logo-both": appMode === "dms",
+                        })}
+                        src={
+                            appMode === "dms"
+                                ? "/icon.png"
+                                : appMode === "servers"
+                                ? "/logo2.png"
+                                : "/logo.png"
+                        }
+                        sx={{ width: 64, height: 64 }}
+                    />
+                </Button>
+            </Stack>
             <Stack className="h-full w-full bg-neutral-700[0.4]">
                 {appMode === "posts" && <SidebarPosts />}
                 {appMode === "servers" && <SidebarServers />}

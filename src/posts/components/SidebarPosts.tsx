@@ -31,11 +31,7 @@ const SidebarPosts = () => {
     ];
 
     return (
-        <Stack
-            direction="column"
-            flexGrow={1}
-            className="shadow-2xl bg-neutral-700[.4]"
-        >
+        <Stack direction="column" flexGrow={1} className="shadow-2xl">
             {mockData.map((user) => (
                 <SidebarIcon key={user.id} user={user} />
             ))}

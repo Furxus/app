@@ -94,8 +94,20 @@ const MessageItem = ({
 
     const { author, content, createdAt, updatedAt } = message;
 
-    const sameUser = (i: number, message: Message) =>
-        messages[i - 1]?.author?.id !== message.author?.id;
+    // Check if the previous message is from the same user and was sent within 5 minutes
+    const isSameUser = messages[index - 1]?.author?.id === author?.id;
+    const isWithinFiveMinutes =
+        moment(createdAt).diff(
+            moment(messages[index - 1]?.createdAt),
+            "minutes"
+        ) <= 5;
+    const showAvatarAndName = !isSameUser || !isWithinFiveMinutes;
+
+    // Checks if the current message is from a different day than the previous message
+    const isNewDay = !moment(createdAt).isSame(
+        moment(messages[index - 1]?.createdAt),
+        "day"
+    );
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -308,7 +320,12 @@ const MessageItem = ({
 
     return (
         <>
-            {sameUser(index, message) ? (
+            {isNewDay && (
+                <Typography className="bg-neutral-700/40 mt-1 rounded-lg text-neutral-400 text-center shadow-2xl">
+                    {moment(createdAt).format("dddd, MMMM Do YYYY")}
+                </Typography>
+            )}
+            {showAvatarAndName ? (
                 <Stack
                     className="w-full hover:bg-neutral-700/60 px-2"
                     direction="row"

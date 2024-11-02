@@ -52,7 +52,6 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
                 }}
                 user={recipient}
             />
-            {console.log(channel.messages)}
             <Stack direction="column">
                 <Typography variant="caption" className="truncate">
                     {recipient?.displayName ?? recipient?.username}

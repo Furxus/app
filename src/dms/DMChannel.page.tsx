@@ -11,15 +11,15 @@ import { User } from "@furxus/types";
 
 const DMsChannelPage = () => {
     const { user: auth } = useAuth();
-    const { dmId } = useParams();
+    const { channelId } = useParams();
 
     const { data: { getDM: dmChannel } = {} } = useQuery(getDM, {
         variables: {
-            id: dmId,
+            id: channelId,
         },
     });
 
-    if (!dmId) return <></>;
+    if (!channelId) return <></>;
     if (!dmChannel) return <></>;
 
     const recipient: User =
@@ -30,7 +30,7 @@ const DMsChannelPage = () => {
     return (
         <Stack direction="column" className="w-full h-full overflow-x-hidden">
             <DMHeader recipient={recipient} />
-            <ChannelMessages channelId={dmId} />
+            <ChannelMessages channelId={channelId} />
             <DMTextInput recipient={recipient} channel={dmChannel} />
         </Stack>
     );

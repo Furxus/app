@@ -116,12 +116,16 @@ const SidebarServers = () => {
     if (!serverId) return <Navigate to={`/servers/${servers[0].id}`} />;
 
     return (
-        <Stack direction="column" className="p-4" gap={1}>
-            <Stack direction="column">
-                {servers.map((server: Server, i: number) => (
-                    <ServerListItem server={server} key={i} />
-                ))}
-            </Stack>
+        <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            className="p-4"
+            gap={1}
+        >
+            {servers.map((server: Server, i: number) => (
+                <ServerListItem server={server} key={i} />
+            ))}
             <SidebarAddServerIcon />
         </Stack>
     );
