@@ -134,25 +134,6 @@ const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
             )}
         </Stack>
     );
-
-    /**
-     * <TextField
-                className="w-full"
-                sx={{
-                    "& .MuiInputBase-root": {
-                        borderRadius: 4,
-                        backgroundColor: "rgb(0 0 0 / 8%)",
-                    },
-                }}
-                color="success"
-                placeholder={`Message #${channel.name}`}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={onKeyDown}
-                multiline
-                autoComplete="off"
-                value={message}
-            />
-     */
 };
 
 export default ChannelTextInput;

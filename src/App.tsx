@@ -6,6 +6,7 @@ import APILoading from "./shared/components/status/APILoading";
 import { useAppMode } from "./hooks";
 import SEO from "./shared/SEO";
 import WebRoutes from "./shared/Web.routes";
+import { socket } from "./providers/MainProvider";
 
 const App = () => {
     const { appMode } = useAppMode();
@@ -20,6 +21,10 @@ const App = () => {
         if (loading) setApiStatus(false);
         if (!error) setApiStatus(true);
     }, [error, loading]);
+
+    useEffect(() => {
+        if (!loading && !error) socket.connect();
+    }, [loading, error]);
 
     if (loading) return <APILoading />;
 

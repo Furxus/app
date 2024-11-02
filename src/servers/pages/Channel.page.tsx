@@ -3,7 +3,7 @@ import ChannelHeader from "../components/channels/ChannelHeader";
 import { useQuery } from "@apollo/client";
 import { GetChannel } from "@gql/channels";
 import ChannelMessages from "../components/channels/ChannelMessages";
-import ChannelTextInput from "../components/channels/ChannelTextInput";
+import ChannelTextInput from "../../shared/components/ChannelTextInput";
 import Stack from "@mui/material/Stack";
 import Skeleton from "@mui/material/Skeleton";
 

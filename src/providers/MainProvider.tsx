@@ -28,6 +28,7 @@ import { store, persistor } from "../reducers";
 import App from "../App";
 import { AuthProvider } from "./AuthProvider";
 import { AppModeProvider } from "./AppModeProvider";
+import { io } from "socket.io-client";
 import { CacheProvider, ThemeProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -46,6 +47,10 @@ const wsUrl = import.meta.env.VITE_APP_URL?.replace("http", "ws").replace(
     "https",
     "wss"
 );
+
+export const socket = io(wsUrl, {
+    autoConnect: false,
+});
 
 const wsLink = new GraphQLWsLink(
     createClient({
