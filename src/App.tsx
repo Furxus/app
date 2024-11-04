@@ -12,19 +12,12 @@ const App = () => {
     const { appMode } = useAppMode();
     const [apiStatus, setApiStatus] = useState(true);
 
-    const { loading, error } = useQuery(APIStatus, {
-        pollInterval: apiStatus ? 50000 : 1000,
-        fetchPolicy: "no-cache",
-    });
-
     useEffect(() => {
-        if (loading) setApiStatus(false);
-        if (!error) setApiStatus(true);
-    }, [error, loading]);
-
-    useEffect(() => {
-        if (!loading && !error) socket.connect();
-    }, [loading, error]);
+        socket.connect();
+        socket.on("disconnect", () => {
+            setApiStatus(false);
+        });
+    }, []);
 
     if (loading) return <APILoading />;
 

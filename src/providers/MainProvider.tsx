@@ -29,15 +29,18 @@ import App from "../App";
 import { AuthProvider } from "./AuthProvider";
 import { AppModeProvider } from "./AppModeProvider";
 import { io } from "socket.io-client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CacheProvider, ThemeProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 
-let restartRequestedBeforeConnected = false;
-let gracefullyRestart = () => {
-    restartRequestedBeforeConnected = true;
-};
+const wsUrl = import.meta.env.VITE_APP_URL.replace("http", "ws").replace(
+    "https",
+    "wss"
+);
+
+const queryClient = new QueryClient();
 
 export const socket = io(wsUrl, {
     autoConnect: false,
@@ -98,7 +101,7 @@ export default function MainProvider() {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <ApolloProvider client={client}>
+                <QueryClientProvider client={queryClient}>
                     <Router>
                         <ThemeProvider theme={theme}>
                             <StyledEngineProvider injectFirst>
@@ -119,7 +122,7 @@ export default function MainProvider() {
                             </StyledEngineProvider>
                         </ThemeProvider>
                     </Router>
-                </ApolloProvider>
+                </QueryClientProvider>
             </PersistGate>
         </Provider>
     );
