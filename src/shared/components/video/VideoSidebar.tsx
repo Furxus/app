@@ -3,23 +3,21 @@ import { Post } from "@furxus/types";
 import { FaHeart } from "react-icons/fa";
 import { useAuth } from "@hooks";
 import CommentPopover from "@/posts/components/comments/CommentPopover";
-import { useMutation } from "@apollo/client";
-import { LikePost, UnlikePost } from "@gql/posts";
 import Stack from "@mui/material/Stack";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const VideoSidebar = ({ post }: { post: Post }) => {
     const { user } = useAuth();
 
-    const [likePost] = useMutation(LikePost, {
-        variables: {
-            postId: post.id,
-        },
+    const { mutate: likePost } = useMutation({
+        mutationKey: ["likePost"],
+        mutationFn: () => api.post(`/posts/${post.id}/like`),
     });
 
-    const [unlikePost] = useMutation(UnlikePost, {
-        variables: {
-            postId: post.id,
-        },
+    const { mutate: unlikePost } = useMutation({
+        mutationKey: ["unlikePost"],
+        mutationFn: () => api.delete(`/posts/${post.id}/like`),
     });
 
     return (

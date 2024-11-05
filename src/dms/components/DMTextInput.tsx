@@ -1,6 +1,8 @@
+import { api } from "@/api";
 import { DMChannel, User } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import { useMutation } from "@tanstack/react-query";
 import { useState, KeyboardEvent } from "react";
 
 const DMTextInput = ({
@@ -11,15 +13,19 @@ const DMTextInput = ({
     channel: DMChannel;
 }) => {
     const [message, setMessage] = useState("");
-    /*const [createMessage] = useMutation(CreateMessage, {
-        variables: {
-            channelId: channel.id,
-            content: message,
+    const [error, setError] = useState<string | null>(null);
+
+    const { mutate: createMessage } = useMutation({
+        mutationKey: ["createMessage"],
+        mutationFn: () =>
+            api.post(`/channels/${channel.id}/messages`, { content: message }),
+        onError: (error) => {
+            setError(error.message);
         },
-    });*/
+    });
 
     const sendMessage = () => {
-        //createMessage();
+        createMessage();
         setMessage("");
     };
 
@@ -63,6 +69,7 @@ const DMTextInput = ({
                 autoComplete="off"
                 value={message}
             />
+            {error && <span>{error}</span>}
         </Stack>
     );
 };

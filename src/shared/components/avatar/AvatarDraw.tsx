@@ -37,7 +37,7 @@ const AvatarDraw = ({
 
     const { mutate: updateAvatar, isPending } = useMutation({
         mutationKey: ["updateAvatar"],
-        mutationFn: (values: any) => api.patch("/@me", values),
+        mutationFn: (avatar: any) => api.patch("/@me", { avatar }),
         onSuccess: () => {
             setOpen(false);
             canvasRef.current?.clearCanvas();
@@ -54,9 +54,7 @@ const AvatarDraw = ({
         const data = await canvasRef.current?.exportImage("png");
         const blob = data ? await fetch(data).then((res) => res.blob()) : null;
         if (!blob) return;
-        updateAvatar({
-            avatar: blob,
-        });
+        updateAvatar(blob);
     };
 
     const onClose = () => {

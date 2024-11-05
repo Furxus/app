@@ -1,17 +1,13 @@
 import classNames from "classnames";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import capitalize from "lodash/capitalize";
-import {
-    GetPreviousAvatars,
-    UpdateAvatarFromURL,
-    UpdateDefaultAvatar,
-} from "@/gql/auth";
-import { useMutation, useQuery } from "@apollo/client";
 import { useAppMode, useAuth } from "@/hooks";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
 import { Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const species = [
     "cat",
@@ -29,6 +25,7 @@ const Avatars = ({
 }: {
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
+    const { user } = useAuth();
     const { appMode } = useAppMode();
 
     const [open, setOpen] = useState(false);
@@ -36,36 +33,15 @@ const Avatars = ({
     const [previousMode, setPreviousMode] = useState(false);
     const [indexSelected, setIndexSelected] = useState<number>(0);
 
-    // const [updateDefaultAvatar, { loading: defaultLoading }] = useMutation(
-    //     UpdateDefaultAvatar,
-    //     {
-    //         variables: {
-    //             avatar: currentAvatar,
-    //         },
-    //         update: () => {
-    //             setOpen(false);
-    //             setMainOpen(false);
-    //             setCurrentAvatar("");
-    //         },
-    //     }
-    // );
-
-    // const [updateAvatarFromURL, { loading: fromUrlLoading }] = useMutation(
-    //     UpdateAvatarFromURL,
-    //     {
-    //         variables: {
-    //             avatar: currentAvatar,
-    //         },
-    //         update: () => {
-    //             setOpen(false);
-    //             setMainOpen(false);
-    //             setCurrentAvatar("");
-    //         },
-    //     }
-    // );
-
-    // const { data: { getPreviousAvatars: avatars = [] } = {}, refetch } =
-    //     useQuery(GetPreviousAvatars);
+    const { mutate: updateAvatar, isPending } = useMutation({
+        mutationKey: ["updateAvatar"],
+        mutationFn: (avatar: any) => api.patch("/@me", { avatar }),
+        onSuccess: () => {
+            setOpen(false);
+            setMainOpen(false);
+            setCurrentAvatar("");
+        },
+    });
 
     const onClose = () => {
         setOpen(false);
@@ -75,9 +51,6 @@ const Avatars = ({
 
     const togglePreviousMode = () => {
         setPreviousMode(!previousMode);
-        if (!previousMode) {
-            refetch();
-        }
         setCurrentAvatar("");
     };
 
@@ -113,7 +86,7 @@ const Avatars = ({
                                     Previous Avatars
                                 </Typography>
                                 <Stack direction="row">
-                                    {avatars.map(
+                                    {user.previousAvatars.map(
                                         (avatar: string, index: number) => (
                                             <Stack
                                                 key={index}
@@ -218,19 +191,15 @@ const Avatars = ({
                                 color="success"
                                 size="small"
                                 variant="contained"
-                                disabled={loading || !currentAvatar}
-                                onClick={() =>
-                                    previousMode
-                                        ? updateAvatarFromURL()
-                                        : updateDefaultAvatar()
-                                }
+                                disabled={isPending || !currentAvatar}
+                                onClick={() => updateAvatar(currentAvatar)}
                             >
                                 Save
                             </Button>
                             <Button
                                 onClick={onClose}
                                 size="small"
-                                disabled={loading}
+                                disabled={isPending}
                                 variant="outlined"
                                 color="error"
                             >

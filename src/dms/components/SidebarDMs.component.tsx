@@ -2,15 +2,17 @@ import { Stack } from "@mui/material";
 import { Navigate, useParams } from "react-router-dom";
 import DMChannelItem from "./DMChannelItem";
 import { DMChannel } from "@furxus/types";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const SidebarDMs = () => {
     const { channelId } = useParams();
-    const [dms] = useState<DMChannel[]>([]);
 
-    //const { loading, data: { getDMs: dms } = {} } = useQuery(getDMs);
+    const { data: dms } = useQuery({
+        queryKey: ["getDMs"],
+        queryFn: () => api.get("/channels?type=dm").then((res) => res.data),
+    });
 
-    //if (loading) return <></>;
     if (!channelId) {
         if (dms[0]) return <Navigate to={`/dms/${dms[0].id}`} />;
         return <></>;

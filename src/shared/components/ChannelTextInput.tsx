@@ -1,6 +1,3 @@
-import { useMutation } from "@apollo/client";
-
-import { CreateMessage } from "@gql/messages";
 import { useState, KeyboardEvent } from "react";
 import { BaseServerChannel } from "@furxus/types";
 import Stack from "@mui/material/Stack";
@@ -39,6 +36,8 @@ import "@css/tiptap.css";
 import { Typography } from "@mui/material";
 
 import emojiSuggestion from "@/utils/emojiSuggestion.tsx";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const lowlight = createLowlight(all);
 
@@ -76,11 +75,11 @@ const extensions = [
 const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
     const [message, setMessage] = useState("");
     const [error, setError] = useState<string | null>(null);
-    const [createMessage] = useMutation(CreateMessage, {
-        variables: {
-            channelId: channel.id,
-            content: message,
-        },
+
+    const { mutate: createMessage } = useMutation({
+        mutationKey: ["createMessage"],
+        mutationFn: () =>
+            api.post(`/channels/${channel.id}/messages`, { content: message }),
         onError: (error) => {
             setError(error.message);
         },

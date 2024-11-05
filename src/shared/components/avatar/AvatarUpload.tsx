@@ -3,11 +3,11 @@ import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
 import AvatarEditor from "react-avatar-edit";
 import { useAppMode, useAuth } from "@/hooks";
-import { useMutation } from "@apollo/client";
-import { UpdateAvatar } from "@/gql/auth";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
 import Avatar from "@/shared/components/avatar/Avatar";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const AvatarUpload = ({
     setMainOpen,
@@ -15,25 +15,35 @@ const AvatarUpload = ({
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
     const { appMode } = useAppMode();
-    const { user, fetchMe } = useAuth();
+    const { user } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState<File | null>(null);
 
     const [error, setError] = useState<string | null>(null);
 
-    const [updateAvatar, { loading }] = useMutation(UpdateAvatar, {
-        variables: {
-            avatar: file,
-        },
-        update: () => {
+    const { mutate: updateAvatar, isPending } = useMutation({
+        mutationKey: ["updateAvatar"],
+        mutationFn: (avatar: any) => api.patch("/@me", { avatar }),
+        onSuccess: () => {
             setOpen(false);
             setFile(null);
 
             setMainOpen(false);
-            fetchMe();
         },
     });
+
+    // const [updateAvatar, { loading }] = useMutation(UpdateAvatar, {
+    //     variables: {
+    //         avatar: file,
+    //     },
+    //     update: () => {
+    //         setOpen(false);
+    //         setFile(null);
+
+    //         setMainOpen(false);
+    //     },
+    // });
 
     const onUpload = (file: any) => {
         setFile(file);
@@ -109,10 +119,10 @@ const AvatarUpload = ({
                     </Stack>
                     <Stack direction="row" gap={1}>
                         <Button
-                            onClick={() => updateAvatar()}
+                            onClick={() => updateAvatar(file)}
                             variant="contained"
                             color="success"
-                            disabled={loading}
+                            disabled={isPending}
                         >
                             Save
                         </Button>
@@ -120,7 +130,7 @@ const AvatarUpload = ({
                             color="error"
                             onClick={onClose}
                             variant="outlined"
-                            disabled={loading}
+                            disabled={isPending}
                         >
                             Cancel
                         </Button>

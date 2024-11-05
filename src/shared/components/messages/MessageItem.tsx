@@ -5,8 +5,6 @@ import { Item, Menu, useContextMenu } from "react-contexify";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 
 import Stack from "@mui/material/Stack";
-import { useMutation } from "@apollo/client";
-import { DeleteMessage, EditMessage } from "@gql/messages";
 import { useAuth } from "@hooks";
 
 import { useHover } from "usehooks-ts";
@@ -36,6 +34,8 @@ import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const MessageItem = ({
     messages,
@@ -53,21 +53,40 @@ const MessageItem = ({
     const hoverRef = useRef<HTMLDivElement>(null);
     const messageHovered = useHover(hoverRef);
 
-    // "m" implies it is a mutation function
-    const [mEditMessage] = useMutation(EditMessage, {
-        variables: {
-            channelId: message.channel?.id,
-            id: message.id,
-            content: newContent,
-        },
+    const { mutate: deleteMessage } = useMutation({
+        mutationKey: ["deleteMessage"],
+        mutationFn: () =>
+            api.delete(
+                `/channels/${message.channel?.id}/messages/${message.id}`
+            ),
     });
 
-    const [deleteMessage] = useMutation(DeleteMessage, {
-        variables: {
-            channelId: message.channel?.id,
-            id: message.id,
-        },
+    const { mutate: mEditMessage } = useMutation({
+        mutationKey: ["editMessage"],
+        mutationFn: (content: string) =>
+            api.patch(
+                `/channels/${message.channel?.id}/messages/${message.id}`,
+                {
+                    content,
+                }
+            ),
     });
+
+    // // "m" implies it is a mutation function
+    // const [mEditMessage] = useMutation(EditMessage, {
+    //     variables: {
+    //         channelId: message.channel?.id,
+    //         id: message.id,
+    //         content: newContent,
+    //     },
+    // });
+
+    // const [deleteMessage] = useMutation(DeleteMessage, {
+    //     variables: {
+    //         channelId: message.channel?.id,
+    //         id: message.id,
+    //     },
+    // });
 
     if (!message) return <></>;
 
@@ -80,7 +99,7 @@ const MessageItem = ({
             setMessageEditing(false);
             return;
         }
-        mEditMessage();
+        mEditMessage(newContent);
         setMessageEditing(false);
     };
 
