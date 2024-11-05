@@ -10,18 +10,9 @@ const api = axios.create({
     },
 });
 
-if (localStorage.getItem("fx-token"))
-    api.defaults.headers.common[
-        "Authorization"
-    ] = `Bearer ${localStorage.getItem("fx-token")}`;
-
 const socket = io(import.meta.env.VITE_APP_URL, {
     path: "/v2/socket-io",
     autoConnect: false,
 });
-
-// Set the token if it exists
-if (localStorage.getItem("fx-token"))
-    socket.auth = { token: localStorage.getItem("fx-token") };
 
 export { api, socket };

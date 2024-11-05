@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser, logout } from "../reducers/auth";
 import { User, UserWithToken } from "@furxus/types";
 import { useNavigate } from "react-router-dom";
+import { api, socket } from "@/api";
 
 export const AuthContext = createContext<{
     user: User;
@@ -39,16 +40,22 @@ export function AuthProvider({ children }: PropsWithChildren) {
     //     },
     // });
 
+    const token = localStorage.getItem("fx-token");
+
+    if (token) {
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+        socket.auth = { token: token };
+    }
+
     const loginUser = (userData: UserWithToken) => {
         const { token, ...user } = userData;
         localStorage.setItem("fx-token", token);
-        //navigate(user?.preferences?.mode ?? "servers");
         dispatch(updateUser(user));
     };
 
     const logoutUser = () => {
         localStorage.removeItem("fx-token");
-        navigate("/login");
         dispatch(logout());
     };
 

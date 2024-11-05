@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import { useAuth } from "@/hooks";
 import { Stack } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,10 +14,10 @@ const VerifyPage = () => {
     const {
         error,
         isPending,
-        data: verifyUser = false,
-    } = useMutation({
-        mutationKey: ["verifyUser", { code }],
-        mutationFn: () =>
+        data: verifyUser,
+    } = useQuery({
+        queryKey: ["verifyUser", { code }],
+        queryFn: () =>
             api.post("/auth/verify", { code }).then((res) => res.data),
     });
 
@@ -32,12 +32,13 @@ const VerifyPage = () => {
     // });
 
     useEffect(() => {
+        if (isPending) return;
         const interval = setInterval(() => {
             setCountdown((prev) => prev - 1);
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [isPending]);
 
     if (countdown === 0) {
         navigation("/login");

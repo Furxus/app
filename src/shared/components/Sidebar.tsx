@@ -15,52 +15,48 @@ const Sidebar = () => {
         <Stack
             justifyContent="center"
             alignItems="center"
-            gap="0.25rem"
+            gap={2}
             pt={1}
-            className={classNames("h-dvh bg-neutral-700/[.4]", {
+            className={classNames("p-2 h-dvh bg-neutral-700/[.4]", {
                 "border-r border-blue-500/60": appMode === "posts",
                 "border-r border-green-500/60": appMode === "servers",
                 "gradient-sidebar": appMode === "dms",
             })}
         >
-            <Stack
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                className="w-full"
+            <Button
+                sx={{ width: 64, height: 64 }}
+                className="rounded-full"
+                variant="text"
+                onClick={() =>
+                    changeAppMode(
+                        appMode === "dms"
+                            ? user?.preferences?.mode ?? "servers"
+                            : appMode === "servers"
+                            ? "posts"
+                            : "servers"
+                    )
+                }
             >
-                <Button
-                    sx={{ width: 64, height: 64 }}
-                    className="rounded-full"
-                    variant="text"
-                    onClick={() =>
-                        changeAppMode(
-                            appMode === "dms"
-                                ? user?.preferences?.mode ?? "servers"
-                                : appMode === "servers"
-                                ? "posts"
-                                : "servers"
-                        )
+                <Avatar
+                    className={classNames({
+                        "gradient-logo-servers": appMode === "posts",
+                        "gradient-logo-posts": appMode === "servers",
+                        "gradient-logo-both": appMode === "dms",
+                    })}
+                    src={
+                        appMode === "dms"
+                            ? "/icon.png"
+                            : appMode === "servers"
+                            ? "/logo2.png"
+                            : "/logo.png"
                     }
-                >
-                    <Avatar
-                        className={classNames({
-                            "gradient-logo-servers": appMode === "posts",
-                            "gradient-logo-posts": appMode === "servers",
-                            "gradient-logo-both": appMode === "dms",
-                        })}
-                        src={
-                            appMode === "dms"
-                                ? "/icon.png"
-                                : appMode === "servers"
-                                ? "/logo2.png"
-                                : "/logo.png"
-                        }
-                        sx={{ width: 64, height: 64 }}
-                    />
-                </Button>
-            </Stack>
-            <Stack className="h-full w-full bg-neutral-700[0.4]">
+                    sx={{ width: 64, height: 64 }}
+                />
+            </Button>
+            <Stack
+                className="h-full w-full bg-neutral-700[0.4]"
+                alignItems="center"
+            >
                 {appMode === "posts" && <SidebarPosts />}
                 {appMode === "servers" && <SidebarServers />}
                 {appMode === "dms" && <SidebarDMs />}

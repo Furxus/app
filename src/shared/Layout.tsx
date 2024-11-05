@@ -64,13 +64,27 @@ const Layout = () => {
                                     you have verified your email or you can
                                     request a new verification code
                                 </span>
-                                <Button
-                                    onClick={() => resendEmail()}
-                                    variant="contained"
-                                    color="success"
+                                <Stack
+                                    direction="row"
+                                    className="w-full"
+                                    justifyContent="center"
+                                    gap={2}
                                 >
-                                    Resend Email
-                                </Button>
+                                    <Button
+                                        onClick={() => resendEmail()}
+                                        variant="contained"
+                                        color="success"
+                                    >
+                                        Resend Email
+                                    </Button>
+                                    <Button
+                                        onClick={() => logout()}
+                                        variant="contained"
+                                        color="error"
+                                    >
+                                        Logout
+                                    </Button>
+                                </Stack>
                             </>
                         )}
                     </Stack>
