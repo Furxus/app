@@ -29,17 +29,6 @@ export function AppModeProvider({ children }: PropsWithChildren) {
     );
 
     useEffect(() => {
-        if (isLoggedIn && location.pathname === "/" && user)
-            navigate(user.preferences?.mode ?? "servers");
-
-        if (
-            !isLoggedIn &&
-            !location.pathname.includes("login") &&
-            !location.pathname.includes("register") &&
-            !location.pathname.includes("verify")
-        )
-            navigate("/login");
-
         if (location.pathname.includes("servers")) setAppMode("servers");
         if (location.pathname.includes("posts")) setAppMode("posts");
         if (location.pathname.includes("dms")) setAppMode("dms");

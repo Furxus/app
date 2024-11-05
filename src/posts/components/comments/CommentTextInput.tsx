@@ -1,7 +1,5 @@
-import { useMutation } from "@apollo/client";
 import { Post } from "@furxus/types";
 import { useState } from "react";
-import { CreateComment } from "@gql/comments";
 import { FaArrowRight } from "react-icons/fa";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -10,15 +8,15 @@ import IconButton from "@mui/material/IconButton";
 const CommentTextInput = ({ post }: { post: Post }) => {
     const [comment, setComment] = useState("");
 
-    const [createComment, { loading }] = useMutation(CreateComment, {
-        variables: {
-            postId: post.id,
-            content: comment,
-        },
-    });
+    // const [createComment, { loading }] = useMutation(CreateComment, {
+    //     variables: {
+    //         postId: post.id,
+    //         content: comment,
+    //     },
+    // });
 
     const sendComment = () => {
-        createComment();
+        //createComment();
         setComment("");
     };
 
@@ -49,7 +47,7 @@ const CommentTextInput = ({ post }: { post: Post }) => {
             <IconButton
                 color="primary"
                 style={{ marginLeft: 8 }}
-                disabled={comment.length === 0 || loading}
+                disabled={comment.length === 0}
                 onClick={() => sendComment()}
             >
                 <FaArrowRight />

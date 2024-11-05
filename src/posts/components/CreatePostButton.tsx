@@ -1,6 +1,4 @@
-import { useMutation } from "@apollo/client";
 import { useState } from "react";
-import { CreatePost } from "@gql/posts";
 
 import { MuiFileInput } from "mui-file-input";
 import Button from "@mui/material/Button";
@@ -17,19 +15,19 @@ const CreatePostButton = () => {
     const [media, setMedia] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const [createPost, { loading }] = useMutation(CreatePost, {
-        variables: { text, media },
-        onCompleted: () => {
-            setError(null);
-            closeModal();
-        },
-        onError: (error) => {
-            const err = error.message.includes("size limit")
-                ? "File too large, maximum file size is 25MB"
-                : error.message;
-            setError(err);
-        },
-    });
+    // const [createPost, { loading }] = useMutation(CreatePost, {
+    //     variables: { text, media },
+    //     onCompleted: () => {
+    //         setError(null);
+    //         closeModal();
+    //     },
+    //     onError: (error) => {
+    //         const err = error.message.includes("size limit")
+    //             ? "File too large, maximum file size is 25MB"
+    //             : error.message;
+    //         setError(err);
+    //     },
+    // });
 
     const closeModal = () => {
         setvisible(false);
@@ -51,7 +49,7 @@ const CreatePostButton = () => {
                 open={visible}
                 onClose={closeModal}
                 onKeyDown={(e) => {
-                    if (e.key === "Enter") createPost();
+                    //if (e.key === "Enter") createPost();
                 }}
             >
                 <DialogTitle className="flex justify-between">
@@ -85,18 +83,18 @@ const CreatePostButton = () => {
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
                         <Button
-                            onClick={() => createPost()}
+                            //onClick={() => createPost()}
                             color="success"
                             size="medium"
                             variant="contained"
-                            disabled={loading}
+                            //disabled={loading}
                         >
                             Submit
                         </Button>
                         <Button
                             color="error"
                             variant="text"
-                            disabled={loading}
+                            // disabled={loading}
                             onClick={closeModal}
                         >
                             Cancel

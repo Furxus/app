@@ -1,14 +1,15 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
+
 import { FaCamera } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import AvatarEditor from "react-avatar-edit";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import { CreateServer } from "@gql/servers";
 import { Avatar, Box, Link, Modal, Stack, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const CreateServerDialog = ({
     visible,
@@ -33,39 +34,62 @@ const CreateServerDialog = ({
         file: null,
     });
 
-    const [createServer, { loading }] = useMutation(CreateServer, {
-        onCompleted: ({ createServer: serverData }) => {
+    const { mutate, isPending } = useMutation({
+        mutationKey: ["createServer"],
+        mutationFn: (values: any) => api.post("/servers", values),
+        onSuccess: ({ data }) => {
             setErrors({
                 name: null,
                 file: null,
             });
 
-            if (!serverData) return;
+            if (!data) return;
 
-            if (serverData.channels && serverData.channels.length > 0)
-                navigate(
-                    `/servers/${serverData.id}/${serverData.channels[0]?.id}`
-                );
+            if (data.channels && data.channels.length > 0)
+                navigate(`/servers/${data.id}/${data.channels[0]?.id}`);
 
             closeModal();
         },
-        onError: (error) => {
-            const errs = error.graphQLErrors[0]?.extensions?.errors as any[];
-            if (!errs) return;
-            errs.forEach((err) => {
-                setErrors((prev) => ({
-                    ...prev,
-                    [err.type]: err.message,
-                }));
-            });
+        onError: (err: any) => {
+            const errors = err.response.data.errors as any[];
+            console.log(errors);
         },
     });
+
+    // const [createServer, { loading }] = useMutation(CreateServer, {
+    //     onCompleted: ({ createServer: serverData }) => {
+    //         setErrors({
+    //             name: null,
+    //             file: null,
+    //         });
+
+    //         if (!serverData) return;
+
+    //         if (serverData.channels && serverData.channels.length > 0)
+    //             navigate(
+    //                 `/servers/${serverData.id}/${serverData.channels[0]?.id}`
+    //             );
+
+    //         closeModal();
+    //     },
+    //     onError: (error) => {
+    //         const errs = error.graphQLErrors[0]?.extensions?.errors as any[];
+    //         if (!errs) return;
+    //         errs.forEach((err) => {
+    //             setErrors((prev) => ({
+    //                 ...prev,
+    //                 [err.type]: err.message,
+    //             }));
+    //         });
+    //     },
+    // });
 
     const closeModal = () => {
         setVisible(false);
         setTimeout(() => {
             setFields({ name: "" });
-            setErrors({ name: null });
+            setErrors({ name: null, file: null });
+            setFile(null);
             setThumbnail(null);
         }, 1000);
     };
@@ -88,11 +112,9 @@ const CreateServerDialog = ({
     };
 
     const onSubmit = () => {
-        createServer({
-            variables: {
-                name: fields.name,
-                icon: file,
-            },
+        mutate({
+            name: fields.name,
+            icon: file,
         });
     };
 
@@ -165,12 +187,12 @@ const CreateServerDialog = ({
                         onClick={onSubmit}
                         variant="contained"
                         color="success"
-                        disabled={loading || !!errors.name || !fields.name}
+                        disabled={isPending || !!errors.name || !fields.name}
                     >
                         Create
                     </Button>
                 </Stack>
-                {!loading && (
+                {!isPending && (
                     <Link
                         variant="body2"
                         className="cursor-pointer"

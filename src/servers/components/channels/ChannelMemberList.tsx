@@ -1,13 +1,16 @@
-import { useQuery } from "@apollo/client";
+import { Member } from "@furxus/types";
 import { GetMembers } from "@gql/members";
 import Stack from "@mui/material/Stack";
+import { useState } from "react";
 
 const ChannelMemberList = ({ serverId }: { serverId: string }) => {
-    const { data: { getMembers: members } = {} } = useQuery(GetMembers, {
-        variables: {
-            serverId,
-        },
-    });
+    const [members] = useState<Member[]>([]);
+
+    // const { data: { getMembers: members } = {} } = useQuery(GetMembers, {
+    //     variables: {
+    //         serverId,
+    //     },
+    // });
 
     return (
         <Stack direction="column">

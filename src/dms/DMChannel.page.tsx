@@ -1,5 +1,3 @@
-import { getDM } from "@/gql/dms";
-import { useQuery } from "@apollo/client";
 import { Stack } from "@mui/material";
 import { useParams } from "react-router-dom";
 
@@ -7,17 +5,19 @@ import DMHeader from "./components/DMHeader";
 import DMTextInput from "./components/DMTextInput";
 import ChannelMessages from "@/servers/components/channels/ChannelMessages";
 import { useAuth } from "@/hooks";
-import { User } from "@furxus/types";
+import { DMChannel, User } from "@furxus/types";
+import { useState } from "react";
 
 const DMsChannelPage = () => {
     const { user: auth } = useAuth();
     const { channelId } = useParams();
+    const [dmChannel] = useState<DMChannel | null>(null);
 
-    const { data: { getDM: dmChannel } = {} } = useQuery(getDM, {
-        variables: {
-            id: channelId,
-        },
-    });
+    // const { data: { getDM: dmChannel } = {} } = useQuery(getDM, {
+    //     variables: {
+    //         id: channelId,
+    //     },
+    // });
 
     if (!channelId) return <></>;
     if (!dmChannel) return <></>;

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { RegisterUser } from "../../gql/auth";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { RegisterSchema } from "../../ValidationSchemas";
 
@@ -12,6 +10,8 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -19,10 +19,6 @@ const RegisterPage = () => {
     const [dob, setDob] = useState<Date | null>(null);
 
     const { isLoggedIn } = useAuth();
-
-    useEffect(() => {
-        if (isLoggedIn) navigate("/");
-    }, [isLoggedIn]);
 
     const [successful, setSuccessful] = useState(false);
 
@@ -37,24 +33,41 @@ const RegisterPage = () => {
         dateOfBirth: null,
     });
 
-    const [registerUser] = useMutation(RegisterUser, {
-        onCompleted: () => {
+    // const [registerUser] = useMutation(RegisterUser, {
+    //     onCompleted: () => {
+    //         setSuccessful(true);
+    //     },
+    //     onError: (error) => {
+    //         const errs = error.graphQLErrors[0].extensions?.errors as any[];
+    //         if (errs) {
+    //             errs.forEach((e) => {
+    //                 setServerErrors((prev) => ({
+    //                     ...prev,
+    //                     [e.type]: e.message,
+    //                 }));
+    //             });
+    //         }
+    //     },
+    // });
+
+    const { mutate } = useMutation({
+        mutationKey: ["register"],
+        mutationFn: (values: any) => api.post("/auth/register", values),
+        onSuccess: () => {
             setSuccessful(true);
         },
-        onError: (error) => {
-            const errs = error.graphQLErrors[0].extensions?.errors as any[];
-            if (errs) {
-                errs.forEach((e) => {
-                    setServerErrors((prev) => ({
-                        ...prev,
-                        [e.type]: e.message,
-                    }));
+        onError: (err: any) => {
+            const errors = err.response.data.errors as any[];
+            errors?.forEach((error) => {
+                setServerErrors({
+                    ...serverErrors,
+                    [error.type]: error.message,
                 });
-            }
+            });
         },
     });
 
-    if (isLoggedIn) return <></>;
+    if (isLoggedIn) return <Navigate to="/" />;
 
     const fields: Record<any, any>[] = [
         {
@@ -136,11 +149,9 @@ const RegisterPage = () => {
                                 }}
                                 validationSchema={RegisterSchema}
                                 onSubmit={(values) =>
-                                    registerUser({
-                                        variables: {
-                                            ...values,
-                                            dateOfBirth: dob,
-                                        },
+                                    mutate({
+                                        ...values,
+                                        dateOfBirth: dob,
                                     })
                                 }
                             >
@@ -277,12 +288,9 @@ const RegisterPage = () => {
                                                     color="success"
                                                     sx={{ color: "white" }}
                                                     onClick={() => {
-                                                        registerUser({
-                                                            variables: {
-                                                                ...values,
-                                                                dateOfBirth:
-                                                                    dob,
-                                                            },
+                                                        mutate({
+                                                            ...values,
+                                                            dateOfBirth: dob,
                                                         });
                                                     }}
                                                 >

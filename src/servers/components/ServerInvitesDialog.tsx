@@ -21,12 +21,12 @@ const ServerInvitesDialog = ({
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { loading, data: { getServer: { invites } = [] } = [] } = useQuery(
-        GetServerInvites,
-        {
-            variables: { id: server.id },
-        }
-    );
+    // const { loading, data: { getServer: { invites } = [] } = [] } = useQuery(
+    //     GetServerInvites,
+    //     {
+    //         variables: { id: server.id },
+    //     }
+    // );
 
     if (loading) return <></>;
 

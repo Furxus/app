@@ -1,5 +1,3 @@
-import { CreateMessage } from "@/gql/messages";
-import { useMutation } from "@apollo/client";
 import { DMChannel, User } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -13,15 +11,15 @@ const DMTextInput = ({
     channel: DMChannel;
 }) => {
     const [message, setMessage] = useState("");
-    const [createMessage] = useMutation(CreateMessage, {
+    /*const [createMessage] = useMutation(CreateMessage, {
         variables: {
             channelId: channel.id,
             content: message,
         },
-    });
+    });*/
 
     const sendMessage = () => {
-        createMessage();
+        //createMessage();
         setMessage("");
     };
 

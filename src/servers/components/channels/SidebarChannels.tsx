@@ -5,7 +5,7 @@ import { useAuth } from "@hooks";
 import { FaPlus } from "react-icons/fa";
 
 import { Virtuoso } from "react-virtuoso";
-import CreateChannelModal from "./CreateChannelModal";
+
 import ChannelTextListItem from "./ChannelTextListItem";
 
 import { Item, Menu, useContextMenu } from "react-contexify";
@@ -17,6 +17,7 @@ import {
     OnChannelDeleted,
 } from "@/gql/channels";
 import { useNavigate } from "react-router-dom";
+import CreateChannelModal from "./CreateChannelModal";
 
 const ServerSidebarChannels = ({ server }: { server: Server }) => {
     const navigate = useNavigate();

@@ -1,77 +1,82 @@
 import { useNavigate, useParams } from "react-router-dom";
 import SidebarChannels from "./channels/SidebarChannels";
-import { useEffect } from "react";
-import { useQuery } from "@apollo/client";
-import { GetChannels, OnChannelCreated, OnChannelDeleted } from "@gql/channels";
 import { FaHashtag } from "react-icons/fa";
-import { Channel, Server } from "@furxus/types";
+import { Server } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import SidebarProfile from "./SidebarProfile";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const ServerSidebar = ({ server }: { server: Server }) => {
     const navigate = useNavigate();
     const { channelId } = useParams();
 
-    const {
-        loading,
-        subscribeToMore,
-        data: { getChannels: channels = [] } = {},
-    } = useQuery(GetChannels, {
-        variables: {
-            serverId: server?.id,
-            type: ["text", "voice"],
-        },
+    const { isLoading, data: channels } = useQuery({
+        queryKey: ["getChannels", { serverId: server.id }],
+        queryFn: () =>
+            api.get(`/servers/${server.id}/channels`).then((res) => res.data),
     });
 
-    useEffect(() => {
-        if (!channelId && channels.length > 0) {
-            navigate(`/servers/${server.id}/${channels[0].id}`);
-        }
-    }, [channels]);
+    // const {
+    //     loading,
+    //     subscribeToMore,
+    //     data: { getChannels: channels = [] } = {},
+    // } = useQuery(GetChannels, {
+    //     variables: {
+    //         serverId: server?.id,
+    //         type: ["text", "voice"],
+    //     },
+    // });
 
-    useEffect(() => {
-        const unsubscribe = subscribeToMore({
-            document: OnChannelCreated,
-            updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData.data) return prev;
-                const newChannel: Channel =
-                    subscriptionData.data.channelCreated;
-                if (!newChannel) return;
+    // useEffect(() => {
+    //     if (!channelId && channels.length > 0) {
+    //         navigate(`/servers/${server.id}/${channels[0].id}`);
+    //     }
+    // }, [channels]);
 
-                return {
-                    getChannels: [...prev.getChannels, newChannel],
-                };
-            },
-            variables: {
-                serverId: server?.id,
-            },
-        });
+    // useEffect(() => {
+    //     const unsubscribe = subscribeToMore({
+    //         document: OnChannelCreated,
+    //         updateQuery: (prev, { subscriptionData }) => {
+    //             if (!subscriptionData.data) return prev;
+    //             const newChannel: Channel =
+    //                 subscriptionData.data.channelCreated;
+    //             if (!newChannel) return;
 
-        return () => unsubscribe();
-    }, []);
+    //             return {
+    //                 getChannels: [...prev.getChannels, newChannel],
+    //             };
+    //         },
+    //         variables: {
+    //             serverId: server?.id,
+    //         },
+    //     });
 
-    useEffect(() => {
-        const unsubscribe = subscribeToMore({
-            document: OnChannelDeleted,
-            updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData.data) return prev;
-                const deletedChannel: Channel =
-                    subscriptionData.data.channelDeleted;
-                if (!deletedChannel) return;
+    //     return () => unsubscribe();
+    // }, []);
 
-                return {
-                    getChannels: prev.getChannels.filter(
-                        (channel: any) => channel.id !== deletedChannel.id
-                    ),
-                };
-            },
-            variables: {
-                serverId: server?.id,
-            },
-        });
+    // useEffect(() => {
+    //     const unsubscribe = subscribeToMore({
+    //         document: OnChannelDeleted,
+    //         updateQuery: (prev, { subscriptionData }) => {
+    //             if (!subscriptionData.data) return prev;
+    //             const deletedChannel: Channel =
+    //                 subscriptionData.data.channelDeleted;
+    //             if (!deletedChannel) return;
 
-        return () => unsubscribe();
-    });
+    //             return {
+    //                 getChannels: prev.getChannels.filter(
+    //                     (channel: any) => channel.id !== deletedChannel.id
+    //                 ),
+    //             };
+    //         },
+    //         variables: {
+    //             serverId: server?.id,
+    //         },
+    //     });
+
+    //     return () => unsubscribe();
+    // });
 
     if (!server) return <></>;
 
@@ -91,7 +96,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
                 <SidebarChannels server={server} />
                 <SidebarProfile />
             </Stack>
-            {!loading && channels.length === 0 && (
+            {!isLoading && channels.length === 0 && (
                 <Stack
                     alignItems="center"
                     justifyContent="center"

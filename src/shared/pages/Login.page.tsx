@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../hooks";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { LoginUser } from "../../gql/auth";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { LoginSchema } from "../../ValidationSchemas";
 import { Form, Formik } from "formik";
@@ -11,6 +9,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 type ServerError = {
     usernameOrEmail?: string;
@@ -25,16 +25,11 @@ const LoginPage = () => {
 
     const [srvErrors, setSrvErrors] = useState<ServerError>();
 
-    useEffect(() => {
-        if (isLoggedIn) navigate("/");
-    }, [isLoggedIn]);
-
-    const [loginUser] = useMutation(LoginUser, {
-        onCompleted: ({ loginUser: userData }) => {
-            login(userData);
-        },
-        onError: (err) => {
-            const errors = err.graphQLErrors[0].extensions?.errors as any[];
+    const { mutate } = useMutation({
+        mutationKey: ["login"],
+        mutationFn: (values: any) => api.post("/auth/login", values),
+        onError: (err: any) => {
+            const errors = err.response.data.errors as any[];
             errors?.forEach((error) => {
                 setSrvErrors({
                     ...srvErrors,
@@ -42,9 +37,13 @@ const LoginPage = () => {
                 });
             });
         },
+        onSuccess: ({ data }) => {
+            setSrvErrors(undefined);
+            login(data);
+        },
     });
 
-    if (isLoggedIn) return <></>;
+    if (isLoggedIn) return <Navigate to="/" />;
 
     return (
         <Stack justifyContent="center" alignItems="center" className="h-dvh">
@@ -67,7 +66,7 @@ const LoginPage = () => {
                             password: "",
                         }}
                         validationSchema={LoginSchema}
-                        onSubmit={(values) => loginUser({ variables: values })}
+                        onSubmit={(values) => mutate(values)}
                     >
                         {({ errors, handleChange, touched, values }) => (
                             <Form className="w-full">

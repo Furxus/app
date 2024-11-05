@@ -1,15 +1,8 @@
-import { useLazyQuery } from "@apollo/client";
 import { Comment, Post } from "@furxus/types";
 
 import classNames from "classnames";
-import {
-    ComponentPropsWithoutRef,
-    forwardRef,
-    useEffect,
-    useState,
-} from "react";
+import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
 import { FaCommentDots } from "react-icons/fa";
-import { GetComments, OnCommentCreated } from "@gql/comments";
 
 import CommentTextInput from "./CommentTextInput";
 import CommentComponent from "./Comment.component";
@@ -46,19 +39,21 @@ const CommentPopover = ({
 
     size: number;
 }) => {
-    const [
+    const [comments] = useState<Comment[]>([]);
+    const called = false;
+    /*const [
         loadComments,
         { called, subscribeToMore, data: { getComments: comments = [] } = {} },
     ] = useLazyQuery(GetComments, {
         variables: {
             postId: post.id,
         },
-    });
+    });*/
 
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const unsubcribe = subscribeToMore({
             document: OnCommentCreated,
             updateQuery: (prev, { subscriptionData }) => {
@@ -76,10 +71,10 @@ const CommentPopover = ({
         });
 
         return () => unsubcribe();
-    }, []);
+    }, []);*/
 
     const togglePopover = (e: any) => {
-        if (!called) loadComments();
+        // if (!called) loadComments();
         if (anchorEl) setAnchorEl(null);
         else setAnchorEl(e.currentTarget);
         setOpen(!open);

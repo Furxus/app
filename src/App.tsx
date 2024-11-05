@@ -1,25 +1,27 @@
-import { useQuery } from "@apollo/client";
-import { APIStatus } from "./gql/general";
 import { useEffect, useState } from "react";
 import APILoading from "./shared/components/status/APILoading";
 
 import { useAppMode } from "./hooks";
 import SEO from "./shared/SEO";
 import WebRoutes from "./shared/Web.routes";
-import { socket } from "./providers/MainProvider";
+
+import { useQuery } from "@tanstack/react-query";
+import { api, socket } from "./api";
 
 const App = () => {
     const { appMode } = useAppMode();
-    const [apiStatus, setApiStatus] = useState(true);
+
+    const { isLoading } = useQuery({
+        queryKey: ["ack"],
+        queryFn: () => api.get("/ack").then((res) => res.data),
+        retry: 5,
+    });
 
     useEffect(() => {
         socket.connect();
-        socket.on("disconnect", () => {
-            setApiStatus(false);
-        });
     }, []);
 
-    if (loading) return <APILoading />;
+    if (isLoading) return <APILoading />;
 
     let title = "Furxus - Furry Nexus";
     let favicon = "/favicon.ico";

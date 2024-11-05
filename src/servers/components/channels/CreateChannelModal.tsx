@@ -23,19 +23,19 @@ const CreateChannelModal = ({
 
     const [errors, setErrors] = useState({ name: null, type: null });
 
-    const [createChannel, { loading }] = useMutation(CreateChannel, {
-        variables: {
-            serverId,
-            name: fields.name,
-            type: "text",
-        },
-        onCompleted: ({ createChannel: channel }) => {
-            if (channel.type === "text") {
-                navigate(`/servers/${serverId}/${channel.id}`);
-            }
-            closeModal();
-        },
-    });
+    // const [createChannel, { loading }] = useMutation(CreateChannel, {
+    //     variables: {
+    //         serverId,
+    //         name: fields.name,
+    //         type: "text",
+    //     },
+    //     onCompleted: ({ createChannel: channel }) => {
+    //         if (channel.type === "text") {
+    //             navigate(`/servers/${serverId}/${channel.id}`);
+    //         }
+    //         closeModal();
+    //     },
+    // });
 
     const closeModal = () => {
         setVisible(false);
@@ -82,17 +82,17 @@ const CreateChannelModal = ({
                                 },
                             }}
                             onKeyDown={(e) => {
-                                if (e.key === "Enter" && fields.name)
-                                    createChannel();
+                                // if (e.key === "Enter" && fields.name)
+                                // createChannel();
                             }}
                         />
                         <Button
                             color="success"
                             onClick={() => {
-                                createChannel();
+                                //createChannel();
                             }}
                             variant="contained"
-                            disabled={loading || !fields.name}
+                            // disabled={loading || !fields.name}
                         >
                             Create Channel
                         </Button>

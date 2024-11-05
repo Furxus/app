@@ -23,12 +23,12 @@ const ChannelTextListItem = ({
     const location = useLocation();
     const isActive = location.pathname.includes(channel.id);
 
-    const [deleteChannel] = useMutation(DeleteChannel, {
-        variables: {
-            serverId: server.id,
-            id: channel.id,
-        },
-    });
+    // const [deleteChannel] = useMutation(DeleteChannel, {
+    //     variables: {
+    //         serverId: server.id,
+    //         id: channel.id,
+    //     },
+    // });
 
     const { show } = useContextMenu();
 
@@ -76,7 +76,7 @@ const ChannelTextListItem = ({
                 {user?.id === server.owner?.id && (
                     <Item
                         onClick={() => {
-                            deleteChannel();
+                            // deleteChannel();
                         }}
                     >
                         <FaTrash className="mr-2" />

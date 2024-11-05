@@ -23,14 +23,14 @@ const ServerListItem = ({ server }: { server: Server }) => {
     const [invitesDialogVisible, setInvitesDialogVisible] = useState(false);
     const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
-    const [leaveServer] = useMutation(LeaveServer, {
-        onCompleted: () => {
-            navigate("/servers");
-        },
-        variables: {
-            id: server.id,
-        },
-    });
+    // const [leaveServer] = useMutation(LeaveServer, {
+    //     onCompleted: () => {
+    //         navigate("/servers");
+    //     },
+    //     variables: {
+    //         id: server.id,
+    //     },
+    // });
 
     const { show } = useContextMenu();
 
@@ -98,7 +98,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
                         Delete Server
                     </Item>
                 ) : (
-                    <Item onClick={() => leaveServer()}>
+                    <Item /*onClick={() => leaveServer()}*/>
                         <FaSignOutAlt className="mr-2" />
                         Leave Server
                     </Item>

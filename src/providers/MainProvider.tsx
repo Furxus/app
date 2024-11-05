@@ -1,19 +1,3 @@
-import {
-    ApolloClient,
-    ApolloLink,
-    ApolloProvider,
-    InMemoryCache,
-    split,
-} from "@apollo/client";
-import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
-
-import { setContext } from "@apollo/client/link/context";
-import { onError } from "@apollo/client/link/error";
-import { RetryLink } from "@apollo/client/link/retry";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
-import { getMainDefinition } from "@apollo/client/utilities";
-
 import { BrowserRouter as Router } from "react-router-dom";
 
 import { createTheme, StyledEngineProvider } from "@mui/material/styles";
@@ -28,23 +12,13 @@ import { store, persistor } from "../reducers";
 import App from "../App";
 import { AuthProvider } from "./AuthProvider";
 import { AppModeProvider } from "./AppModeProvider";
-import { io } from "socket.io-client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CacheProvider, ThemeProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 
-const wsUrl = import.meta.env.VITE_APP_URL.replace("http", "ws").replace(
-    "https",
-    "wss"
-);
-
 const queryClient = new QueryClient();
-
-export const socket = io(wsUrl, {
-    autoConnect: false,
-});
 
 const emotionCache = createCache({
     key: "css",

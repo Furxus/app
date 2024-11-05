@@ -1,5 +1,3 @@
-import { useMutation } from "@apollo/client";
-import { DeleteServer } from "@gql/servers";
 import { useNavigate } from "react-router-dom";
 import { Dispatch, SetStateAction, useState } from "react";
 
@@ -9,6 +7,8 @@ import Button from "@mui/material/Button";
 
 import { Server } from "@furxus/types";
 import { Modal, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const ConfirmServerDeleteDialog = ({
     server,
@@ -24,19 +24,33 @@ const ConfirmServerDeleteDialog = ({
     const [confirm, setConfirm] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
 
-    const [deleteServer, { loading }] = useMutation(DeleteServer, {
-        variables: { id: server.id },
-        onCompleted: () => {
+    const { mutate: deleteServer, isPending } = useMutation({
+        mutationKey: ["deleteServer"],
+        mutationFn: () => api.delete(`/servers/${server.id}`),
+        onSuccess: () => {
             navigate("/servers");
         },
-        onError: (error) => {
-            const errs = error.graphQLErrors[0].extensions?.errors as any[];
-            if (!errs) return;
-            errs.forEach((err) => {
-                setError(err.message);
+        onError: (err: any) => {
+            const errors = err.response.data.errors as any[];
+            errors?.forEach((error) => {
+                setError(error.message);
             });
         },
     });
+
+    // const [deleteServer, { loading }] = useMutation(DeleteServer, {
+    //     variables: { id: server.id },
+    //     onCompleted: () => {
+    //         navigate("/servers");
+    //     },
+    //     onError: (error) => {
+    //         const errs = error.graphQLErrors[0].extensions?.errors as any[];
+    //         if (!errs) return;
+    //         errs.forEach((err) => {
+    //             setError(err.message);
+    //         });
+    //     },
+    // });
 
     const closeModal = () => {
         setError(null);
@@ -93,7 +107,7 @@ const ConfirmServerDeleteDialog = ({
                         variant="contained"
                         onClick={() => deleteFunc()}
                         color="error"
-                        disabled={confirm !== "CONFIRM" || loading}
+                        disabled={confirm !== "CONFIRM" || isPending}
                     >
                         Confirm
                     </Button>

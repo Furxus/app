@@ -1,25 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import {
-    GetPaginatedPosts,
-    GetPosts,
-    OnPostCreated,
-    OnPostDeleted,
-    OnPostLiked,
-    OnPostUnliked,
-} from "@gql/posts";
-import { useQuery } from "@apollo/client";
-import InfiniteScroll from "react-infinite-scroller";
-import { Post } from "@furxus/types";
-import PostCard from "../components/PostCard";
-
-import Stack from "@mui/material/Stack";
-
 const PostsTrending = () => {
-    const { data: { getPosts: allPosts } = {} } = useQuery(GetPosts);
-    const [hasMore, setHasMore] = useState(true);
-    const parentRef = useRef<HTMLDivElement>(null);
+    // const { data: { getPosts: allPosts } = {} } = useQuery(GetPosts);
+    // const [hasMore, setHasMore] = useState(true);
+    // const parentRef = useRef<HTMLDivElement>(null);
 
-    const {
+    /*const {
         subscribeToMore,
         fetchMore,
         data: { getPaginatedPosts: posts = [] } = [],
@@ -139,7 +123,7 @@ const PostsTrending = () => {
     if (!posts) return <></>;
     if (!allPosts) return <></>;
     if (posts.length < 1) return <></>;
-    return (
+    /*return (
         <Stack ref={parentRef} className="m-auto">
             <InfiniteScroll
                 loadMore={fetchMoreData}
@@ -153,7 +137,9 @@ const PostsTrending = () => {
                 ))}
             </InfiniteScroll>
         </Stack>
-    );
+    );*/
+
+    return <></>;
 };
 
 export default PostsTrending;

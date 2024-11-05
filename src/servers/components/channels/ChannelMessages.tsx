@@ -5,7 +5,7 @@ import {
     OnMessageDeleted,
     OnMessageEdited,
 } from "@gql/messages";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageItem from "../../../shared/components/messages/MessageItem";
 import { MessageSkeleton } from "@utils";
 import { Message } from "@furxus/types";
@@ -17,8 +17,10 @@ import classNames from "classnames";
 
 const ChannelMessages = ({ channelId }: { channelId: string }) => {
     const scrollRef = useRef<VirtuosoHandle>(null);
+    const [messages] = useState<Message[]>([]);
+    const loading = false;
 
-    const {
+    /*const {
         fetchMore,
         loading,
         subscribeToMore,
@@ -102,7 +104,7 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
         });
 
         return () => unsubscribe();
-    }, []);
+    }, []);*/
 
     const EmptyMessage = () => (
         <Stack justifyContent="center" alignItems="center">
@@ -113,7 +115,7 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
         </Stack>
     );
 
-    const next = () => {
+    /* const next = () => {
         fetchMore({
             variables: {
                 channelId,
@@ -132,7 +134,7 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
                 };
             },
         });
-    };
+    };*/
 
     return (
         <Stack
@@ -153,7 +155,7 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
                     initialTopMostItemIndex={messages.length - 1}
                     atTopStateChange={(atTop) => {
                         if (atTop) {
-                            next();
+                            //next();
                         }
                     }}
                     itemContent={(i, message: Message) => (

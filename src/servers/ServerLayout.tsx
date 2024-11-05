@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client";
 import ServerSidebar from "./components/ServerSidebar";
 import { GetUserServers } from "@gql/servers";
 import { Outlet, useParams } from "react-router-dom";
@@ -6,14 +5,21 @@ import { FaBook } from "react-icons/fa";
 
 import "@css/ServerSideContextMenu.css";
 import Stack from "@mui/material/Stack";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const ServerLayout = () => {
     const { serverId } = useParams();
 
-    const { loading, data: { getUserServers: servers = [] } = {} } =
-        useQuery(GetUserServers);
+    // const { loading, data: { getUserServers: servers = [] } = {} } =
+    //     useQuery(GetUserServers);
 
-    if (loading) return <></>;
+    const { isLoading, data: servers } = useQuery({
+        queryKey: ["getUserServers"],
+        queryFn: () => api.get("/@me/servers").then((res) => res.data),
+    });
+
+    if (isLoading) return <></>;
 
     if (servers.length === 0)
         return (

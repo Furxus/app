@@ -4,8 +4,6 @@ import classNames from "classnames";
 import VideoPlayer from "@/shared/components/video/VideoPlayer";
 import PostImage from "./PostImage";
 import { FaHeart } from "react-icons/fa";
-import { useMutation } from "@apollo/client";
-import { LikePost, UnlikePost } from "@gql/posts";
 import CommentPopover from "./comments/CommentPopover";
 import Stack from "@mui/material/Stack";
 import UserAvatar from "@/shared/components/avatar/UserAvatar";
@@ -13,17 +11,17 @@ import UserAvatar from "@/shared/components/avatar/UserAvatar";
 const PostCard = ({ post }: { post: Post }) => {
     const { user } = post;
 
-    const [likePost] = useMutation(LikePost, {
-        variables: {
-            postId: post.id,
-        },
-    });
+    // const [likePost] = useMutation(LikePost, {
+    //     variables: {
+    //         postId: post.id,
+    //     },
+    // });
 
-    const [unlikePost] = useMutation(UnlikePost, {
-        variables: {
-            postId: post.id,
-        },
-    });
+    // const [unlikePost] = useMutation(UnlikePost, {
+    //     variables: {
+    //         postId: post.id,
+    //     },
+    // });
 
     if (post.content?.video)
         return (
@@ -87,13 +85,13 @@ const PostCard = ({ post }: { post: Post }) => {
                             size={18}
                             color="red"
                             className="cursor-pointer"
-                            onClick={() => unlikePost()}
+                            //onClick={() => unlikePost()}
                         />
                     ) : (
                         <FaHeart
                             size={18}
                             className="cursor-pointer"
-                            onClick={() => likePost()}
+                            // onClick={() => likePost()}
                         />
                     )}
                     <p>{post.likes?.length}</p>

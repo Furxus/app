@@ -18,19 +18,19 @@ const JoinServerDialog = ({
 
     const [error, setError] = useState<string | null>(null);
 
-    const [joinServer, { loading }] = useMutation(JoinServer, {
-        variables: { code },
-        onCompleted: () => {
-            closeModal();
-        },
-        onError: (error) => {
-            const errs = error.graphQLErrors[0].extensions?.errors as any[];
-            if (!errs) return;
-            errs.forEach((err) => {
-                setError(err.message);
-            });
-        },
-    });
+    // const [joinServer, { loading }] = useMutation(JoinServer, {
+    //     variables: { code },
+    //     onCompleted: () => {
+    //         closeModal();
+    //     },
+    //     onError: (error) => {
+    //         const errs = error.graphQLErrors[0].extensions?.errors as any[];
+    //         if (!errs) return;
+    //         errs.forEach((err) => {
+    //             setError(err.message);
+    //         });
+    //     },
+    // });
 
     const closeModal = () => {
         setError(null);
