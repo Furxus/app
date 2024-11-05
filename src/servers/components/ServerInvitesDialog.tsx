@@ -1,7 +1,5 @@
-import { useQuery } from "@apollo/client";
-import { GetServerInvites } from "@gql/servers";
 import moment from "moment";
-import { Invite, Server } from "@furxus/types";
+import { Server } from "@furxus/types";
 import { Dispatch, Fragment, SetStateAction } from "react";
 import Stack from "@mui/material/Stack";
 import Avatar from "@/shared/components/avatar/Avatar";
@@ -21,15 +19,6 @@ const ServerInvitesDialog = ({
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
 }) => {
-    // const { loading, data: { getServer: { invites } = [] } = [] } = useQuery(
-    //     GetServerInvites,
-    //     {
-    //         variables: { id: server.id },
-    //     }
-    // );
-
-    if (loading) return <></>;
-
     return (
         <Modal
             className="flex items-center justify-center"
@@ -70,7 +59,7 @@ const ServerInvitesDialog = ({
                         <TableCell>Created</TableCell>
                     </TableHead>
                     <TableBody>
-                        {invites.map((invite: Invite, i: number) => (
+                        {server.invites.map((invite, i: number) => (
                             <Fragment key={i}>
                                 <TableCell>{invite.code}</TableCell>
                                 <TableCell>{invite.uses}</TableCell>

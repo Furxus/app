@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import { Avatar, Box, Link, Modal, Stack, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import { Server } from "@furxus/types";
 
 const CreateServerDialog = ({
     visible,
@@ -36,17 +37,18 @@ const CreateServerDialog = ({
 
     const { mutate, isPending } = useMutation({
         mutationKey: ["createServer"],
-        mutationFn: (values: any) => api.post("/servers", values),
-        onSuccess: ({ data }) => {
+        mutationFn: (values: any) =>
+            api.post("/servers", values).then((res) => res.data),
+        onSuccess: (server: Server) => {
             setErrors({
                 name: null,
                 file: null,
             });
 
-            if (!data) return;
+            if (!server) return;
 
-            if (data.channels && data.channels.length > 0)
-                navigate(`/servers/${data.id}/${data.channels[0]?.id}`);
+            if (server.channels && server.channels.length > 0)
+                navigate(`/servers/${server.id}/${server.channels[0]?.id}`);
 
             closeModal();
         },

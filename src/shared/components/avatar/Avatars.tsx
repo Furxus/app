@@ -29,51 +29,43 @@ const Avatars = ({
 }: {
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { fetchMe } = useAuth();
     const { appMode } = useAppMode();
 
     const [open, setOpen] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState<string>("");
     const [previousMode, setPreviousMode] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [indexSelected, setIndexSelected] = useState<number>(0);
 
-    const [updateDefaultAvatar, { loading: defaultLoading }] = useMutation(
-        UpdateDefaultAvatar,
-        {
-            variables: {
-                avatar: currentAvatar,
-            },
-            update: () => {
-                setOpen(false);
-                setMainOpen(false);
-                fetchMe();
-                setCurrentAvatar("");
-            },
-        }
-    );
+    // const [updateDefaultAvatar, { loading: defaultLoading }] = useMutation(
+    //     UpdateDefaultAvatar,
+    //     {
+    //         variables: {
+    //             avatar: currentAvatar,
+    //         },
+    //         update: () => {
+    //             setOpen(false);
+    //             setMainOpen(false);
+    //             setCurrentAvatar("");
+    //         },
+    //     }
+    // );
 
-    const [updateAvatarFromURL, { loading: fromUrlLoading }] = useMutation(
-        UpdateAvatarFromURL,
-        {
-            variables: {
-                avatar: currentAvatar,
-            },
-            update: () => {
-                setOpen(false);
-                setMainOpen(false);
-                fetchMe();
-                setCurrentAvatar("");
-            },
-        }
-    );
+    // const [updateAvatarFromURL, { loading: fromUrlLoading }] = useMutation(
+    //     UpdateAvatarFromURL,
+    //     {
+    //         variables: {
+    //             avatar: currentAvatar,
+    //         },
+    //         update: () => {
+    //             setOpen(false);
+    //             setMainOpen(false);
+    //             setCurrentAvatar("");
+    //         },
+    //     }
+    // );
 
-    useEffect(() => {
-        setLoading(defaultLoading || fromUrlLoading);
-    }, [defaultLoading, fromUrlLoading]);
-
-    const { data: { getPreviousAvatars: avatars = [] } = {}, refetch } =
-        useQuery(GetPreviousAvatars);
+    // const { data: { getPreviousAvatars: avatars = [] } = {}, refetch } =
+    //     useQuery(GetPreviousAvatars);
 
     const onClose = () => {
         setOpen(false);

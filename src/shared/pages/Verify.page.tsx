@@ -1,7 +1,7 @@
-import { VerifyUser } from "@/gql/auth";
+import { api } from "@/api";
 import { useAuth } from "@/hooks";
-import { useQuery } from "@apollo/client";
 import { Stack } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -12,14 +12,24 @@ const VerifyPage = () => {
     const [countdown, setCountdown] = useState(5);
 
     const {
-        loading,
-        data: { verifyUser = false } = {},
         error,
-    } = useQuery(VerifyUser, {
-        variables: {
-            code,
-        },
+        isPending,
+        data: verifyUser = false,
+    } = useMutation({
+        mutationKey: ["verifyUser", { code }],
+        mutationFn: () =>
+            api.post("/auth/verify", { code }).then((res) => res.data),
     });
+
+    // const {
+    //     loading,
+    //     data: { verifyUser = false } = {},
+    //     error,
+    // } = useQuery(VerifyUser, {
+    //     variables: {
+    //         code,
+    //     },
+    // });
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -42,7 +52,7 @@ const VerifyPage = () => {
                 gap={1}
                 className="bg-neutral-700/40 p-4"
             >
-                {loading && <p>Verifying your email...</p>}
+                {isPending && <p>Verifying your email...</p>}
                 {error && <p>{error.message}</p>}
                 {verifyUser && (
                     <>

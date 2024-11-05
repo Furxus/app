@@ -1,5 +1,3 @@
-import { useMutation } from "@apollo/client";
-import { CreateChannel } from "@gql/channels";
 import { Dispatch, SetStateAction, useState } from "react";
 import { FaHashtag } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +5,8 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Modal, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const CreateChannelModal = ({
     serverId,
@@ -20,8 +20,24 @@ const CreateChannelModal = ({
     const navigate = useNavigate();
 
     const [fields, setFields] = useState({ name: "", type: "text" });
-
     const [errors, setErrors] = useState({ name: null, type: null });
+
+    const { mutate: createChannel, isPending } = useMutation({
+        mutationKey: ["createChannel", { serverId }],
+        mutationFn: () =>
+            api
+                .post(`/servers/${serverId}/channels`, {
+                    name: fields.name,
+                    type: fields.type,
+                })
+                .then((res) => res.data),
+        onSuccess: (channel) => {
+            if (channel.type === "text")
+                navigate(`/servers/${serverId}/${channel.id}`);
+
+            closeModal();
+        },
+    });
 
     // const [createChannel, { loading }] = useMutation(CreateChannel, {
     //     variables: {
@@ -82,17 +98,17 @@ const CreateChannelModal = ({
                                 },
                             }}
                             onKeyDown={(e) => {
-                                // if (e.key === "Enter" && fields.name)
-                                // createChannel();
+                                if (e.key === "Enter" && fields.name)
+                                    createChannel();
                             }}
                         />
                         <Button
                             color="success"
                             onClick={() => {
-                                //createChannel();
+                                createChannel();
                             }}
                             variant="contained"
-                            // disabled={loading || !fields.name}
+                            disabled={isPending || !fields.name}
                         >
                             Create Channel
                         </Button>
@@ -101,57 +117,6 @@ const CreateChannelModal = ({
             </Stack>
         </Modal>
     );
-
-    /*return (
-        <Dialog open={visible} onClose={closeModal}>
-            <DialogTitle className="flex gap-2 items-center justify-center">
-                <h2 className="text-lg font-semibold">Create a channel</h2>
-            </DialogTitle>
-            <DialogContent>
-                <Stack p={4} direction="column" gap={2}>
-                    <Stack
-                        direction="column"
-                        justifyContent="flex-start"
-                        alignItems="flex-start"
-                        gap={4}
-                    >
-                        <TextField
-                            label="Channel Name"
-                            value={fields.name}
-                            onChange={(e) =>
-                                setFields((prev) => ({
-                                    ...prev,
-                                    name: e.target.value,
-                                }))
-                            }
-                            error={!!errors.name}
-                            helperText={errors.name}
-                            className="w-full"
-                            slotProps={{
-                                input: {
-                                    startAdornment: (
-                                        <FaHashtag className="text-gray-500 mr-2" />
-                                    ),
-                                },
-                            }}
-                        />
-                    </Stack>
-                    <Stack justifyContent="flex-end" gap={4}>
-                        <Button
-                            color="success"
-                            onClick={() => {
-                                createChannel();
-                            }}
-                            variant="contained"
-                            disabled={loading}
-                        >
-                            Create Channel
-                        </Button>
-                    </Stack>
-                </Stack>
-            </DialogContent>
-        </Dialog>
-    );*/
 };
 
 export default CreateChannelModal;

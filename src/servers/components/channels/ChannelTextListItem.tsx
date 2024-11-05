@@ -3,12 +3,12 @@ import classNames from "classnames";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { FaTrash } from "react-icons/fa";
-import { useMutation } from "@apollo/client";
-import { DeleteChannel } from "@gql/channels";
 import { BaseServerChannel, Server } from "@furxus/types";
 import { useAuth } from "@hooks";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import Stack from "@mui/material/Stack";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const ChannelTextListItem = ({
     server,
@@ -22,6 +22,14 @@ const ChannelTextListItem = ({
     const navigate = useNavigate();
     const location = useLocation();
     const isActive = location.pathname.includes(channel.id);
+
+    const { mutate: deleteChannel } = useMutation({
+        mutationKey: ["deleteChannel", { serverId: server.id, id: channel.id }],
+        mutationFn: () =>
+            api
+                .delete(`/servers/${server.id}/channels/${channel.id}`)
+                .then((res) => res.data),
+    });
 
     // const [deleteChannel] = useMutation(DeleteChannel, {
     //     variables: {
@@ -76,7 +84,7 @@ const ChannelTextListItem = ({
                 {user?.id === server.owner?.id && (
                     <Item
                         onClick={() => {
-                            // deleteChannel();
+                            deleteChannel();
                         }}
                     >
                         <FaTrash className="mr-2" />

@@ -1,5 +1,4 @@
 import ServerSidebar from "./components/ServerSidebar";
-import { GetUserServers } from "@gql/servers";
 import { Outlet, useParams } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 

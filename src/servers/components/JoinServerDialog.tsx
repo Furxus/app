@@ -1,9 +1,11 @@
-import { useMutation } from "@apollo/client";
-import { JoinServer } from "@gql/servers";
 import { Dispatch, SetStateAction, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Link, Modal, Stack, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
+import { Server } from "@furxus/types";
+import { useNavigate } from "react-router-dom";
 
 const JoinServerDialog = ({
     visible,
@@ -14,9 +16,23 @@ const JoinServerDialog = ({
     setVisible: Dispatch<SetStateAction<boolean>>;
     setModalType: Dispatch<SetStateAction<"create" | "join">>;
 }) => {
+    const navigate = useNavigate();
+
     const [code, setCode] = useState<string>("");
 
     const [error, setError] = useState<string | null>(null);
+
+    const { isPending, mutate: joinServer } = useMutation({
+        mutationKey: ["joinServer", { code }],
+        mutationFn: () =>
+            api.post(`/servers/join`, { code }).then((res) => res.data),
+        onSuccess: (server: Server) => {
+            if (server.channels && server.channels.length > 0)
+                navigate(`/servers/${server.id}/${server.channels[0]?.id}`);
+
+            closeModal();
+        },
+    });
 
     // const [joinServer, { loading }] = useMutation(JoinServer, {
     //     variables: { code },
@@ -69,13 +85,13 @@ const JoinServerDialog = ({
                             variant="contained"
                             onClick={() => joinServer()}
                             color="success"
-                            disabled={loading || !code}
+                            disabled={isPending || !code}
                         >
                             Join
                         </Button>
                     </Stack>
                     <Stack direction="column" gap={1} alignItems="center">
-                        {!loading && (
+                        {!isPending && (
                             <Link
                                 variant="body2"
                                 className="cursor-pointer"

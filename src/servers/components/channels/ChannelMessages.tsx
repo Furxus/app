@@ -1,11 +1,4 @@
-import { useQuery } from "@apollo/client";
-import {
-    GetMessages,
-    OnMessageCreated,
-    OnMessageDeleted,
-    OnMessageEdited,
-} from "@gql/messages";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import MessageItem from "../../../shared/components/messages/MessageItem";
 import { MessageSkeleton } from "@utils";
 import { Message } from "@furxus/types";
@@ -14,15 +7,23 @@ import Stack from "@mui/material/Stack";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import classNames from "classnames";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const ChannelMessages = ({ channelId }: { channelId: string }) => {
     const scrollRef = useRef<VirtuosoHandle>(null);
-    const [messages] = useState<Message[]>([]);
-    const loading = false;
+
+    const { isLoading, data: messages } = useQuery({
+        queryKey: ["getMessages", { channelId }],
+        queryFn: () =>
+            api
+                .get(`/channels/${channelId}/messages?limit=50`)
+                .then((res) => res.data),
+    });
 
     /*const {
         fetchMore,
-        loading,
+        isisLoading,
         subscribeToMore,
         data: { getMessages: messages = [] } = {},
     } = useQuery(GetMessages, {
@@ -144,7 +145,7 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
             })}
             id="messages"
         >
-            {loading ? (
+            {isLoading ? (
                 <MessageSkeleton />
             ) : messages.length === 0 ? (
                 <EmptyMessage />

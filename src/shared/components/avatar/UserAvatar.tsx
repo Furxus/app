@@ -1,10 +1,3 @@
-import { OpenDMChannel } from "@/gql/dms";
-import {
-    AcceptFriendRequest,
-    CancelFriendRequest,
-    RemoveFriend,
-    SendFriendRequest,
-} from "@/gql/users";
 import { useAppMode, useAuth } from "@/hooks";
 import { useMutation } from "@apollo/client";
 import { User } from "@furxus/types";
@@ -36,83 +29,83 @@ const UserAvatar = ({
     const [message, setMessage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const [sendFriendRequest] = useMutation(SendFriendRequest, {
-        variables: { userId: user?.id },
-        onCompleted: (data) => {
-            if (!data.sendFriendRequest) return;
-            setMessage("Friend request sent");
-            setSnackbarVisible(true);
-        },
-        onError: (err) => {
-            setSnackbarVisible(true);
-            setError(err.message);
-        },
-    });
+    // const [sendFriendRequest] = useMutation(SendFriendRequest, {
+    //     variables: { userId: user?.id },
+    //     onCompleted: (data) => {
+    //         if (!data.sendFriendRequest) return;
+    //         setMessage("Friend request sent");
+    //         setSnackbarVisible(true);
+    //     },
+    //     onError: (err) => {
+    //         setSnackbarVisible(true);
+    //         setError(err.message);
+    //     },
+    // });
 
-    const [cancelFriendRequest] = useMutation(CancelFriendRequest, {
-        variables: {
-            userId: user?.id,
-        },
-        onCompleted: (data) => {
-            if (!data.cancelFriendRequest) return;
-            setMessage("Friend request cancelled");
-            setError(null);
-            setSnackbarVisible(true);
-        },
-        onError: (err) => {
-            setError(err.message);
-            setMessage(null);
-            setSnackbarVisible(true);
-        },
-    });
+    // const [cancelFriendRequest] = useMutation(CancelFriendRequest, {
+    //     variables: {
+    //         userId: user?.id,
+    //     },
+    //     onCompleted: (data) => {
+    //         if (!data.cancelFriendRequest) return;
+    //         setMessage("Friend request cancelled");
+    //         setError(null);
+    //         setSnackbarVisible(true);
+    //     },
+    //     onError: (err) => {
+    //         setError(err.message);
+    //         setMessage(null);
+    //         setSnackbarVisible(true);
+    //     },
+    // });
 
-    const [acceptFriendRequest] = useMutation(AcceptFriendRequest, {
-        variables: {
-            userId: user?.id,
-        },
-        onCompleted: (data) => {
-            if (!data.acceptFriendRequest) return;
-            setMessage("Friend request accepted");
-            setError(null);
-            setSnackbarVisible(true);
-        },
-        onError: (err) => {
-            setError(err.message);
-            setMessage(null);
-            setSnackbarVisible(true);
-        },
-    });
+    // const [acceptFriendRequest] = useMutation(AcceptFriendRequest, {
+    //     variables: {
+    //         userId: user?.id,
+    //     },
+    //     onCompleted: (data) => {
+    //         if (!data.acceptFriendRequest) return;
+    //         setMessage("Friend request accepted");
+    //         setError(null);
+    //         setSnackbarVisible(true);
+    //     },
+    //     onError: (err) => {
+    //         setError(err.message);
+    //         setMessage(null);
+    //         setSnackbarVisible(true);
+    //     },
+    // });
 
-    const [removeFriend] = useMutation(RemoveFriend, {
-        variables: {
-            userId: user?.id,
-        },
-        onCompleted: (data) => {
-            if (!data.removeFriend) return;
-            setMessage("Friend removed");
-            setError(null);
-            setSnackbarVisible(true);
-        },
-        onError: (err) => {
-            setError(err.message);
-            setMessage(null);
-            setSnackbarVisible(true);
-        },
-    });
+    // const [removeFriend] = useMutation(RemoveFriend, {
+    //     variables: {
+    //         userId: user?.id,
+    //     },
+    //     onCompleted: (data) => {
+    //         if (!data.removeFriend) return;
+    //         setMessage("Friend removed");
+    //         setError(null);
+    //         setSnackbarVisible(true);
+    //     },
+    //     onError: (err) => {
+    //         setError(err.message);
+    //         setMessage(null);
+    //         setSnackbarVisible(true);
+    //     },
+    // });
 
-    const [openDM] = useMutation(OpenDMChannel, {
-        variables: {
-            recipient: user?.id,
-        },
-        onCompleted: ({ openDMChannel }) => {
-            if (!openDMChannel) return;
-            changeAppMode("dms");
-            navigate(`/dms/${openDMChannel.id}`);
-        },
-        onError: (err) => {
-            console.error(err);
-        },
-    });
+    // const [openDM] = useMutation(OpenDMChannel, {
+    //     variables: {
+    //         recipient: user?.id,
+    //     },
+    //     onCompleted: ({ openDMChannel }) => {
+    //         if (!openDMChannel) return;
+    //         changeAppMode("dms");
+    //         navigate(`/dms/${openDMChannel.id}`);
+    //     },
+    //     onError: (err) => {
+    //         console.error(err);
+    //     },
+    // });
 
     const hoverRef = useRef<HTMLDivElement>(null);
     const isHovered = useHover(hoverRef);
@@ -177,12 +170,12 @@ const UserAvatar = ({
                 </Item>
                 {auth?.id !== user?.id && (
                     <>
-                        <Item onClick={() => openDM()}>
+                        <Item>
                             <MdMail className="mr-2" />
                             Message
                         </Item>
                         {auth.friends?.some((f) => f.id === user?.id) && (
-                            <Item onClick={() => removeFriend()}>
+                            <Item>
                                 <FaUserMinus className="mr-2" />
                                 Remove Friend
                             </Item>
@@ -190,7 +183,7 @@ const UserAvatar = ({
                         {auth.friendRequests?.sent.some(
                             (f) => f.id === user?.id
                         ) && (
-                            <Item onClick={() => cancelFriendRequest()}>
+                            <Item>
                                 <FaUserMinus className="mr-2" />
                                 Cancel Request
                             </Item>
@@ -198,7 +191,7 @@ const UserAvatar = ({
                         {auth.friendRequests?.received.some(
                             (f) => f.id === user?.id
                         ) && (
-                            <Item onClick={() => acceptFriendRequest()}>
+                            <Item>
                                 <FaUserMinus className="mr-2" />
                                 Accept Request
                             </Item>
@@ -210,7 +203,7 @@ const UserAvatar = ({
                                 (f) => f.id === user?.id
                             ) &&
                             !auth.friends?.some((f) => f.id === user?.id) && (
-                                <Item onClick={() => sendFriendRequest()}>
+                                <Item>
                                     <FaUserPlus className="mr-2" />
                                     Send Friend Request
                                 </Item>

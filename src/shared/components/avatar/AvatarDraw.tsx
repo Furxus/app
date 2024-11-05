@@ -1,12 +1,10 @@
-import { useAppMode, useAuth } from "@/hooks";
+import { useAppMode } from "@/hooks";
 
 import classNames from "classnames";
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
 
 import PopoverPicker from "../PopoverPicker";
 import { Colors } from "@/utils";
-import { useMutation } from "@apollo/client";
-import { UpdateAvatar } from "@/gql/auth";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -16,6 +14,8 @@ import Typography from "@mui/material/Typography";
 
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 import { FaEraser, FaPaintBrush } from "react-icons/fa";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const AvatarDraw = ({
     setMainOpen,
@@ -23,7 +23,6 @@ const AvatarDraw = ({
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
     const { appMode } = useAppMode();
-    const { fetchMe } = useAuth();
 
     const [open, setOpen] = useState(false);
 
@@ -36,12 +35,13 @@ const AvatarDraw = ({
 
     const canvasRef = useRef<ReactSketchCanvasRef>(null);
 
-    const [updateAvatar, { loading }] = useMutation(UpdateAvatar, {
-        update: () => {
+    const { mutate: updateAvatar, isPending } = useMutation({
+        mutationKey: ["updateAvatar"],
+        mutationFn: (values: any) => api.patch("/@me", values),
+        onSuccess: () => {
             setOpen(false);
             canvasRef.current?.clearCanvas();
             setMainOpen(false);
-            fetchMe();
         },
     });
 
@@ -55,9 +55,7 @@ const AvatarDraw = ({
         const blob = data ? await fetch(data).then((res) => res.blob()) : null;
         if (!blob) return;
         updateAvatar({
-            variables: {
-                avatar: blob,
-            },
+            avatar: blob,
         });
     };
 
@@ -226,7 +224,7 @@ const AvatarDraw = ({
                             onClick={() => canvasRef.current?.clearCanvas()}
                             size="small"
                             variant="outlined"
-                            disabled={loading}
+                            disabled={isPending}
                         >
                             Clear
                         </Button>
@@ -237,7 +235,7 @@ const AvatarDraw = ({
                             onClick={() => canvasRef.current?.undo()}
                             size="small"
                             variant="outlined"
-                            disabled={loading}
+                            disabled={isPending}
                         >
                             Undo
                         </Button>
@@ -248,7 +246,7 @@ const AvatarDraw = ({
                             size="small"
                             variant="outlined"
                             onClick={() => canvasRef.current?.redo()}
-                            disabled={loading}
+                            disabled={isPending}
                         >
                             Redo
                         </Button>
@@ -259,7 +257,7 @@ const AvatarDraw = ({
                             size="small"
                             variant="outlined"
                             onClick={onUpload}
-                            disabled={loading}
+                            disabled={isPending}
                         >
                             Upload
                         </Button>
@@ -270,7 +268,7 @@ const AvatarDraw = ({
                             onClick={onClose}
                             size="small"
                             variant="outlined"
-                            disabled={loading}
+                            disabled={isPending}
                         >
                             Cancel
                         </Button>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { BaseServerChannel, Server } from "@furxus/types";
 import { useAuth } from "@hooks";
@@ -10,70 +10,60 @@ import ChannelTextListItem from "./ChannelTextListItem";
 
 import { Item, Menu, useContextMenu } from "react-contexify";
 import Stack from "@mui/material/Stack";
-import { useQuery } from "@apollo/client";
-import {
-    GetChannels,
-    OnChannelCreated,
-    OnChannelDeleted,
-} from "@/gql/channels";
-import { useNavigate } from "react-router-dom";
 import CreateChannelModal from "./CreateChannelModal";
 
-const ServerSidebarChannels = ({ server }: { server: Server }) => {
-    const navigate = useNavigate();
+const ServerSidebarChannels = ({
+    server,
+    channels,
+}: {
+    server: Server;
+    channels: BaseServerChannel[];
+}) => {
     const { user } = useAuth();
     const [visible, setVisible] = useState(false);
 
-    const { subscribeToMore, data: { getChannels: channels = [] } = {} } =
-        useQuery(GetChannels, {
-            variables: {
-                serverId: server.id,
-                type: ["text"],
-            },
-        });
-
     const { show } = useContextMenu();
 
-    useEffect(() => {
-        const unsubcribe = subscribeToMore({
-            document: OnChannelCreated,
-            variables: { serverId: server.id },
-            updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData.data) return prev;
-                const newChannel = subscriptionData.data.channelCreated;
+    // useEffect(() => {
+    //     const unsubcribe = subscribeToMore({
+    //         document: OnChannelCreated,
+    //         variables: { serverId: server.id },
+    //         updateQuery: (prev, { subscriptionData }) => {
+    //             if (!subscriptionData.data) return prev;
+    //             const newChannel = subscriptionData.data.channelCreated;
 
-                navigate(`/servers/${server.id}/${newChannel.id}`);
+    //             navigate(`/servers/${server.id}/${newChannel.id}`);
 
-                return {
-                    getChannels: [...prev.getChannels, newChannel],
-                };
-            },
-        });
+    //             return {
+    //                 getChannels: [...prev.getChannels, newChannel],
+    //             };
+    //         },
+    //     });
 
-        return () => unsubcribe();
-    }, []);
+    //     return () => unsubcribe();
+    // }, []);
 
-    useEffect(() => {
-        const unsubscribe = subscribeToMore({
-            document: OnChannelDeleted,
-            variables: { serverId: server.id },
-            updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData.data) return prev;
-                const deletedChannel = subscriptionData.data.channelDeleted;
+    // useEffect(() => {
+    //     const unsubscribe = subscribeToMore({
+    //         document: OnChannelDeleted,
+    //         variables: { serverId: server.id },
+    //         updateQuery: (prev, { subscriptionData }) => {
+    //             if (!subscriptionData.data) return prev;
+    //             const deletedChannel = subscriptionData.data.channelDeleted;
 
-                navigate(`/servers/${server.id}/${channels[0].id}`);
+    //             navigate(`/servers/${server.id}/${channels[0].id}`);
 
-                return {
-                    getChannels: prev.getChannels.filter(
-                        (channel: BaseServerChannel) =>
-                            channel.id !== deletedChannel.id
-                    ),
-                };
-            },
-        });
+    //             return {
+    //                 getChannels: prev.getChannels.filter(
+    //                     (channel: BaseServerChannel) =>
+    //                         channel.id !== deletedChannel.id
+    //                 ),
+    //             };
+    //         },
+    //     });
 
-        return () => unsubscribe();
-    }, []);
+    //     return () => unsubscribe();
+    // }, []);
 
     // Keep this for now since they are no permission system created
     const showMenu = (event: any) => {
@@ -97,11 +87,11 @@ const ServerSidebarChannels = ({ server }: { server: Server }) => {
             >
                 <Virtuoso
                     data={channels}
-                    itemContent={(i, channel: BaseServerChannel) => (
+                    itemContent={(i, channel) => (
                         <ChannelTextListItem
                             key={i}
-                            channel={channel}
                             server={server}
+                            channel={channel}
                         />
                     )}
                     className="w-full"

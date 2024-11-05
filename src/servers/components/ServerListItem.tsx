@@ -2,8 +2,6 @@ import { useState } from "react";
 import ServerInvitesDialog from "./ServerInvitesDialog";
 import { useAuth } from "@hooks";
 import { useLocation, useNavigate } from "react-router-dom";
-import { LeaveServer } from "@gql/servers";
-import { useMutation } from "@apollo/client";
 import { ActiveServerPill, HoverServerPill } from "./ServerPills";
 import ConfirmServerDeleteDialog from "./ConfirmServerDeleteDialog";
 import { Server } from "@furxus/types";
@@ -12,6 +10,8 @@ import { Menu, useContextMenu, Item } from "react-contexify";
 import Stack from "@mui/material/Stack";
 import Avatar from "@/shared/components/avatar/Avatar";
 import MAvatar from "@mui/material/Avatar";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 
 const ServerListItem = ({ server }: { server: Server }) => {
     const { user } = useAuth();
@@ -22,6 +22,14 @@ const ServerListItem = ({ server }: { server: Server }) => {
     const [hover, setHover] = useState(false);
     const [invitesDialogVisible, setInvitesDialogVisible] = useState(false);
     const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+
+    const { mutate: leaveServer } = useMutation({
+        mutationKey: ["leaveServer", { id: server.id }],
+        mutationFn: () =>
+            api
+                .delete(`/servers/${server.id}/members/${user?.id}`)
+                .then((res) => res.data),
+    });
 
     // const [leaveServer] = useMutation(LeaveServer, {
     //     onCompleted: () => {
@@ -98,7 +106,7 @@ const ServerListItem = ({ server }: { server: Server }) => {
                         Delete Server
                     </Item>
                 ) : (
-                    <Item /*onClick={() => leaveServer()}*/>
+                    <Item onClick={() => leaveServer()}>
                         <FaSignOutAlt className="mr-2" />
                         Leave Server
                     </Item>
