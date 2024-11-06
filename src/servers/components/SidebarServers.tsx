@@ -9,12 +9,10 @@ import { useQuery } from "@tanstack/react-query";
 const SidebarServers = () => {
     const { serverId } = useParams();
 
-    const { isLoading, data: { getUserServers: servers = [] } = {} } = useQuery(
-        {
-            queryKey: ["getUserServers"],
-            queryFn: () => api.get("/@me/servers").then((res) => res.data),
-        }
-    );
+    const { isLoading, data: servers } = useQuery({
+        queryKey: ["getUserServers"],
+        queryFn: () => api.get("/@me/servers").then((res) => res.data),
+    });
 
     // const { subscribeToMore, data: { getUserServers: servers = [] } = {} } =
     //     useQuery(GetUserServers);
@@ -110,6 +108,8 @@ const SidebarServers = () => {
     //     return () => unsubcribe();
     // }, []);
 
+    console.log(servers);
+
     if (isLoading) return <SidebarAddServerIcon />;
     if (!servers || servers?.length === 0) return <SidebarAddServerIcon />;
     if (!serverId) return <Navigate to={`/servers/${servers[0].id}`} />;
@@ -119,7 +119,6 @@ const SidebarServers = () => {
             direction="column"
             justifyContent="center"
             alignItems="center"
-            className="p-4"
             gap={1}
         >
             {servers.map((server: Server, i: number) => (

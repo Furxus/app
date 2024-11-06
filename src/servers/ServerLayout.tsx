@@ -10,9 +10,6 @@ import { api } from "@/api";
 const ServerLayout = () => {
     const { serverId } = useParams();
 
-    // const { loading, data: { getUserServers: servers = [] } = {} } =
-    //     useQuery(GetUserServers);
-
     const { isLoading, data: servers } = useQuery({
         queryKey: ["getUserServers"],
         queryFn: () => api.get("/@me/servers").then((res) => res.data),

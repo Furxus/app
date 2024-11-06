@@ -96,7 +96,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
                 <SidebarChannels server={server} channels={channels} />
                 <SidebarProfile />
             </Stack>
-            {!isLoading && channels.length === 0 && (
+            {!isLoading && channels?.length === 0 && (
                 <Stack
                     alignItems="center"
                     justifyContent="center"

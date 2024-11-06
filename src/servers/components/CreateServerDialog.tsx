@@ -38,7 +38,13 @@ const CreateServerDialog = ({
     const { mutate, isPending } = useMutation({
         mutationKey: ["createServer"],
         mutationFn: (values: any) =>
-            api.post("/servers", values).then((res) => res.data),
+            api
+                .post("/servers", values, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((res) => res.data),
         onSuccess: (server: Server) => {
             setErrors({
                 name: null,
@@ -48,13 +54,18 @@ const CreateServerDialog = ({
             if (!server) return;
 
             if (server.channels && server.channels.length > 0)
-                navigate(`/servers/${server.id}/${server.channels[0]?.id}`);
+                navigate(`/servers/${server.id}/${server.channels[0]}`);
 
             closeModal();
         },
         onError: (err: any) => {
             const errors = err.response.data.errors as any[];
-            console.log(errors);
+            errors.forEach((err) => {
+                setErrors((prev) => ({
+                    ...prev,
+                    [err.type]: err.message,
+                }));
+            });
         },
     });
 
