@@ -108,8 +108,6 @@ const SidebarServers = () => {
     //     return () => unsubcribe();
     // }, []);
 
-    console.log(servers);
-
     if (isLoading) return <SidebarAddServerIcon />;
     if (!servers || servers?.length === 0) return <SidebarAddServerIcon />;
     if (!serverId) return <Navigate to={`/servers/${servers[0].id}`} />;
@@ -121,7 +119,7 @@ const SidebarServers = () => {
             alignItems="center"
             gap={1}
         >
-            {servers.map((server: Server, i: number) => (
+            {servers?.map((server: Server, i: number) => (
                 <ServerListItem server={server} key={i} />
             ))}
             <SidebarAddServerIcon />

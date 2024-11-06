@@ -115,23 +115,3 @@ const ServerSidebarChannels = ({
 };
 
 export default ServerSidebarChannels;
-
-/**
- *  <ScrollContainer>
-                <Stack
-                    px="0.5rem"
-                    alignItems="flex-start"
-                    justifyContent="flex-start"
-                    gap={1}
-                    className="w-full h-full overflow-y-auto flex-grow mt-14"
-                >
-                    {channels.map((channel: any) => (
-                        <ChannelTextListItem
-                            key={channel.id}
-                            channel={channel}
-                            server={server}
-                        />
-                    ))}
-                </Stack>
-            </ScrollContainer>
- */

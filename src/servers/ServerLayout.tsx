@@ -15,6 +15,8 @@ const ServerLayout = () => {
         queryFn: () => api.get("/@me/servers").then((res) => res.data),
     });
 
+    console.log(servers);
+
     if (isLoading) return <></>;
 
     if (servers.length === 0)

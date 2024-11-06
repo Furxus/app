@@ -94,7 +94,11 @@ const ServerInvitesDialog = ({
                                     )}
                                 </TableCell>
                                 <TableCell>
-                                    <Stack direction="row" alignItems="center">
+                                    <Stack
+                                        direction="row"
+                                        gap={1}
+                                        alignItems="center"
+                                    >
                                         <UserAvatar
                                             user={invite.createdBy}
                                             avatar={{

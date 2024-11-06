@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import { Avatar, Box, Link, Modal, Stack, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
 import { Server } from "@furxus/types";
 
@@ -22,6 +22,7 @@ const CreateServerDialog = ({
     setModalType: Dispatch<SetStateAction<"create" | "join">>;
 }) => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const [fields, setFields] = useState<Record<string, string>>({
         name: "",
@@ -39,7 +40,7 @@ const CreateServerDialog = ({
         mutationKey: ["createServer"],
         mutationFn: (values: any) =>
             api
-                .post("/servers", values, {
+                .put("/servers", values, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -55,6 +56,8 @@ const CreateServerDialog = ({
 
             if (server.channels && server.channels.length > 0)
                 navigate(`/servers/${server.id}/${server.channels[0]}`);
+
+            queryClient.invalidateQueries({ queryKey: ["getUserServers"] });
 
             closeModal();
         },

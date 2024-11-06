@@ -11,7 +11,7 @@ import { api, socket } from "./api";
 const App = () => {
     const { appMode } = useAppMode();
 
-    const { isLoading } = useQuery({
+    const { isLoading, error } = useQuery({
         queryKey: ["ack"],
         queryFn: () => api.get("/ack").then((res) => res.data),
         retry: 5,
@@ -21,6 +21,7 @@ const App = () => {
         socket.connect();
     }, []);
 
+    if (error) return <APILoading />;
     if (isLoading) return <APILoading />;
 
     let title = "Furxus - Furry Nexus";
