@@ -1,7 +1,6 @@
-import { useState, KeyboardEvent, Dispatch, SetStateAction } from "react";
-import { Message } from "@furxus/types";
+import { useState, KeyboardEvent } from "react";
+import { BaseServerChannel, Channel, User } from "@furxus/types";
 import Stack from "@mui/material/Stack";
-import MLink from "@mui/material/Link";
 
 // Markdown imports
 
@@ -20,6 +19,7 @@ import Mention from "@tiptap/extension-mention";
 import Parapgraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { Markdown } from "tiptap-markdown";
+import Placeholder from "@tiptap/extension-placeholder";
 import Bold from "@tiptap/extension-bold";
 import Code from "@tiptap/extension-code";
 import Highlight from "@tiptap/extension-highlight";
@@ -42,25 +42,20 @@ import { api } from "@/api";
 
 const lowlight = createLowlight(all);
 
-const ChannelTextEditInput = ({
-    message,
-    deleteMessage,
-    setMessageEditing,
+const ChannelTextInput = ({
+    channel,
+    recipient,
 }: {
-    message: Message;
-    deleteMessage: () => void;
-    setMessageEditing: Dispatch<SetStateAction<boolean>>;
+    channel: Channel;
+    recipient?: User;
 }) => {
-    const [content, setContent] = useState(message.content);
+    const [message, setMessage] = useState(message.content);
     const [error, setError] = useState<string | null>(null);
 
-    const { mutate: mEditMessage } = useMutation({
-        mutationKey: ["editMessage"],
-        mutationFn: () =>
-            api.patch(
-                `/channels/${message.channel.id}/messages/${message.id}`,
-                { content }
-            ),
+    const { mutate: createMessage } = useMutation({
+        mutationKey: ["createMessage"],
+        mutationFn: (values: any) =>
+            api.put(`/channels/${channel.id}/messages`, values),
         onError: (error: any) => {
             setError(error.response.data.message);
         },
@@ -90,11 +85,16 @@ const ChannelTextEditInput = ({
         Markdown,
         Bold,
         Code,
+        Placeholder.configure({
+            placeholder: `Message ${
+                recipient
+                    ? `@${recipient.displayName ?? recipient.username}`
+                    : `#${(channel as BaseServerChannel).name}`
+            }`,
+        }),
         Highlight,
         Italic,
-        Link.configure({
-            openOnClick: false,
-        }),
+        Link,
         Strike,
         Subscript,
         Superscript,
@@ -104,35 +104,28 @@ const ChannelTextEditInput = ({
 
     const editor = useEditor({
         extensions,
-        content: content,
+        content: message,
         onUpdate({ editor }) {
-            setContent(editor.storage.markdown.getMarkdown());
+            setMessage(editor.storage.markdown.getMarkdown());
         },
     });
 
-    const editMessage = () => {
-        if (content?.trim() === "") {
-            deleteMessage();
-            setMessageEditing(false);
-            return;
-        } else if (content === message.content) {
-            setMessageEditing(false);
-            return;
-        }
-        mEditMessage();
-        setMessageEditing(false);
+    const sendMessage = () => {
+        createMessage({ channelId: channel.id, content: message });
+        setMessage("");
+        editor?.commands.setContent("");
     };
 
     const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
 
-            if (content.startsWith("```") && !content.endsWith("```")) {
+            if (message.startsWith("```") && !message.endsWith("```")) {
                 editor?.commands.insertContent("\n");
                 return;
             }
 
-            editMessage();
+            sendMessage();
         }
     };
 
@@ -149,20 +142,6 @@ const ChannelTextEditInput = ({
                 className="w-full"
                 editor={editor}
             />
-            <Typography variant="subtitle2" className="">
-                escape to{" "}
-                <MLink
-                    className="cursor-pointer"
-                    onClick={() => setMessageEditing(false)}
-                >
-                    cancel
-                </MLink>{" "}
-                or press enter to{" "}
-                <MLink className="cursor-pointer" onClick={() => editMessage()}>
-                    save
-                </MLink>{" "}
-                ● <span className="font-semibold">empty message</span> to delete
-            </Typography>
             {error && (
                 <Typography variant="caption" color="error">
                     {error}
@@ -172,4 +151,4 @@ const ChannelTextEditInput = ({
     );
 };
 
-export default ChannelTextEditInput;
+export default ChannelTextInput;
