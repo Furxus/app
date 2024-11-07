@@ -2,11 +2,11 @@ import { Stack } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 import DMHeader from "./components/DMHeader";
-import DMTextInput from "./components/DMTextInput";
 import ChannelMessages from "@/servers/components/channels/ChannelMessages";
 import { useAuth } from "@/hooks";
 import { DMChannel, User } from "@furxus/types";
 import { useState } from "react";
+import ChannelTextInput from "@/shared/components/ChannelTextInput";
 
 const DMsChannelPage = () => {
     const { user: auth } = useAuth();
@@ -31,7 +31,7 @@ const DMsChannelPage = () => {
         <Stack direction="column" className="w-full h-full overflow-x-hidden">
             <DMHeader recipient={recipient} />
             <ChannelMessages channelId={channelId} />
-            <DMTextInput recipient={recipient} channel={dmChannel} />
+            <ChannelTextInput recipient={recipient} channel={dmChannel} />
         </Stack>
     );
 };

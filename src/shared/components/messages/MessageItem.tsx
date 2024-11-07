@@ -28,14 +28,15 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import MessageEmbed from "./MessageEmbed";
-import { KeyboardEvent, useRef, useState } from "react";
-import { TextField, Tooltip } from "@mui/material";
+import { useRef, useState } from "react";
+import { Tooltip } from "@mui/material";
 import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import ChannelTextEditInput from "../ChannelTextEditInput";
 
 const MessageItem = ({
     messages,
@@ -49,7 +50,6 @@ const MessageItem = ({
     const { show } = useContextMenu();
     const { user: auth } = useAuth();
     const [messageEditing, setMessageEditing] = useState(false);
-    const [newContent, setNewContent] = useState(message.content);
     const hoverRef = useRef<HTMLDivElement>(null);
     const messageHovered = useHover(hoverRef);
 
@@ -57,51 +57,9 @@ const MessageItem = ({
         mutationKey: ["deleteMessage"],
         mutationFn: () =>
             api.delete(
-                `/channels/${message.channel?.id}/messages/${message.id}`
+                `/channels/${message.channel.id}/messages/${message.id}`
             ),
     });
-
-    const { mutate: mEditMessage } = useMutation({
-        mutationKey: ["editMessage"],
-        mutationFn: (content: string) =>
-            api.patch(
-                `/channels/${message.channel?.id}/messages/${message.id}`,
-                {
-                    content,
-                }
-            ),
-    });
-
-    // // "m" implies it is a mutation function
-    // const [mEditMessage] = useMutation(EditMessage, {
-    //     variables: {
-    //         channelId: message.channel?.id,
-    //         id: message.id,
-    //         content: newContent,
-    //     },
-    // });
-
-    // const [deleteMessage] = useMutation(DeleteMessage, {
-    //     variables: {
-    //         channelId: message.channel?.id,
-    //         id: message.id,
-    //     },
-    // });
-
-    if (!message) return <></>;
-
-    const editMessage = () => {
-        if (newContent?.trim() === "") {
-            deleteMessage();
-            setMessageEditing(false);
-            return;
-        } else if (newContent === message.content) {
-            setMessageEditing(false);
-            return;
-        }
-        mEditMessage(newContent);
-        setMessageEditing(false);
-    };
 
     const showMenu = (event: any) => {
         event.stopPropagation();
@@ -127,15 +85,6 @@ const MessageItem = ({
         moment(messages[index - 1]?.createdAt),
         "day"
     );
-
-    const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            editMessage();
-        }
-
-        if (e.key === "Escape") setMessageEditing(false);
-    };
 
     const renderMessage = () => (
         <Stack direction="column" position="relative">
@@ -348,7 +297,6 @@ const MessageItem = ({
                 <Stack
                     className="w-full hover:bg-neutral-700/60 px-2"
                     direction="row"
-                    alignItems="center"
                     justifyContent="center"
                     gap={1}
                     mt={3}
@@ -380,29 +328,10 @@ const MessageItem = ({
                         </Stack>
                         <Stack onContextMenu={showMenu} className="w-full">
                             {messageEditing ? (
-                                <TextField
-                                    className="w-full"
-                                    sx={{
-                                        "& .MuiInputBase-root": {
-                                            borderRadius: 4,
-                                            backgroundColor: "rgb(0 0 0 / 8%)",
-                                        },
-                                    }}
-                                    color="success"
-                                    onKeyDown={onKeyDown}
-                                    value={newContent}
-                                    onChange={(e) =>
-                                        setNewContent(e.target.value)
-                                    }
-                                    multiline
-                                    autoFocus
-                                    onFocus={(e) =>
-                                        e.target.setSelectionRange(
-                                            message.content?.length ?? 0,
-                                            message.content?.length ?? 0
-                                        )
-                                    }
-                                    autoComplete="off"
+                                <ChannelTextEditInput
+                                    setMessageEditing={setMessageEditing}
+                                    deleteMessage={deleteMessage}
+                                    message={message}
                                 />
                             ) : (
                                 renderMessage()
@@ -418,51 +347,11 @@ const MessageItem = ({
                     ref={hoverRef}
                 >
                     {messageEditing ? (
-                        <Stack direction="column">
-                            <TextField
-                                className="w-full"
-                                sx={{
-                                    "& .MuiInputBase-root": {
-                                        borderRadius: 4,
-                                        backgroundColor: "rgb(0 0 0 / 8%)",
-                                    },
-                                }}
-                                color="success"
-                                onKeyDown={onKeyDown}
-                                value={newContent}
-                                onChange={(e) => setNewContent(e.target.value)}
-                                multiline
-                                autoFocus
-                                onFocus={(e) =>
-                                    e.target.setSelectionRange(
-                                        message.content?.length ?? 0,
-                                        message.content?.length ?? 0
-                                    )
-                                }
-                                autoComplete="off"
-                            />
-                            <Typography variant="subtitle2" className="">
-                                escape to{" "}
-                                <Link
-                                    className="cursor-pointer"
-                                    onClick={() => setMessageEditing(false)}
-                                >
-                                    cancel
-                                </Link>{" "}
-                                or press enter to{" "}
-                                <Link
-                                    className="cursor-pointer"
-                                    onClick={() => editMessage()}
-                                >
-                                    save
-                                </Link>{" "}
-                                ●{" "}
-                                <span className="font-semibold">
-                                    empty message
-                                </span>{" "}
-                                to delete
-                            </Typography>
-                        </Stack>
+                        <ChannelTextEditInput
+                            setMessageEditing={setMessageEditing}
+                            deleteMessage={deleteMessage}
+                            message={message}
+                        />
                     ) : (
                         renderMessage()
                     )}

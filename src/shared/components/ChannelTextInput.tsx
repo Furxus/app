@@ -1,5 +1,5 @@
 import { useState, KeyboardEvent } from "react";
-import { BaseServerChannel } from "@furxus/types";
+import { BaseServerChannel, Channel, Message, User } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 
 // Markdown imports
@@ -19,6 +19,7 @@ import Mention from "@tiptap/extension-mention";
 import Parapgraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { Markdown } from "tiptap-markdown";
+import Placeholder from "@tiptap/extension-placeholder";
 import Bold from "@tiptap/extension-bold";
 import Code from "@tiptap/extension-code";
 import Highlight from "@tiptap/extension-highlight";
@@ -41,61 +42,81 @@ import { api } from "@/api";
 
 const lowlight = createLowlight(all);
 
-const extensions = [
-    Document,
-    BulletList,
-    CodeBlockLowLight.configure({
-        lowlight,
-    }),
-    Emoji.configure({
-        enableEmoticons: true,
-        suggestion: emojiSuggestion,
-        emojis: gitHubEmojis,
-    }),
-    ListItem,
-    OrderedList,
-    HardBreak,
-    Heading.configure({ levels: [1, 2, 3] }),
-    Mention,
-    Parapgraph,
-    Text,
-    Markdown,
-    Bold,
-    Code,
-    Highlight,
-    Italic,
-    Link,
-    Strike,
-    Subscript,
-    Superscript,
-    TextStyle,
-    Underline,
-];
-
-const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
-    const [message, setMessage] = useState("");
+const ChannelTextInput = ({
+    channel,
+    recipient,
+    message,
+}: {
+    channel: Channel;
+    recipient?: User;
+    message?: Message;
+}) => {
+    const [messageContent, setMessageContent] = useState(
+        message?.content ?? ""
+    );
     const [error, setError] = useState<string | null>(null);
 
     const { mutate: createMessage } = useMutation({
         mutationKey: ["createMessage"],
-        mutationFn: () =>
-            api.post(`/channels/${channel.id}/messages`, { content: message }),
-        onError: (error) => {
-            setError(error.message);
+        mutationFn: (values: any) =>
+            api.put(`/channels/${channel.id}/messages`, values),
+        onError: (error: any) => {
+            setError(error.response.data.message);
+        },
+        onSuccess: () => {
+            setError(null);
         },
     });
 
+    const extensions = [
+        Document,
+        BulletList,
+        CodeBlockLowLight.configure({
+            lowlight,
+        }),
+        Emoji.configure({
+            enableEmoticons: true,
+            suggestion: emojiSuggestion,
+            emojis: gitHubEmojis,
+        }),
+        ListItem,
+        OrderedList,
+        HardBreak,
+        Heading.configure({ levels: [1, 2, 3] }),
+        Mention,
+        Parapgraph,
+        Text,
+        Markdown,
+        Bold,
+        Code,
+        Placeholder.configure({
+            placeholder: `Message ${
+                recipient
+                    ? `@${recipient.displayName ?? recipient.username}`
+                    : `#${(channel as BaseServerChannel).name}`
+            }`,
+        }),
+        Highlight,
+        Italic,
+        Link,
+        Strike,
+        Subscript,
+        Superscript,
+        TextStyle,
+        Underline,
+    ];
+
     const editor = useEditor({
         extensions,
-        content: message,
+        content: messageContent,
         onUpdate({ editor }) {
-            setMessage(editor.storage.markdown.getMarkdown());
+            setMessageContent(editor.storage.markdown.getMarkdown());
         },
     });
 
     const sendMessage = () => {
-        createMessage();
-        setMessage("");
+        createMessage({ channelId: channel.id, content: messageContent });
+        setMessageContent("");
         editor?.commands.setContent("");
     };
 
@@ -103,7 +124,10 @@ const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
 
-            if (message.startsWith("```") && !message.endsWith("```")) {
+            if (
+                messageContent.startsWith("```") &&
+                !messageContent.endsWith("```")
+            ) {
                 editor?.commands.insertContent("\n");
                 return;
             }
@@ -124,7 +148,6 @@ const ChannelTextInput = ({ channel }: { channel: BaseServerChannel }) => {
                 onKeyDown={onKeyDown}
                 className="w-full"
                 editor={editor}
-                placeholder={`Message #${channel.name}`}
             />
             {error && (
                 <Typography variant="caption" color="error">

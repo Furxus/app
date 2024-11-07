@@ -6,6 +6,8 @@ import "@css/ServerSideContextMenu.css";
 import Stack from "@mui/material/Stack";
 import { useUserServers } from "@/hooks";
 import { Server } from "@furxus/types";
+import { useEffect } from "react";
+import { socket } from "@/api";
 
 const ServerLayout = () => {
     const { serverId } = useParams();
@@ -28,6 +30,14 @@ const ServerLayout = () => {
                 </span>
             </Stack>
         );
+
+    useEffect(() => {
+        socket.emit("server:focus", serverId);
+
+        return () => {
+            socket.emit("server:blur", serverId);
+        };
+    }, [serverId]);
 
     if (!servers) return <></>;
     const server = servers.find((srv: Server) => srv.id === serverId);

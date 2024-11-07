@@ -5,8 +5,10 @@ import shuffle from "lodash/shuffle";
 import EmojiList from "@/shared/components/emojis/EmojiList";
 
 export default {
-    items: ({ editor, query }: any) =>
-        shuffle(
+    items: ({ editor, query }: any) => {
+        if (query.length < 2) return [];
+
+        return shuffle(
             editor.storage.emoji.emojis.filter(
                 ({ shortcodes, tags }: any) =>
                     shortcodes.find((shortcode: any) =>
@@ -14,8 +16,8 @@ export default {
                     ) ||
                     tags.find((tag: any) => tag.startsWith(query.toLowerCase()))
             )
-        ),
-
+        );
+    },
     allowSpaces: false,
     render: () => {
         let component: any;
@@ -30,7 +32,7 @@ export default {
 
                 popup = tippy(".tiptap", {
                     getReferenceClientRect: props.clientRect,
-                    maxWidth: 320,
+                    maxWidth: 9999,
                     content: component.element,
                     showOnCreate: true,
                     interactive: true,

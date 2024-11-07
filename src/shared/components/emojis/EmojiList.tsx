@@ -1,7 +1,11 @@
+import { useAppMode } from "@/hooks";
 import { Stack } from "@mui/material";
+import classNames from "classnames";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 const EmojiList = forwardRef((props: any, ref: any) => {
+    const { appMode } = useAppMode();
+
     const [emojiIndex, select] = useState(0);
 
     const { items } = props;
@@ -48,7 +52,9 @@ const EmojiList = forwardRef((props: any, ref: any) => {
 
     return (
         <Stack
-            className="bg-neutral-700 rounded-xl w-full"
+            className={classNames("bg-neutral-700 rounded-xl w-full border", {
+                "border-green-500/60": appMode === "servers",
+            })}
             direction="column"
             gap={1}
             p={1}
