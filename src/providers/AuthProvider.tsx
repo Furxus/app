@@ -1,9 +1,10 @@
-import { createContext, PropsWithChildren } from "react";
+import { createContext, PropsWithChildren, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, logout } from "../reducers/auth";
 import { User, UserWithToken } from "@furxus/types";
 import { useNavigate } from "react-router-dom";
 import { api, socket } from "@/api";
+import { useQuery } from "@tanstack/react-query";
 
 export const AuthContext = createContext<{
     user: User;
@@ -42,11 +43,35 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     const token = localStorage.getItem("fx-token");
 
+    const { data: meData } = useQuery({
+        queryKey: ["me"],
+        queryFn: () => api.get("/@me").then((res) => res.data),
+        retry: 5,
+        enabled: !!token,
+        refetchInterval: 10000,
+    });
+
+    useEffect(() => {
+        if (meData) {
+            dispatch(updateUser(meData));
+        }
+    }, [meData]);
+
     if (token) {
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         socket.auth = { token: token };
     }
+
+    useEffect(() => {
+        socket.on("me:update", (user: User) => {
+            dispatch(updateUser(user));
+        });
+
+        return () => {
+            socket.off("me:update");
+        };
+    }, []);
 
     const loginUser = (userData: UserWithToken) => {
         const { token, ...user } = userData;

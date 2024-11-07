@@ -17,6 +17,8 @@ import { CacheProvider, ThemeProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { useEffect } from "react";
+import { socket } from "@/api";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +74,11 @@ const theme = createTheme({
 });
 
 export default function MainProvider() {
+
+    useEffect(() => {
+        socket.connect();
+    }, [])
+
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>

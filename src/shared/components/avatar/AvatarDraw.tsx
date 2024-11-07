@@ -37,7 +37,16 @@ const AvatarDraw = ({
 
     const { mutate: updateAvatar, isPending } = useMutation({
         mutationKey: ["updateAvatar"],
-        mutationFn: (avatar: any) => api.patch("/@me", { avatar }),
+        mutationFn: (avatar: any) =>
+            api.patch(
+                "/@me",
+                { avatar },
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            ),
         onSuccess: () => {
             setOpen(false);
             canvasRef.current?.clearCanvas();

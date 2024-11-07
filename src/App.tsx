@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import APILoading from "./shared/components/status/APILoading";
 
 import { useAppMode } from "./hooks";
@@ -6,7 +5,7 @@ import SEO from "./shared/SEO";
 import WebRoutes from "./shared/Web.routes";
 
 import { useQuery } from "@tanstack/react-query";
-import { api, socket } from "./api";
+import { api } from "./api";
 
 const App = () => {
     const { appMode } = useAppMode();
@@ -16,10 +15,6 @@ const App = () => {
         queryFn: () => api.get("/ack").then((res) => res.data),
         retry: 5,
     });
-
-    useEffect(() => {
-        socket.connect();
-    }, []);
 
     if (error) return <APILoading />;
     if (isLoading) return <APILoading />;
