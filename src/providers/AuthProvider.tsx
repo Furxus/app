@@ -48,7 +48,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         queryFn: () => api.get("/@me").then((res) => res.data),
         retry: 5,
         enabled: !!token,
-        refetchInterval: 10000,
+        refetchInterval: 300000,
     });
 
     useEffect(() => {
