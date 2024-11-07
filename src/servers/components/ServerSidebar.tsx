@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import SidebarChannels from "./channels/SidebarChannels";
 import { FaHashtag } from "react-icons/fa";
 import { Server } from "@furxus/types";
@@ -8,77 +8,16 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
 
 const ServerSidebar = ({ server }: { server: Server }) => {
-    const navigate = useNavigate();
     const { channelId } = useParams();
 
     const { isLoading, data: channels } = useQuery({
         queryKey: ["getChannels", { serverId: server.id }],
         queryFn: () =>
-            api.get(`/servers/${server.id}/channels`).then((res) => res.data),
+            api.get(`/channels/${server.id}`).then((res) => res.data),
     });
 
-    // const {
-    //     loading,
-    //     subscribeToMore,
-    //     data: { getChannels: channels = [] } = {},
-    // } = useQuery(GetChannels, {
-    //     variables: {
-    //         serverId: server?.id,
-    //         type: ["text", "voice"],
-    //     },
-    // });
-
-    // useEffect(() => {
-    //     if (!channelId && channels.length > 0) {
-    //         navigate(`/servers/${server.id}/${channels[0].id}`);
-    //     }
-    // }, [channels]);
-
-    // useEffect(() => {
-    //     const unsubscribe = subscribeToMore({
-    //         document: OnChannelCreated,
-    //         updateQuery: (prev, { subscriptionData }) => {
-    //             if (!subscriptionData.data) return prev;
-    //             const newChannel: Channel =
-    //                 subscriptionData.data.channelCreated;
-    //             if (!newChannel) return;
-
-    //             return {
-    //                 getChannels: [...prev.getChannels, newChannel],
-    //             };
-    //         },
-    //         variables: {
-    //             serverId: server?.id,
-    //         },
-    //     });
-
-    //     return () => unsubscribe();
-    // }, []);
-
-    // useEffect(() => {
-    //     const unsubscribe = subscribeToMore({
-    //         document: OnChannelDeleted,
-    //         updateQuery: (prev, { subscriptionData }) => {
-    //             if (!subscriptionData.data) return prev;
-    //             const deletedChannel: Channel =
-    //                 subscriptionData.data.channelDeleted;
-    //             if (!deletedChannel) return;
-
-    //             return {
-    //                 getChannels: prev.getChannels.filter(
-    //                     (channel: any) => channel.id !== deletedChannel.id
-    //                 ),
-    //             };
-    //         },
-    //         variables: {
-    //             serverId: server?.id,
-    //         },
-    //     });
-
-    //     return () => unsubscribe();
-    // });
-
-    if (!server) return <></>;
+    if (!channelId && channels?.length > 0)
+        return <Navigate to={`/servers/${server.id}/${channels[0].id}`} />;
 
     return (
         <>

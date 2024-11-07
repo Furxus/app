@@ -26,7 +26,8 @@ const CreateChannelModal = ({
         mutationKey: ["createChannel", { serverId }],
         mutationFn: () =>
             api
-                .post(`/servers/${serverId}/channels`, {
+                .put(`/channels`, {
+                    serverId,
                     name: fields.name,
                     type: fields.type,
                 })

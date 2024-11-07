@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { BaseServerChannel, Server } from "@furxus/types";
 import { useAuth } from "@hooks";
@@ -11,6 +11,8 @@ import ChannelTextListItem from "./ChannelTextListItem";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import Stack from "@mui/material/Stack";
 import CreateChannelModal from "./CreateChannelModal";
+import { socket } from "@/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ServerSidebarChannels = ({
     server,
@@ -19,10 +21,35 @@ const ServerSidebarChannels = ({
     server: Server;
     channels: BaseServerChannel[];
 }) => {
+    const queryClient = useQueryClient();
     const { user } = useAuth();
     const [visible, setVisible] = useState(false);
 
     const { show } = useContextMenu();
+
+    useEffect(() => {
+        socket.on("channel:create", (channel: BaseServerChannel) => {
+            queryClient.setQueryData<BaseServerChannel[]>(
+                ["getChannels", { serverId: server.id }],
+                (data) => [...(data as any), channel]
+            );
+        });
+
+        socket.on("channel:delete", (channel: BaseServerChannel) => {
+            queryClient.setQueryData<BaseServerChannel[]>(
+                ["getChannels", { serverId: server.id }],
+                (data) =>
+                    (data as any).filter(
+                        (c: BaseServerChannel) => c.id !== channel.id
+                    )
+            );
+        });
+
+        return () => {
+            socket.off("channel:create");
+            socket.off("channel:delete");
+        };
+    }, []);
 
     // useEffect(() => {
     //     const unsubcribe = subscribeToMore({

@@ -24,11 +24,12 @@ const ChannelTextListItem = ({
     const isActive = location.pathname.includes(channel.id);
 
     const { mutate: deleteChannel } = useMutation({
-        mutationKey: ["deleteChannel", { serverId: server.id, id: channel.id }],
+        mutationKey: [
+            "deleteChannel",
+            { serverId: server.id, channelId: channel.id },
+        ],
         mutationFn: () =>
-            api
-                .delete(`/servers/${server.id}/channels/${channel.id}`)
-                .then((res) => res.data),
+            api.delete(`/channels/${channel.id}`).then((res) => res.data),
     });
 
     // const [deleteChannel] = useMutation(DeleteChannel, {

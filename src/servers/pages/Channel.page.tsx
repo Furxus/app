@@ -5,22 +5,26 @@ import ChannelTextInput from "../../shared/components/ChannelTextInput";
 import Stack from "@mui/material/Stack";
 import Skeleton from "@mui/material/Skeleton";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api, socket } from "@/api";
+import { useEffect } from "react";
 
 const ChannelPage = () => {
     const { serverId, channelId } = useParams();
 
     const { isLoading, data: channel } = useQuery({
-        queryKey: ["getChannel", { serverId, id: channelId }],
+        queryKey: ["getChannel", { id: channelId }],
         queryFn: () =>
             api
-                .get(`/servers/${serverId}/channels/${channelId}`)
+                .get(`/channels/${serverId}/${channelId}`)
                 .then((res) => res.data),
     });
 
-    if (!serverId) return <></>;
-    if (!channelId) return <></>;
-    if (isLoading) return <Skeleton />;
+    useEffect(() => {
+        socket.emit("server:focus", serverId);
+        socket.emit("channel:join", channelId);
+    }, [channelId]);
+
+    if (isLoading || !channelId) return <Skeleton />;
     if (!channel) return <Navigate to={`/servers/${serverId}`} />;
 
     return (

@@ -26,7 +26,7 @@ const JoinServerDialog = ({
     const { isPending, mutate: joinServer } = useMutation({
         mutationKey: ["joinServer", { code }],
         mutationFn: () =>
-            api.post(`/servers/join`, { code }).then((res) => res.data),
+            api.post(`/servers`, { code }).then((res) => res.data),
         onSuccess: (server: Server) => {
             if (server.channels && server.channels.length > 0)
                 navigate(`/servers/${server.id}/${server.channels[0]?.id}`);
@@ -34,6 +34,9 @@ const JoinServerDialog = ({
             queryClient.invalidateQueries({ queryKey: ["getUserServers"] });
 
             closeModal();
+        },
+        onError: (err: any) => {
+            setError(err.response.data.message);
         },
     });
 

@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
-import AvatarEditor from "react-avatar-edit";
+import AvatarEditor from "@mikhail2404/react-avatar-edit";
 import { useAppMode, useAuth } from "@/hooks";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
@@ -19,6 +19,7 @@ const AvatarUpload = ({
 
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState<File | null>(null);
+    const [editedFile, setEditedFile] = useState<File | null>(null);
 
     const [error, setError] = useState<string | null>(null);
 
@@ -37,30 +38,31 @@ const AvatarUpload = ({
         onSuccess: () => {
             setOpen(false);
             setFile(null);
-
             setMainOpen(false);
         },
     });
 
-    // const [updateAvatar, { loading }] = useMutation(UpdateAvatar, {
-    //     variables: {
-    //         avatar: file,
-    //     },
-    //     update: () => {
-    //         setOpen(false);
-    //         setFile(null);
-
-    //         setMainOpen(false);
-    //     },
-    // });
-
-    const onUpload = (file: any) => {
+    const onUpload = async (file: any) => {
+        if (typeof file === "string")
+            file = await fetch(file).then((res) => res.blob());
         setFile(file);
+    };
+
+    const onCrop = async (file: any) => {
+        if (typeof file === "string")
+            file = await fetch(file).then((res) => res.blob());
+
+        setEditedFile(file);
+    };
+
+    const onClear = () => {
+        setFile(null);
+        setEditedFile(null);
+        setError(null);
     };
 
     const onClose = () => {
         setFile(null);
-
         setError(null);
         setOpen(false);
     };
@@ -100,18 +102,18 @@ const AvatarUpload = ({
                         gap={0.5}
                     >
                         <AvatarEditor
-                            width={512}
-                            height={512}
-                            imageHeight={512}
-                            imageWidth={512}
+                            width={256}
+                            height={256}
+                            imageWidth={256}
                             label={
                                 <Avatar
                                     src={user.avatar ?? user.defaultAvatar}
-                                    sx={{ width: 512, height: 512 }}
+                                    sx={{ width: 256, height: 256 }}
                                 />
                             }
                             onFileLoad={onUpload}
-                            onClose={onClose}
+                            onClose={onClear}
+                            onCrop={onCrop}
                             borderStyle={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -128,13 +130,22 @@ const AvatarUpload = ({
                     </Stack>
                     <Stack direction="row" gap={1}>
                         <Button
-                            onClick={() => updateAvatar(file)}
+                            onClick={() => updateAvatar(editedFile)}
                             variant="contained"
                             color="success"
                             disabled={isPending}
                         >
                             Save
                         </Button>
+                        {file && (
+                            <Button
+                                onClick={() => updateAvatar(file)}
+                                variant="outlined"
+                                disabled={isPending}
+                            >
+                                Skip
+                            </Button>
+                        )}
                         <Button
                             color="error"
                             onClick={onClose}

@@ -141,19 +141,19 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
         <Stack
             pl={2}
             className={classNames("flex-grow", {
-                "justify-center": messages.length === 0,
+                "justify-center": messages?.length === 0,
             })}
             id="messages"
         >
             {isLoading ? (
                 <MessageSkeleton />
-            ) : messages.length === 0 ? (
+            ) : messages?.length === 0 ? (
                 <EmptyMessage />
             ) : (
                 <Virtuoso
                     ref={scrollRef}
                     data={messages}
-                    initialTopMostItemIndex={messages.length - 1}
+                    initialTopMostItemIndex={messages?.length - 1}
                     atTopStateChange={(atTop) => {
                         if (atTop) {
                             //next();

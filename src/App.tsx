@@ -13,7 +13,7 @@ const App = () => {
     const { isLoading, error } = useQuery({
         queryKey: ["ack"],
         queryFn: () => api.get("/ack").then((res) => res.data),
-        retry: 5,
+        retry: Infinity,
     });
 
     if (error) return <APILoading />;
