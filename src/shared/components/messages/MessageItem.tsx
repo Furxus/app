@@ -295,7 +295,7 @@ const MessageItem = ({
             )}
             {showAvatarAndName ? (
                 <Stack
-                    className="w-full hover:bg-neutral-700/60 px-2"
+                    className="w-full hover:bg-neutral-700/60 px-3 py-0.5"
                     direction="row"
                     justifyContent="center"
                     gap={1}
@@ -342,8 +342,8 @@ const MessageItem = ({
             ) : (
                 <Stack
                     onContextMenu={showMenu}
-                    className="w-full hover:bg-neutral-700/60"
-                    pl={7}
+                    className="w-full hover:bg-neutral-700/60 py-0.5"
+                    pl={7.5}
                     ref={hoverRef}
                 >
                     {messageEditing ? (
