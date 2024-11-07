@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Link, Modal, Stack, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
 import { Server } from "@furxus/types";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const JoinServerDialog = ({
     setVisible: Dispatch<SetStateAction<boolean>>;
     setModalType: Dispatch<SetStateAction<"create" | "join">>;
 }) => {
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const [code, setCode] = useState<string>("");
@@ -29,6 +30,8 @@ const JoinServerDialog = ({
         onSuccess: (server: Server) => {
             if (server.channels && server.channels.length > 0)
                 navigate(`/servers/${server.id}/${server.channels[0]?.id}`);
+
+            queryClient.invalidateQueries({ queryKey: ["getUserServers"] });
 
             closeModal();
         },
@@ -49,6 +52,7 @@ const JoinServerDialog = ({
     // });
 
     const closeModal = () => {
+        setCode("");
         setError(null);
         setVisible(false);
     };

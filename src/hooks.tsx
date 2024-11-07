@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./providers/AuthProvider";
 import { AppModeContext } from "./providers/AppModeProvider";
+import { UserServersContext } from "./providers/UserServers.provider";
 
 export function useAuth() {
     const value = useContext(AuthContext);
@@ -16,6 +17,17 @@ export function useAppMode() {
 
     if (process.env.NODE_ENV === "development" && value === undefined)
         throw new Error("useAppMode must be used within a AppModeProvider");
+
+    return value;
+}
+
+export function useUserServers() {
+    const value = useContext(UserServersContext);
+
+    if (process.env.NODE_ENV === "development" && value === undefined)
+        throw new Error(
+            "useUserServers must be used within a UserServersProvider"
+        );
 
     return value;
 }

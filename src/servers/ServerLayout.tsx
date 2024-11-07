@@ -4,20 +4,12 @@ import { FaBook } from "react-icons/fa";
 
 import "@css/ServerSideContextMenu.css";
 import Stack from "@mui/material/Stack";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
+import { useUserServers } from "@/hooks";
+import { Server } from "@furxus/types";
 
 const ServerLayout = () => {
     const { serverId } = useParams();
-
-    const { isLoading, data: servers } = useQuery({
-        queryKey: ["getUserServers"],
-        queryFn: () => api.get("/@me/servers").then((res) => res.data),
-    });
-
-    console.log(servers);
-
-    if (isLoading) return <></>;
+    const { servers } = useUserServers();
 
     if (servers.length === 0)
         return (
@@ -38,7 +30,8 @@ const ServerLayout = () => {
         );
 
     if (!servers) return <></>;
-    if (!servers.find((srv: any) => srv.id === serverId)) return <></>;
+    const server = servers.find((srv: Server) => srv.id === serverId);
+    if (!server) return <></>;
 
     return (
         <Stack
@@ -47,9 +40,7 @@ const ServerLayout = () => {
             direction="row"
             className="w-full h-full"
         >
-            <ServerSidebar
-                server={servers.find((srv: any) => srv.id === serverId)}
-            />
+            <ServerSidebar server={server} />
             <Outlet />
         </Stack>
     );

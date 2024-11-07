@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { useEffect } from "react";
 import { socket } from "@/api";
+import { UserServersProvider } from "./UserServers.provider";
 
 const queryClient = new QueryClient();
 
@@ -74,10 +75,9 @@ const theme = createTheme({
 });
 
 export default function MainProvider() {
-
     useEffect(() => {
         socket.connect();
-    }, [])
+    }, []);
 
     return (
         <Provider store={store}>
@@ -93,8 +93,10 @@ export default function MainProvider() {
                                         <HelmetProvider>
                                             <AuthProvider>
                                                 <AppModeProvider>
-                                                    <CssBaseline />
-                                                    <App />
+                                                    <UserServersProvider>
+                                                        <CssBaseline />
+                                                        <App />
+                                                    </UserServersProvider>
                                                 </AppModeProvider>
                                             </AuthProvider>
                                         </HelmetProvider>

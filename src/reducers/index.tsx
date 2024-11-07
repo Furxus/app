@@ -3,14 +3,16 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import authReducer from "./auth";
+import serversReducer from "./user_servers";
 
 const persistConfig = {
     key: "root",
-    storage
+    storage,
 };
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    servers: serversReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -18,7 +20,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false })
+        getDefaultMiddleware({ serializableCheck: false }),
 });
 
 const persistor = persistStore(store);

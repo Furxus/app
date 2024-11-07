@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 
 import { Server } from "@furxus/types";
 import { Modal, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
 
 const ConfirmServerDeleteDialog = ({
@@ -19,6 +19,7 @@ const ConfirmServerDeleteDialog = ({
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
 }) => {
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const [confirm, setConfirm] = useState<string>("");
@@ -29,6 +30,7 @@ const ConfirmServerDeleteDialog = ({
         mutationFn: () => api.delete(`/servers/${server.id}`),
         onSuccess: () => {
             navigate("/servers");
+            queryClient.invalidateQueries({ queryKey: ["getUserServers"] });
         },
         onError: (err: any) => {
             const errors = err.response.data.errors as any[];
