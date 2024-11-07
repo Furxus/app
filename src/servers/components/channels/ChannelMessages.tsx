@@ -13,7 +13,7 @@ import { api } from "@/api";
 const ChannelMessages = ({ channelId }: { channelId: string }) => {
     const scrollRef = useRef<VirtuosoHandle>(null);
 
-    const { isFetching, data: messages } = useQuery({
+    const { isFetching, data: messages = [] } = useQuery({
         queryKey: ["getMessages", { channelId }],
         queryFn: () =>
             api.get(`/channels/${channelId}/messages`).then((res) => res.data),
