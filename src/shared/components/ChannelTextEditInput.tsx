@@ -10,6 +10,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 // Tiptap imports
 import Document from "@tiptap/extension-document";
 import BulletList from "@tiptap/extension-bullet-list";
+import CharacterCount from "@tiptap/extension-character-count";
 import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
 import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
@@ -36,9 +37,9 @@ import { all, createLowlight } from "lowlight";
 import "@css/tiptap.css";
 import { Typography } from "@mui/material";
 
-import emojiSuggestion from "@/utils/emojiSuggestion.tsx";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown";
 
 const lowlight = createLowlight(all);
 
@@ -72,12 +73,14 @@ const ChannelTextEditInput = ({
     const extensions = [
         Document,
         BulletList,
+        CharacterCount.configure({
+            limit: 2000,
+        }),
         CodeBlockLowLight.configure({
             lowlight,
         }),
         Emoji.configure({
             enableEmoticons: true,
-            suggestion: emojiSuggestion,
             emojis: gitHubEmojis,
         }),
         ListItem,
@@ -144,11 +147,33 @@ const ChannelTextEditInput = ({
             className="w-full"
             p={2}
         >
+            {editor && <EmojiSuggestionDropdown editor={editor} />}
             <EditorContent
                 onKeyDown={onKeyDown}
                 className="w-full"
                 editor={editor}
             />
+            <Stack
+                position="relative"
+                direction="row"
+                justifyContent="flex-end"
+                gap={1}
+            >
+                <Typography
+                    position="absolute"
+                    bottom={0}
+                    right={5}
+                    variant="caption"
+                    color={content.length === 2000 ? "error" : "inherit"}
+                >
+                    {content.length}/2000
+                </Typography>
+                {error && (
+                    <Typography variant="caption" color="error">
+                        {error}
+                    </Typography>
+                )}
+            </Stack>
             <Typography variant="subtitle2" className="">
                 escape to{" "}
                 <MLink

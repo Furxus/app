@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
-import AvatarEditor from "@mikhail2404/react-avatar-edit";
+import AvatarEditor from "react-avatar-edit";
 import { useAppMode, useAuth } from "@/hooks";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";

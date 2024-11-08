@@ -59,6 +59,7 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
                             messages={messages}
                         />
                     )}
+                    followOutput={true}
                 />
             )}
         </Stack>
