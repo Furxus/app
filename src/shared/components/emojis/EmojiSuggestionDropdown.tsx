@@ -1,8 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { offset, shift, useFloating, flip } from "@floating-ui/react";
 import { Stack } from "@mui/material";
+import { Editor } from "@tiptap/react";
+import { TextSelection } from "@tiptap/pm/state";
 
-const EmojiSuggestionDropdown = ({ editor }: { editor: any }) => {
+const EmojiSuggestionDropdown = ({
+    editor,
+    onSelectEmoji,
+}: {
+    editor: Editor;
+    onSelectEmoji: () => void;
+}) => {
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [query, setQuery] = useState("");
     const [index, setIndex] = useState(-1);
@@ -21,52 +29,85 @@ const EmojiSuggestionDropdown = ({ editor }: { editor: any }) => {
                 tags.find((tag: any) => tag.startsWith(query.toLowerCase()))
         );
 
-    useEffect(() => {
-        const handleTransaction = () => {
-            const { state } = editor;
-            const { from } = state.selection;
-            const textBefore = state.doc.textBetween(0, from, " ");
+    const handleTransaction = useCallback(() => {
+        const { state } = editor;
+        const { from } = state.selection;
+        const textBefore = state.doc.textBetween(0, from, " ");
 
-            const match = textBefore.match(/:([\w]*)$/);
-            if (match) {
-                const search = match[1];
-                setQuery(search);
-                setSuggestions(filterEmojis(search));
-                setIndex(-1);
+        const match = textBefore.match(/:([\w]*)$/);
+        if (match) {
+            const search = match[1];
+            setQuery(search);
+            setSuggestions(filterEmojis(search));
+            setIndex(0);
 
-                const cursorPos = editor.view.coordsAtPos(from);
-                refs.reference.current = {
-                    getBoundingClientRect: () => ({
-                        x: cursorPos.left,
-                        y: cursorPos.top,
-                        width: 0,
-                        height: 0,
-                        top: cursorPos.top,
-                        left: cursorPos.left,
-                        right: cursorPos.left,
-                        bottom: cursorPos.top,
-                    }),
-                };
-            } else {
-                setSuggestions([]);
-            }
-        };
-
-        editor.on("transaction", handleTransaction);
-        return () => editor.off("transaction", handleTransaction);
+            const cursorPos = editor.view.coordsAtPos(from);
+            refs.reference.current = {
+                getBoundingClientRect: () => ({
+                    x: cursorPos.left,
+                    y: cursorPos.top,
+                    width: 0,
+                    height: 0,
+                    top: cursorPos.top,
+                    left: cursorPos.left,
+                    right: cursorPos.left,
+                    bottom: cursorPos.top,
+                }),
+            };
+        } else {
+            setSuggestions([]);
+        }
     }, [editor, refs.reference]);
 
+    useEffect(() => {
+        editor.on("transaction", handleTransaction);
+        return () => {
+            editor.off("transaction", handleTransaction);
+        };
+    }, [editor, handleTransaction]);
+
     const insertEmoji = (emoji: string) => {
-        editor.chain().focus().insertContent(emoji).run();
+        console.log(emoji);
+        const { state, view } = editor;
+
+        const { from } = state.selection;
+        const textBefore = state.doc.textBetween(0, from, " ");
+
+        const match = textBefore.match(/:([\w]*)$/);
+        if (match) {
+            const textBeforeMatch = match[0];
+            const fromPos = from - textBeforeMatch.length;
+
+            const transaction = state.tr
+                .delete(fromPos, from)
+                .insertText(emoji, fromPos);
+
+            // Get the correct new position for the cursor after the emoji insertion
+            const newSelectionPos = fromPos + emoji.length;
+
+            // Now, update the transaction with the correct cursor position
+            const updatedTransaction = transaction.setSelection(
+                TextSelection.create(
+                    transaction.doc,
+                    newSelectionPos,
+                    newSelectionPos
+                )
+            );
+
+            // Finally, dispatch the updated transaction with the new selection
+            view.dispatch(updatedTransaction);
+
+            // Focus the editor again to prevent focus loss
+            view.focus();
+        }
         setSuggestions([]);
         setQuery("");
-        setIndex(-1);
+        setIndex(0);
+        onSelectEmoji();
     };
 
     const handleKeyDown = (event: any) => {
         if (!suggestions.length) return;
-
-        console.log(event.key);
 
         switch (event.key) {
             case "ArrowDown":
@@ -80,21 +121,32 @@ const EmojiSuggestionDropdown = ({ editor }: { editor: any }) => {
                 );
                 break;
             case "Enter":
+                event.preventDefault();
                 if (index >= 0 && index < suggestions.length) {
-                    event.preventDefault();
-                    insertEmoji(suggestions[index]);
+                    insertEmoji(suggestions[index].emoji);
                 }
                 break;
             case "Escape":
                 setSuggestions([]);
                 setQuery("");
-                setIndex(-1);
+                setIndex(0);
                 break;
-
             default:
                 break;
         }
     };
+
+    useEffect(() => {
+        if (index >= 0 && index < suggestions.length) {
+            const el = document.getElementById(`emoji-${index}`);
+            if (el) {
+                el.scrollIntoView({
+                    behavior: "instant",
+                    block: "nearest",
+                });
+            }
+        }
+    }, [index]);
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
@@ -117,6 +169,7 @@ const EmojiSuggestionDropdown = ({ editor }: { editor: any }) => {
                         direction="row"
                         key={emoji.name}
                         gap={1}
+                        id={`emoji-${i}`}
                         className="hover:bg-neutral-600 hover:cursor-pointer rounded-lg p-1 w-full"
                         onClick={() => insertEmoji(emoji.emoji)}
                         style={{
@@ -125,12 +178,9 @@ const EmojiSuggestionDropdown = ({ editor }: { editor: any }) => {
                     >
                         {emoji.fallbackImage ? (
                             <img
+                                className="size-[1.4em]"
                                 src={emoji.fallbackImage}
                                 alt={emoji.name}
-                                style={{
-                                    width: "1.5rem",
-                                    height: "1.5rem",
-                                }}
                             />
                         ) : (
                             <>{emoji.emoji}</>

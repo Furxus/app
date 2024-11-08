@@ -1,5 +1,5 @@
-import { useState, KeyboardEvent } from "react";
-import { BaseServerChannel, Channel, Message, User } from "@furxus/types";
+import { useState } from "react";
+import { BaseServerChannel, Channel, User } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 
 // Markdown imports
@@ -13,7 +13,7 @@ import CharacterCount from "@tiptap/extension-character-count";
 import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
 import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
-import Emoji, { gitHubEmojis } from "@tiptap-pro/extension-emoji";
+import Emoji from "@tiptap-pro/extension-emoji";
 import HardBreak from "@tiptap/extension-hard-break";
 import Heading from "@tiptap/extension-heading";
 import Mention from "@tiptap/extension-mention";
@@ -46,16 +46,13 @@ const lowlight = createLowlight(all);
 const ChannelTextInput = ({
     channel,
     recipient,
-    message,
 }: {
     channel: Channel;
     recipient?: User;
-    message?: Message;
 }) => {
-    const [messageContent, setMessageContent] = useState(
-        message?.content ?? ""
-    );
+    const [messageContent, setMessageContent] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const [isTypingEmoji, setIsTypingEmoji] = useState(false);
 
     const { mutate: createMessage } = useMutation({
         mutationKey: ["createMessage"],
@@ -69,6 +66,15 @@ const ChannelTextInput = ({
         },
     });
 
+    const sendMessage = () => {
+        if (!channel) return;
+        if (!isTypingEmoji && messageContent.trim() !== "") {
+            createMessage({ channelId: channel.id, content: messageContent });
+            setMessageContent("");
+            editor?.commands.setContent("");
+        }
+    };
+
     const extensions = [
         Document,
         BulletList,
@@ -80,7 +86,6 @@ const ChannelTextInput = ({
         }),
         Emoji.configure({
             enableEmoticons: true,
-            emojis: gitHubEmojis,
         }),
         ListItem,
         OrderedList,
@@ -109,35 +114,51 @@ const ChannelTextInput = ({
         Underline,
     ];
 
+    const handleEmojiSelection = (selected: boolean) => {
+        setIsTypingEmoji(selected);
+    };
+
     const editor = useEditor({
         extensions,
         content: messageContent,
         onUpdate({ editor }) {
             setMessageContent(editor.storage.markdown.getMarkdown());
         },
+        editorProps: {
+            handleKeyDown(view, event) {
+                if (event.key === "Enter") {
+                    if (event.shiftKey) {
+                        // Shift + Enter creates a new line
+                        return false; // Allow default behavior to create a new line
+                    }
+
+                    if (isTypingEmoji) {
+                        event.preventDefault(); // Prevent new line while selecting emoji
+                    } else {
+                        event.preventDefault(); // Prevent new line and send the message
+                        sendMessage();
+                    }
+                    return true;
+                }
+
+                // Set emoji typing state when `:` is typed
+                const typedText = view.state.doc.textBetween(
+                    view.state.selection.from - 1,
+                    view.state.selection.from
+                );
+                if (typedText === ":" && !event.shiftKey) {
+                    setIsTypingEmoji(true);
+                }
+
+                // Reset emoji typing state on space or enter
+                if (event.key === " " || event.key === "Enter") {
+                    setIsTypingEmoji(false);
+                }
+
+                return false;
+            },
+        },
     });
-
-    const sendMessage = () => {
-        createMessage({ channelId: channel.id, content: messageContent });
-        setMessageContent("");
-        editor?.commands.setContent("");
-    };
-
-    // const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    //     if (e.key === "Enter" && !e.shiftKey) {
-    //         e.preventDefault();
-
-    //         if (
-    //             messageContent.startsWith("```") &&
-    //             !messageContent.endsWith("```")
-    //         ) {
-    //             editor?.commands.insertContent("\n");
-    //             return;
-    //         }
-
-    //         sendMessage();
-    //     }
-    // };
 
     return (
         <Stack
@@ -147,7 +168,12 @@ const ChannelTextInput = ({
             className="w-full"
             p={2}
         >
-            {editor && <EmojiSuggestionDropdown editor={editor} />}
+            {editor && (
+                <EmojiSuggestionDropdown
+                    editor={editor}
+                    onSelectEmoji={() => handleEmojiSelection(false)}
+                />
+            )}
             <EditorContent className="w-full" editor={editor} />
             <Stack
                 position="relative"

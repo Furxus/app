@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import MLink from "@mui/material/Link";
@@ -54,6 +54,7 @@ const ChannelTextEditInput = ({
 }) => {
     const [content, setContent] = useState(message.content);
     const [error, setError] = useState<string | null>(null);
+    const [isTypingEmoji, setIsTypingEmoji] = useState(false);
 
     const { mutate: mEditMessage } = useMutation({
         mutationKey: ["editMessage"],
@@ -69,6 +70,19 @@ const ChannelTextEditInput = ({
             setError(null);
         },
     });
+
+    const editMessage = () => {
+        if (!isTypingEmoji && content.trim() === "") {
+            deleteMessage();
+            setMessageEditing(false);
+            return;
+        } else if (content === message.content) {
+            setMessageEditing(false);
+            return;
+        }
+        mEditMessage();
+        setMessageEditing(false);
+    };
 
     const extensions = [
         Document,
@@ -105,39 +119,51 @@ const ChannelTextEditInput = ({
         Underline,
     ];
 
+    const handleEmojiSelection = (selected: boolean) => {
+        setIsTypingEmoji(selected);
+    };
+
     const editor = useEditor({
         extensions,
         content: content,
         onUpdate({ editor }) {
             setContent(editor.storage.markdown.getMarkdown());
         },
+        editorProps: {
+            handleKeyDown(view, event) {
+                if (event.key === "Enter") {
+                    if (event.shiftKey) {
+                        // Shift + Enter creates a new line
+                        return false; // Allow default behavior to create a new line
+                    }
+
+                    if (isTypingEmoji) {
+                        event.preventDefault(); // Prevent new line while selecting emoji
+                    } else {
+                        event.preventDefault(); // Prevent new line and send the message
+                        editMessage();
+                    }
+                    return true;
+                }
+
+                // Set emoji typing state when `:` is typed
+                const typedText = view.state.doc.textBetween(
+                    view.state.selection.from - 1,
+                    view.state.selection.from
+                );
+                if (typedText === ":" && !event.shiftKey) {
+                    setIsTypingEmoji(true);
+                }
+
+                // Reset emoji typing state on space or enter
+                if (event.key === " " || event.key === "Enter") {
+                    setIsTypingEmoji(false);
+                }
+
+                return false;
+            },
+        },
     });
-
-    const editMessage = () => {
-        if (content?.trim() === "") {
-            deleteMessage();
-            setMessageEditing(false);
-            return;
-        } else if (content === message.content) {
-            setMessageEditing(false);
-            return;
-        }
-        mEditMessage();
-        setMessageEditing(false);
-    };
-
-    const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-
-            if (content.startsWith("```") && !content.endsWith("```")) {
-                editor?.commands.insertContent("\n");
-                return;
-            }
-
-            editMessage();
-        }
-    };
 
     return (
         <Stack
@@ -147,12 +173,13 @@ const ChannelTextEditInput = ({
             className="w-full"
             p={2}
         >
-            {editor && <EmojiSuggestionDropdown editor={editor} />}
-            <EditorContent
-                onKeyDown={onKeyDown}
-                className="w-full"
-                editor={editor}
-            />
+            {editor && (
+                <EmojiSuggestionDropdown
+                    onSelectEmoji={() => handleEmojiSelection(false)}
+                    editor={editor}
+                />
+            )}
+            <EditorContent className="w-full" editor={editor} />
             <Stack
                 position="relative"
                 direction="row"
