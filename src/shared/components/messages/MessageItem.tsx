@@ -289,9 +289,9 @@ const MessageItem = ({
     return (
         <>
             {isNewDay && (
-                <Typography className="bg-neutral-700/40 mt-1 rounded-lg text-neutral-400 text-center shadow-2xl">
+                <Divider className="mt-1 rounded-lg text-neutral-400 shadow-2xl">
                     {moment(createdAt).format("dddd, MMMM Do YYYY")}
-                </Typography>
+                </Divider>
             )}
             {showAvatarAndName ? (
                 <Stack
