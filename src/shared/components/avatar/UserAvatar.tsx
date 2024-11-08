@@ -1,10 +1,10 @@
-import { api } from "@/api";
+import { api, socket } from "@/api";
 import { useAppMode, useAuth } from "@/hooks";
 import { DMChannel, User } from "@furxus/types";
 import { Alert, ButtonProps, IconButton, Snackbar } from "@mui/material";
 import Avatar, { AvatarProps } from "@mui/material/Avatar";
-import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { FaUserCircle, FaUserMinus, FaUserPlus } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
@@ -20,6 +20,7 @@ const UserAvatar = ({
     avatar?: { avatarProps?: AvatarProps; avatarClasses?: string };
     button?: { btnProps?: ButtonProps; btnClasses?: string };
 }) => {
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { changeAppMode } = useAppMode();
     const { avatarProps, avatarClasses } = avatar ?? {};
@@ -32,10 +33,13 @@ const UserAvatar = ({
 
     const { mutate: sendFriendRequest } = useMutation({
         mutationKey: ["sendFriendRequest"],
-        mutationFn: (userId: string) =>
-            api.post("/friend-requests", { userId }),
+        mutationFn: (userId: string) => api.put("/friend-requests", { userId }),
         onSuccess: () => {
             setMessage("Friend request sent");
+            setSnackbarVisible(true);
+        },
+        onError: (err: any) => {
+            setError(err.response.data.message);
             setSnackbarVisible(true);
         },
     });
@@ -43,7 +47,9 @@ const UserAvatar = ({
     const { mutate: cancelFriendRequest } = useMutation({
         mutationKey: ["cancelFriendRequest"],
         mutationFn: (userId: string) =>
-            api.delete(`/friend-requests/${userId}`),
+            api.delete(`/friend-requests`, {
+                params: { userId },
+            }),
         onSuccess: () => {
             setMessage("Friend request cancelled");
             setSnackbarVisible(true);
@@ -52,8 +58,7 @@ const UserAvatar = ({
 
     const { mutate: acceptFriendRequest } = useMutation({
         mutationKey: ["acceptFriendRequest"],
-        mutationFn: (userId: string) =>
-            api.post(`/friend-requests/${userId}/accept`),
+        mutationFn: (userId: string) => api.put(`/friends`, { userId }),
         onSuccess: () => {
             setMessage("Friend request accepted");
             setSnackbarVisible(true);
@@ -62,7 +67,10 @@ const UserAvatar = ({
 
     const { mutate: removeFriend } = useMutation({
         mutationKey: ["removeFriend"],
-        mutationFn: (userId: string) => api.delete(`/friends/${userId}`),
+        mutationFn: (userId: string) =>
+            api.delete(`/friends`, {
+                params: { userId },
+            }),
         onSuccess: () => {
             setMessage("Friend removed");
             setSnackbarVisible(true);
@@ -72,7 +80,7 @@ const UserAvatar = ({
     const { mutate: openDM } = useMutation({
         mutationKey: ["openDM"],
         mutationFn: (recipient: string) =>
-            api.post("/dm", { recipient }).then((res) => res.data),
+            api.post("/dms", { recipient }).then((res) => res.data),
         onSuccess: (dm: DMChannel) => {
             changeAppMode("dms");
             navigate(`/dms/${dm.id}`);

@@ -8,11 +8,12 @@ import { api } from "@/api";
 const SidebarDMs = () => {
     const { channelId } = useParams();
 
-    const { data: dms } = useQuery({
+    const { isLoading, data: dms } = useQuery({
         queryKey: ["getDMs"],
-        queryFn: () => api.get("/channels?type=dm").then((res) => res.data),
+        queryFn: () => api.get("/@me/dms").then((res) => res.data),
     });
 
+    if (isLoading) return <></>;
     if (!channelId) {
         if (dms[0]) return <Navigate to={`/dms/${dms[0].id}`} />;
         return <></>;
