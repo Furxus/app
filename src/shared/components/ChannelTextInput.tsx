@@ -4,44 +4,19 @@ import Stack from "@mui/material/Stack";
 
 // Markdown imports
 
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 
 // Tiptap imports
-import Document from "@tiptap/extension-document";
-import BulletList from "@tiptap/extension-bullet-list";
-import CharacterCount from "@tiptap/extension-character-count";
-import ListItem from "@tiptap/extension-list-item";
-import OrderedList from "@tiptap/extension-ordered-list";
-import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
-import Emoji from "@tiptap-pro/extension-emoji";
-import HardBreak from "@tiptap/extension-hard-break";
-import Heading from "@tiptap/extension-heading";
-import Mention from "@tiptap/extension-mention";
-import Parapgraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
-import Bold from "@tiptap/extension-bold";
-import Code from "@tiptap/extension-code";
-import Highlight from "@tiptap/extension-highlight";
-import Italic from "@tiptap/extension-italic";
 import Link from "@tiptap/extension-link";
-import Strike from "@tiptap/extension-strike";
-import Subscript from "@tiptap/extension-subscript";
-import Superscript from "@tiptap/extension-superscript";
-import TextStyle from "@tiptap/extension-text-style";
-import Underline from "@tiptap/extension-underline";
 
-import { all, createLowlight } from "lowlight";
-
-import "@css/tiptap.css";
 import { Typography } from "@mui/material";
 
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown";
-
-const lowlight = createLowlight(all);
+import { extensions } from "../FurxusEditor";
+import classNames from "classnames";
 
 const ChannelTextInput = ({
     channel,
@@ -51,6 +26,7 @@ const ChannelTextInput = ({
     recipient?: User;
 }) => {
     const [messageContent, setMessageContent] = useState("");
+    const [json, setJson] = useState<JSONContent | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isTypingEmoji, setIsTypingEmoji] = useState(false);
 
@@ -69,60 +45,33 @@ const ChannelTextInput = ({
     const sendMessage = () => {
         if (!channel) return;
         if (!isTypingEmoji && messageContent.trim() !== "") {
-            createMessage({ channelId: channel.id, content: messageContent });
+            createMessage({ content: json });
             setMessageContent("");
+            setJson(null);
             editor?.commands.setContent("");
         }
     };
-
-    const extensions = [
-        Document,
-        BulletList,
-        CharacterCount.configure({
-            limit: 2000,
-        }),
-        CodeBlockLowLight.configure({
-            lowlight,
-        }),
-        Emoji.configure({
-            enableEmoticons: true,
-        }),
-        ListItem,
-        OrderedList,
-        HardBreak,
-        Heading.configure({ levels: [1, 2, 3] }),
-        Mention,
-        Parapgraph,
-        Text,
-        Markdown,
-        Bold,
-        Code,
-        Placeholder.configure({
-            placeholder: `Message ${
-                recipient
-                    ? `@${recipient.displayName ?? recipient.username}`
-                    : `#${(channel as BaseServerChannel).name}`
-            }`,
-        }),
-        Highlight,
-        Italic,
-        Link,
-        Strike,
-        Subscript,
-        Superscript,
-        TextStyle,
-        Underline,
-    ];
 
     const handleEmojiSelection = (selected: boolean) => {
         setIsTypingEmoji(selected);
     };
 
     const editor = useEditor({
-        extensions,
+        extensions: [
+            ...extensions,
+            Placeholder.configure({
+                placeholder: `Message ${
+                    recipient
+                        ? `@${recipient?.displayName ?? recipient?.username}`
+                        : `#${(channel as BaseServerChannel)?.name}`
+                }`,
+            }),
+            Link.configure({ openOnClick: false }),
+        ],
         content: messageContent,
         onUpdate({ editor }) {
             setMessageContent(editor.storage.markdown.getMarkdown());
+            setJson(editor.getJSON());
         },
         editorProps: {
             handleKeyDown(view, event) {
@@ -156,6 +105,11 @@ const ChannelTextInput = ({
                 }
 
                 return false;
+            },
+            attributes: {
+                class: classNames(
+                    "prose dark:prose-invert max-w-none [&_ol]:list-decimal [&_ul]:list-disc"
+                ),
             },
         },
     });

@@ -23,7 +23,7 @@ export const AppModeContext = createContext<{
 export function AppModeProvider({ children }: PropsWithChildren) {
     const location = useLocation();
     const navigate = useNavigate();
-    const { isLoggedIn, user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [appMode, setAppMode] = useState<AppModes>(
         user?.preferences?.mode ?? "servers"
     );
@@ -33,8 +33,10 @@ export function AppModeProvider({ children }: PropsWithChildren) {
         if (location.pathname.includes("posts")) setAppMode("posts");
         if (location.pathname.includes("dms")) setAppMode("dms");
 
+        if (location.pathname === "/" && user) navigate(appMode);
+
         return () => {};
-    }, [isLoggedIn, appMode, location.pathname, user]);
+    }, [appMode, location.pathname]);
 
     const changeAppMode = (appMode: AppModes) => {
         setAppMode(appMode);

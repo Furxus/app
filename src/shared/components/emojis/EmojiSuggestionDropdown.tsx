@@ -3,6 +3,7 @@ import { offset, shift, useFloating, flip } from "@floating-ui/react";
 import { Stack } from "@mui/material";
 import { Editor } from "@tiptap/react";
 import { TextSelection } from "@tiptap/pm/state";
+import Emoji from "@tiptap-pro/extension-emoji";
 
 const EmojiSuggestionDropdown = ({
     editor,
@@ -66,8 +67,7 @@ const EmojiSuggestionDropdown = ({
         };
     }, [editor, handleTransaction]);
 
-    const insertEmoji = (emoji: string) => {
-        console.log(emoji);
+    const insertEmoji = (emoji: any) => {
         const { state, view } = editor;
 
         const { from } = state.selection;
@@ -171,7 +171,7 @@ const EmojiSuggestionDropdown = ({
                         gap={1}
                         id={`emoji-${i}`}
                         className="hover:bg-neutral-600 hover:cursor-pointer rounded-lg p-1 w-full"
-                        onClick={() => insertEmoji(emoji.emoji)}
+                        onClick={() => insertEmoji(emoji.fallbackImage)}
                         style={{
                             backgroundColor: i === index ? "#2d3748" : "",
                         }}

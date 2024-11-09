@@ -51,47 +51,6 @@ const ServerSidebarChannels = ({
         };
     }, []);
 
-    // useEffect(() => {
-    //     const unsubcribe = subscribeToMore({
-    //         document: OnChannelCreated,
-    //         variables: { serverId: server.id },
-    //         updateQuery: (prev, { subscriptionData }) => {
-    //             if (!subscriptionData.data) return prev;
-    //             const newChannel = subscriptionData.data.channelCreated;
-
-    //             navigate(`/servers/${server.id}/${newChannel.id}`);
-
-    //             return {
-    //                 getChannels: [...prev.getChannels, newChannel],
-    //             };
-    //         },
-    //     });
-
-    //     return () => unsubcribe();
-    // }, []);
-
-    // useEffect(() => {
-    //     const unsubscribe = subscribeToMore({
-    //         document: OnChannelDeleted,
-    //         variables: { serverId: server.id },
-    //         updateQuery: (prev, { subscriptionData }) => {
-    //             if (!subscriptionData.data) return prev;
-    //             const deletedChannel = subscriptionData.data.channelDeleted;
-
-    //             navigate(`/servers/${server.id}/${channels[0].id}`);
-
-    //             return {
-    //                 getChannels: prev.getChannels.filter(
-    //                     (channel: BaseServerChannel) =>
-    //                         channel.id !== deletedChannel.id
-    //                 ),
-    //             };
-    //         },
-    //     });
-
-    //     return () => unsubscribe();
-    // }, []);
-
     // Keep this for now since they are no permission system created
     const showMenu = (event: any) => {
         event.stopPropagation();

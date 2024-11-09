@@ -19,26 +19,23 @@ body {
     font-family: "Montserrat", sans-serif;
 }
 
-[data-twemoji] {
-    @apply size-[1.4em] inline-block align-text-bottom;
+[data-type="emoji"] {
+    @apply size-[1.4em] block p-0 m-0;
 }
 
 .gradient-sidebar {
     border-right: 1px solid #0000;
-    background: linear-gradient(rgb(38 38 38), rgb(38 38 38)) padding-box,
-        linear-gradient(
-                var(--angle),
-                rgb(59 130 246 / 0.6),
-                rgb(34 197 94 / 0.6)
-            )
+    background: linear-gradient(rgb(48 48 48), rgb(48 48 48)) padding-box,
+        linear-gradient(var(--angle), rgb(59 130 246), rgb(34 197 94))
             border-box;
+
     animation: 6s rotate linear infinite;
 }
 
 .gradient-button {
     border: 3px solid #0000;
     border-radius: 999px;
-    background: linear-gradient(rgb(38 38 38), rgb(38 38 38)) padding-box,
+    background: linear-gradient(rgb(48 48 48), rgb(48 48 48)) padding-box,
         linear-gradient(var(--angle), rgb(59 130 246), rgb(34 197 94))
             border-box;
     animation: 2s rotate linear infinite;

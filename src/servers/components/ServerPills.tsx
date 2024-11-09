@@ -35,7 +35,7 @@ export const ActiveServerPill: FC = () => (
         position="absolute"
         style={{ borderRadius: "0 4px 4px 0" }}
         left={0}
-        ml="-16px"
+        ml="-18px"
         mt="8px"
     />
 );
@@ -48,7 +48,7 @@ export const HoverServerPill: FC = () => (
         position="absolute"
         style={{ borderRadius: "0 4px 4px 0" }}
         left={0}
-        ml="-16px"
+        ml="-18px"
         mt="8px"
     />
 );

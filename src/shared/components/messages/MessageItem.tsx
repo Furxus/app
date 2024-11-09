@@ -12,31 +12,19 @@ import { useHover } from "usehooks-ts";
 import copy from "copy-to-clipboard";
 import markdownToTxt from "markdown-to-txt";
 import Divider from "@mui/material/Divider";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
 // Markdown imports
-import Markdown from "react-markdown";
-import remarkEmoji from "remark-emoji";
-import remarkGfm from "remark-gfm";
-import remarkBreaks from "remark-breaks";
-import remarkParse from "remark-parse";
-
-import { rehypeTwemoji, RehypeTwemojiOptions } from "rehype-twemoji";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import MessageEmbed from "./MessageEmbed";
 import { useRef, useState } from "react";
 import { Tooltip } from "@mui/material";
 import UserAvatar from "@/shared/components/avatar/UserAvatar";
 
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import ChannelTextEditInput from "../ChannelTextEditInput";
+import ReadOnlyEditor from "../ReadOnlyEditor";
 
 const MessageItem = ({
     messages,
@@ -107,148 +95,7 @@ const MessageItem = ({
                 </Tooltip>
             )}
             <Stack direction="row" alignItems="flex-end" className="w-full">
-                <Markdown
-                    skipHtml={true}
-                    remarkPlugins={[
-                        remarkParse,
-                        remarkGfm,
-                        remarkBreaks,
-                        remarkEmoji,
-                    ]}
-                    rehypePlugins={[
-                        rehypeSanitize,
-                        rehypeRaw,
-                        [
-                            rehypeTwemoji,
-                            {
-                                format: "svg",
-                            } satisfies RehypeTwemojiOptions,
-                        ],
-                    ]}
-                    components={{
-                        code({
-                            node,
-                            className,
-                            children,
-                            style,
-                            ref,
-                            ...props
-                        }) {
-                            const match =
-                                /language-(\w+)/.exec(className || "") ?? "";
-                            return (
-                                <SyntaxHighlighter
-                                    style={materialDark}
-                                    language={match[1] ?? ""}
-                                    PreTag="div"
-                                    children={String(children).replace(
-                                        /\n$/,
-                                        ""
-                                    )}
-                                    wrapLongLines
-                                    showLineNumbers
-                                    {...props}
-                                />
-                            );
-                        },
-                        h1({ node, className, children, ref, ...props }) {
-                            return (
-                                <Typography
-                                    variant="h3"
-                                    children={children}
-                                    {...props}
-                                />
-                            );
-                        },
-                        h2({ node, className, children, ref, ...props }) {
-                            return (
-                                <Typography
-                                    variant="h4"
-                                    children={children}
-                                    {...props}
-                                />
-                            );
-                        },
-                        h3({ node, className, children, ref, ...props }) {
-                            return (
-                                <Typography
-                                    variant="h5"
-                                    children={children}
-                                    {...props}
-                                />
-                            );
-                        },
-                        h4({ node, className, children, ref, ...props }) {
-                            return (
-                                <Typography
-                                    variant="h6"
-                                    children={children}
-                                    {...props}
-                                />
-                            );
-                        },
-                        h5({ node, className, children, ref, ...props }) {
-                            return (
-                                <Typography
-                                    variant="h6"
-                                    children={children}
-                                    {...props}
-                                />
-                            );
-                        },
-                        h6({ node, className, children, ref, ...props }) {
-                            return (
-                                <Typography
-                                    variant="h6"
-                                    children={children}
-                                    {...props}
-                                />
-                            );
-                        },
-                        p({ node, className, children, ref, ...props }) {
-                            return (
-                                <Typography children={children} {...props} />
-                            );
-                        },
-                        a({ node, className, children, ref, ...props }) {
-                            return (
-                                <Link
-                                    underline="hover"
-                                    children={children}
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                    {...props}
-                                />
-                            );
-                        },
-                        li({ node, className, children, ref, ...props }) {
-                            return (
-                                <Box
-                                    component="li"
-                                    children={children}
-                                    {...props}
-                                />
-                            );
-                        },
-                        hr({ node, className, children, ref, ...props }) {
-                            return <Divider {...props} />;
-                        },
-                        blockquote({
-                            node,
-                            className,
-                            children,
-                            ref,
-                            ...props
-                        }) {
-                            return (
-                                <blockquote children={children} {...props} />
-                            );
-                        },
-                    }}
-                    className="flex flex-col justify-center"
-                >
-                    {content}
-                </Markdown>
+                <ReadOnlyEditor content={content} />
                 {message.edited && (
                     <Tooltip
                         disableInteractive
@@ -295,7 +142,7 @@ const MessageItem = ({
             )}
             {showAvatarAndName ? (
                 <Stack
-                    className="w-full hover:bg-neutral-700/60 px-3 py-0.5"
+                    className="w-full hover:bg-neutral-700/60 px-3"
                     direction="row"
                     justifyContent="center"
                     gap={1}

@@ -51,6 +51,7 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
                     },
                 }}
                 user={recipient}
+                withBadge
             />
             <Stack direction="column">
                 <Typography variant="caption" className="truncate">

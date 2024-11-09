@@ -1,6 +1,8 @@
 import "@fontsource/montserrat";
 
 import "@css/index.css";
+import "@css/tiptap.css";
+import "@css/readonly-editor.css";
 import "react-contexify/dist/ReactContexify.css";
 
 import { createRoot } from "react-dom/client";

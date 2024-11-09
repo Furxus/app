@@ -4,26 +4,50 @@ import DMChannelItem from "./DMChannelItem";
 import { DMChannel } from "@furxus/types";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
+import { Virtuoso } from "react-virtuoso";
+import SidebarProfile from "@/servers/components/SidebarProfile";
 
 const SidebarDMs = () => {
-    const { channelId } = useParams();
+    const { dmId } = useParams();
 
-    const { isLoading, data: dms } = useQuery({
+    const { data: dms } = useQuery<DMChannel[]>({
         queryKey: ["getDMs"],
         queryFn: () => api.get("/@me/dms").then((res) => res.data),
     });
 
-    if (isLoading) return <></>;
-    if (!channelId) {
+    if (!dms) return <></>;
+    if (!dmId) {
         if (dms[0]) return <Navigate to={`/dms/${dms[0].id}`} />;
         return <></>;
     }
 
     return (
-        <Stack className="py-6 px-1 w-full h-full shadow-2xl" gap={1}>
-            {dms?.map((dm: DMChannel) => (
-                <DMChannelItem key={dm.id} channel={dm} />
-            ))}
+        <Stack
+            pt={1}
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            className="shadow-md h-dvh w-60 bg-neutral-700/[.2] border-r border-green-500/60"
+        >
+            <Stack
+                direction="column"
+                className="w-full border-b border-green-500/60"
+            >
+                <Stack className="shadow-2xl bg-neutral-800[0.5] px-3 py-3 w-full">
+                    <span className="text-neutral-200 text-md truncate">
+                        Direct Messages
+                    </span>
+                </Stack>
+            </Stack>
+            <Stack direction="column" className="h-full w-full p-2">
+                <Virtuoso
+                    data={dms}
+                    itemContent={(index, dm) => (
+                        <DMChannelItem key={index} channel={dm} />
+                    )}
+                    className="w-full"
+                />
+            </Stack>
+            <SidebarProfile />
         </Stack>
     );
 };

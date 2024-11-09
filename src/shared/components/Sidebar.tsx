@@ -5,11 +5,22 @@ import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar";
 import Stack from "@mui/material/Stack";
 import { Button, Typography } from "@mui/material";
-import SidebarDMs from "@/dms/components/SidebarDMs.component";
 
 const Sidebar = () => {
     const { user } = useAuth();
     const { appMode, changeAppMode } = useAppMode();
+
+    let icon = "/icon.png";
+    switch (appMode) {
+        case "posts":
+            icon = "/logo.png";
+            break;
+        case "servers":
+            icon = "/logo2.png";
+            break;
+        case "dms":
+            icon = "/icon.png";
+    }
 
     return (
         <Stack
@@ -17,10 +28,10 @@ const Sidebar = () => {
             alignItems="center"
             gap={2}
             pt={1}
-            className={classNames("p-2 h-dvh bg-neutral-700/[.4]", {
+            className={classNames("py-2 px-3 h-dvh bg-neutral-700/[.4]", {
                 "border-r border-blue-500/60": appMode === "posts",
-                "border-r border-green-500/60": appMode === "servers",
-                "gradient-sidebar": appMode === "dms",
+                "border-r border-green-500/60":
+                    appMode === "servers" || appMode === "dms",
             })}
         >
             <Button
@@ -43,23 +54,14 @@ const Sidebar = () => {
                         "gradient-logo-posts": appMode === "servers",
                         "gradient-logo-both": appMode === "dms",
                     })}
-                    src={
-                        appMode === "dms"
-                            ? "/icon.png"
-                            : appMode === "servers"
-                            ? "/logo2.png"
-                            : "/logo.png"
-                    }
+                    src={icon}
                     sx={{ width: 64, height: 64 }}
                 />
             </Button>
-            <Stack
-                className="h-full w-full bg-neutral-700[0.4]"
-                alignItems="center"
-            >
+            <Stack className="h-full w-full" alignItems="center">
                 {appMode === "posts" && <SidebarPosts />}
                 {appMode === "servers" && <SidebarServers />}
-                {appMode === "dms" && <SidebarDMs />}
+                {appMode === "dms" && <SidebarServers />}
             </Stack>
             <Button
                 sx={{ width: 64, height: 64 }}

@@ -3,36 +3,7 @@ import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import MLink from "@mui/material/Link";
 
-// Markdown imports
-
-import { EditorContent, useEditor } from "@tiptap/react";
-
-// Tiptap imports
-import Document from "@tiptap/extension-document";
-import BulletList from "@tiptap/extension-bullet-list";
-import CharacterCount from "@tiptap/extension-character-count";
-import ListItem from "@tiptap/extension-list-item";
-import OrderedList from "@tiptap/extension-ordered-list";
-import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
-import Emoji, { gitHubEmojis } from "@tiptap-pro/extension-emoji";
-import HardBreak from "@tiptap/extension-hard-break";
-import Heading from "@tiptap/extension-heading";
-import Mention from "@tiptap/extension-mention";
-import Parapgraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { Markdown } from "tiptap-markdown";
-import Bold from "@tiptap/extension-bold";
-import Code from "@tiptap/extension-code";
-import Highlight from "@tiptap/extension-highlight";
-import Italic from "@tiptap/extension-italic";
-import Link from "@tiptap/extension-link";
-import Strike from "@tiptap/extension-strike";
-import Subscript from "@tiptap/extension-subscript";
-import Superscript from "@tiptap/extension-superscript";
-import TextStyle from "@tiptap/extension-text-style";
-import Underline from "@tiptap/extension-underline";
-
-import { all, createLowlight } from "lowlight";
+import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 
 import "@css/tiptap.css";
 import { Typography } from "@mui/material";
@@ -40,8 +11,9 @@ import { Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown";
-
-const lowlight = createLowlight(all);
+import { extensions } from "../FurxusEditor";
+import Link from "@tiptap/extension-link";
+import classNames from "classnames";
 
 const ChannelTextEditInput = ({
     message,
@@ -53,6 +25,7 @@ const ChannelTextEditInput = ({
     setMessageEditing: Dispatch<SetStateAction<boolean>>;
 }) => {
     const [content, setContent] = useState(message.content);
+    const [json, setJson] = useState<JSONContent | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isTypingEmoji, setIsTypingEmoji] = useState(false);
 
@@ -61,7 +34,7 @@ const ChannelTextEditInput = ({
         mutationFn: () =>
             api.patch(
                 `/channels/${message.channel.id}/messages/${message.id}`,
-                { content }
+                { content: json }
             ),
         onError: (error: any) => {
             setError(error.response.data.message);
@@ -84,50 +57,16 @@ const ChannelTextEditInput = ({
         setMessageEditing(false);
     };
 
-    const extensions = [
-        Document,
-        BulletList,
-        CharacterCount.configure({
-            limit: 2000,
-        }),
-        CodeBlockLowLight.configure({
-            lowlight,
-        }),
-        Emoji.configure({
-            enableEmoticons: true,
-            emojis: gitHubEmojis,
-        }),
-        ListItem,
-        OrderedList,
-        HardBreak,
-        Heading.configure({ levels: [1, 2, 3] }),
-        Mention,
-        Parapgraph,
-        Text,
-        Markdown,
-        Bold,
-        Code,
-        Highlight,
-        Italic,
-        Link.configure({
-            openOnClick: false,
-        }),
-        Strike,
-        Subscript,
-        Superscript,
-        TextStyle,
-        Underline,
-    ];
-
     const handleEmojiSelection = (selected: boolean) => {
         setIsTypingEmoji(selected);
     };
 
     const editor = useEditor({
-        extensions,
+        extensions: [...extensions, Link.configure({ openOnClick: false })],
         content: content,
         onUpdate({ editor }) {
             setContent(editor.storage.markdown.getMarkdown());
+            setJson(editor.getJSON());
         },
         editorProps: {
             handleKeyDown(view, event) {
@@ -161,6 +100,11 @@ const ChannelTextEditInput = ({
                 }
 
                 return false;
+            },
+            attributes: {
+                class: classNames(
+                    "prose dark:prose-invert max-w-none [&_ol]:list-decimal [&_ul]:list-disc"
+                ),
             },
         },
     });

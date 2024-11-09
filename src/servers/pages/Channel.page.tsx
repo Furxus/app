@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ChannelHeader from "../components/channels/ChannelHeader";
 import ChannelMessages from "../components/channels/ChannelMessages";
 import ChannelTextInput from "../../shared/components/ChannelTextInput";
@@ -13,7 +13,7 @@ const ChannelPage = () => {
     const queryClient = useQueryClient();
     const { serverId, channelId } = useParams();
 
-    const { isLoading, data: channel } = useQuery({
+    const { data: channel } = useQuery({
         queryKey: ["getChannel", { id: channelId }],
         queryFn: () =>
             api
@@ -57,8 +57,8 @@ const ChannelPage = () => {
         };
     }, []);
 
-    if (isLoading || !channelId) return <Skeleton />;
-    if (!channel) return <Navigate to={`/servers/${serverId}`} />;
+    if (!channelId) return <Skeleton />;
+    if (!channel) return <></>;
 
     return (
         <Stack direction="column" className="w-full h-full overflow-x-hidden">

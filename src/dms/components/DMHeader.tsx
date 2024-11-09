@@ -29,6 +29,7 @@ const DMHeader = ({ recipient }: { recipient: User }) => {
                         },
                     }}
                     user={recipient}
+                    withBadge
                 />
                 <Typography>
                     {recipient?.displayName ?? recipient?.username}

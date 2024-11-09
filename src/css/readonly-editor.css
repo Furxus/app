@@ -1,0 +1,9 @@
+.message {
+    @apply bg-transparent;
+    .tiptap {
+        @apply bg-transparent p-0 border-none;
+        .ProseMirror {
+            @apply bg-transparent;
+        }
+    }
+}

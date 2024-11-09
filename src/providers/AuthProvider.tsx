@@ -25,22 +25,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const navigate = useNavigate();
     const user = useSelector((state: any) => state.auth.user);
 
-    // const [fetchMe] = useLazyQuery(FetchMe, {
-    //     onCompleted: ({ me }: { me: User }) => {
-    //         dispatch(updateUser(me));
-    //     },
-    //     onError: (error) => {
-    //         setError(error.message);
-    //     },
-    //     pollInterval: 10000,
-    // });
-
-    // useSubscription(OnUserUpdated, {
-    //     onData: () => {
-    //         fetchMe();
-    //     },
-    // });
-
     const token = localStorage.getItem("fx-token");
 
     const { data: meData } = useQuery({
