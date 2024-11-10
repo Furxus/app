@@ -27,7 +27,6 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
                 .then((res) => res.data),
         initialPageParam: null,
         getNextPageParam: (lastMessage) => {
-            console.log(lastMessage);
             if (lastMessage.length === 0) return null;
             return lastMessage[0].createdTimestamp;
         },
