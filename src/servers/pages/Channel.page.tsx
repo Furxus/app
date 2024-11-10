@@ -27,25 +27,40 @@ const ChannelPage = () => {
         socket.on("message:create", (message: Message) => {
             queryClient.setQueryData(
                 ["getMessages", { channelId }],
-                (data: Message[]) => [...data, message]
+                (data: any) => ({
+                    pages: [[...data.pages?.flat(), message]],
+                    pageParams: data.pageParams,
+                })
             );
         });
 
         socket.on("message:delete", (message: Message) => {
             queryClient.setQueryData(
                 ["getMessages", { channelId }],
-                (data: Message[]) =>
-                    data.filter((m: Message) => m.id !== message.id)
+                (data: any) => ({
+                    pages: [
+                        data.pages
+                            ?.flat()
+                            .filter((m: Message) => m.id !== message.id),
+                    ],
+                    pageParams: data.pageParams,
+                })
             );
         });
 
         socket.on("message:update", (message: Message) => {
             queryClient.setQueryData(
                 ["getMessages", { channelId }],
-                (data: Message[]) =>
-                    data.map((m: Message) =>
-                        m.id === message.id ? message : m
-                    )
+                (data: any) => ({
+                    pages: [
+                        data.pages
+                            ?.flat()
+                            .map((m: Message) =>
+                                m.id === message.id ? message : m
+                            ),
+                    ],
+                    pageParams: data.pageParams,
+                })
             );
         });
 
