@@ -1,5 +1,5 @@
 import ServerSidebar from "./components/ServerSidebar.component";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 
 import "@css/ServerSideContextMenu.css";
@@ -10,9 +10,20 @@ import { useEffect } from "react";
 import { socket } from "@/api";
 
 const ServerLayout = () => {
-    const navigate = useNavigate();
     const { serverId } = useParams();
     const { servers } = useUserServers();
+
+    const server = servers.find((srv: Server) => srv.id === serverId);
+
+    useEffect(() => {
+        if (server) {
+            socket.emit("server:focus", serverId);
+        }
+
+        return () => {
+            socket.emit("server:blur", serverId);
+        };
+    }, [serverId, server]);
 
     if (servers.length === 0)
         return (
@@ -31,21 +42,6 @@ const ServerLayout = () => {
                 </span>
             </Stack>
         );
-
-    const server = servers.find((srv: Server) => srv.id === serverId);
-
-    useEffect(() => {
-        if (!server) {
-            navigate(`/servers/${servers[0].id}`);
-        }
-
-        if (server) {
-            socket.emit("server:focus", serverId);
-            return () => {
-                socket.emit("server:blur", serverId);
-            };
-        }
-    }, [serverId]);
 
     if (!servers) return <></>;
     if (!server) return <></>;

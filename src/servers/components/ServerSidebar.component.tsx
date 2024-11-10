@@ -5,6 +5,7 @@ import SidebarProfile from "./SidebarProfile.component";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const ServerSidebar = ({ server }: { server: Server }) => {
     const navigate = useNavigate();
@@ -16,9 +17,12 @@ const ServerSidebar = ({ server }: { server: Server }) => {
             api.get(`/channels/${server.id}`).then((res) => res.data),
     });
 
+    useEffect(() => {
+        if (channels && channels.length > 0 && !channelId)
+            navigate(`/servers/${server.id}/${channels[0].id}`);
+    }, []);
+
     if (!channels) return <></>;
-    if (channels && channels.length > 0 && !channelId)
-        navigate(`/servers/${server.id}/${channels[0].id}`);
 
     return (
         <Stack
