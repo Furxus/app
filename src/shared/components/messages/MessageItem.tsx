@@ -10,7 +10,6 @@ import { useAuth } from "@hooks";
 import { useHover } from "usehooks-ts";
 
 import copy from "copy-to-clipboard";
-import markdownToTxt from "markdown-to-txt";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
@@ -25,6 +24,8 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import ChannelTextEditInput from "../ChannelTextEditInput";
 import ReadOnlyEditor from "../ReadOnlyEditor";
+import { generateText } from "@tiptap/react";
+import { extensions } from "@/shared/FurxusEditor";
 
 const MessageItem = ({
     messages,
@@ -211,11 +212,7 @@ const MessageItem = ({
                         Edit Message
                     </Item>
                 )}
-                <Item onClick={() => copy(markdownToTxt(content ?? ""))}>
-                    <FaCopy className="mr-2" />
-                    Copy Raw Text
-                </Item>
-                <Item onClick={() => copy(content ?? "")}>
+                <Item onClick={() => copy(generateText(content, extensions))}>
                     <FaCopy className="mr-2" />
                     Copy Text
                 </Item>
