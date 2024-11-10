@@ -7,16 +7,34 @@ import Stack from "@mui/material/Stack";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 import classNames from "classnames";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { api } from "@/api";
 
 const ChannelMessages = ({ channelId }: { channelId: string }) => {
     const scrollRef = useRef<VirtuosoHandle>(null);
 
-    const { isFetching, data: messages = [] } = useQuery<Message[]>({
+    const { isFetching, fetchNextPage, hasNextPage, data } = useInfiniteQuery<
+        Message[]
+    >({
         queryKey: ["getMessages", { channelId }],
-        queryFn: () =>
-            api.get(`/channels/${channelId}/messages`).then((res) => res.data),
+        queryFn: ({ pageParam }) =>
+            api
+                .get(
+                    `/channels/${channelId}/messages?limit=25${
+                        pageParam ? `&cursor=${pageParam}` : ""
+                    }`
+                )
+                .then((res) => res.data),
+        initialPageParam: null,
+        getNextPageParam: (lastMessage) => {
+            console.log(lastMessage);
+            if (lastMessage.length === 0) return null;
+            return lastMessage[0].createdTimestamp;
+        },
+        select: (data) => ({
+            pages: [...data.pages].reverse(),
+            pageParams: [...data.pageParams].reverse(),
+        }),
         placeholderData: keepPreviousData,
     });
 
@@ -28,6 +46,15 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
             </span>
         </Stack>
     );
+
+    const messages = data?.pages.flat();
+
+    if (!messages)
+        return (
+            <Stack flexGrow={1}>
+                <MessageSkeleton />
+            </Stack>
+        );
 
     return (
         <Stack
@@ -46,10 +73,9 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
                     ref={scrollRef}
                     data={messages}
                     initialTopMostItemIndex={messages?.length - 1}
-                    atTopStateChange={(atTop) => {
-                        if (atTop) {
-                            //next();
-                        }
+                    atTopStateChange={(isAtTop) => {
+                        if (!isFetching && hasNextPage && isAtTop)
+                            fetchNextPage();
                     }}
                     itemContent={(i, message: Message) => (
                         <MessageItem
