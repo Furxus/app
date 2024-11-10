@@ -2,14 +2,14 @@ import Stack from "@mui/material/Stack";
 import Sidebar from "./components/Sidebar.component";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks";
-import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, socket } from "@/api";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api";
 import Button from "@mui/material/Button";
 
 const Layout = () => {
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
+
     const { user: auth, logout, isLoggedIn } = useAuth();
     const [emailSent, setEmailSent] = useState(false);
 
@@ -21,19 +21,6 @@ const Layout = () => {
             setEmailSent(true);
         },
     });
-
-    useEffect(() => {
-        socket.on("user:update", (user) => {
-            queryClient.setQueryData(["getMessages"], (old: any) => {
-                return old.map((msg: any) => {
-                    if (msg.author.id === user.id) {
-                        return { ...msg, author: user };
-                    }
-                    return msg;
-                });
-            });
-        });
-    }, []);
 
     if (!isLoggedIn) return <Navigate to="/login" />;
 
