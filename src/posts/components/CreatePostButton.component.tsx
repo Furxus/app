@@ -49,7 +49,9 @@ const CreatePostButton = () => {
                 open={visible}
                 onClose={closeModal}
                 onKeyDown={(e) => {
-                    //if (e.key === "Enter") createPost();
+                    if (e.key === "Enter") {
+                        //createPost();
+                    }
                 }}
             >
                 <DialogTitle className="flex justify-between">

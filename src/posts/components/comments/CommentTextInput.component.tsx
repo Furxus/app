@@ -15,6 +15,8 @@ const CommentTextInput = ({ post }: { post: Post }) => {
     //     },
     // });
 
+    if (!post) return <></>;
+
     const sendComment = () => {
         //createComment();
         setComment("");
