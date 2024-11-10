@@ -31,6 +31,7 @@ const ConfirmServerDeleteDialog = ({
         onSuccess: () => {
             navigate("/servers");
             queryClient.invalidateQueries({ queryKey: ["getUserServers"] });
+            closeModal();
         },
         onError: (err: any) => {
             const errors = err.response.data.errors as any[];
@@ -56,6 +57,7 @@ const ConfirmServerDeleteDialog = ({
 
     const closeModal = () => {
         setError(null);
+        setConfirm("");
         setVisible(false);
     };
 
