@@ -20,7 +20,7 @@ const ChannelMessages = ({ channelId }: { channelId: string }) => {
         queryFn: ({ pageParam }) =>
             api
                 .get(
-                    `/channels/${channelId}/messages?limit=25${
+                    `/channels/${channelId}/messages?limit=50${
                         pageParam ? `&cursor=${pageParam}` : ""
                     }`
                 )
