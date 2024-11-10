@@ -1,7 +1,7 @@
 import { Comment } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import moment from "moment";
-import UserAvatar from "@/shared/components/avatar/UserAvatar";
+import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
 
 const CommentComponent = ({ comment }: { comment: Comment }) => {
     return (

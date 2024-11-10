@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import ChannelHeader from "../components/channels/ChannelHeader";
-import ChannelMessages from "../components/channels/ChannelMessages";
-import ChannelTextInput from "../../shared/components/ChannelTextInput";
+import ChannelHeader from "../components/channels/ChannelHeader.component";
+import ChannelMessages from "../components/channels/ChannelMessages.component";
+import ChannelTextInput from "../../shared/components/MessageTextInput.component";
 import Stack from "@mui/material/Stack";
 import Skeleton from "@mui/material/Skeleton";
 import { useQuery, useQueryClient } from "@tanstack/react-query";

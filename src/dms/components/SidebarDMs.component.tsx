@@ -1,11 +1,11 @@
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { Navigate, useParams } from "react-router-dom";
-import DMChannelItem from "./DMChannelItem";
+import DMChannelItem from "./DMChannelItem.component";
 import { DMChannel } from "@furxus/types";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
 import { Virtuoso } from "react-virtuoso";
-import SidebarProfile from "@/servers/components/SidebarProfile";
+import SidebarProfile from "@/servers/components/SidebarProfile.component";
 
 const SidebarDMs = () => {
     const { dmId } = useParams();

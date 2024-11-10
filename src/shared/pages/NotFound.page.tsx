@@ -1,7 +1,8 @@
 import Stack from "@mui/material/Stack";
-import ErrorMessage from "../components/ErrorMessage";
+
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 
 const NotFound = () => {
     const navigate = useNavigate();
@@ -13,10 +14,10 @@ const NotFound = () => {
             className="h-dvh"
             gap={2}
         >
-            <ErrorMessage
-                message="404 Not Found"
-                subtext="The page you are looking for does not exist."
-            />
+            <Typography variant="h1">404 Not found</Typography>
+            <Typography variant="h4">
+                The page you are looking for does not exist.
+            </Typography>
             <Stack gap={1} justifyContent="center" alignItems="center">
                 <span className="text-lg">Go back to </span>
                 <Stack

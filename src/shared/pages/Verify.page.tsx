@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const VerifyPage = () => {
     const { code } = useParams();
-    const { isLoggedIn, logout } = useAuth();
+    const { logout } = useAuth();
     const navigation = useNavigate();
     const [countdown, setCountdown] = useState(5);
 

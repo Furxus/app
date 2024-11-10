@@ -8,7 +8,7 @@ import "react-contexify/dist/ReactContexify.css";
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 
-import MainProvider from "./providers/MainProvider";
+import MainProvider from "./providers/Main.provider";
 
 const container = document.getElementById("app");
 const root = createRoot(container!);

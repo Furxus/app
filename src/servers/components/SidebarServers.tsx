@@ -1,6 +1,6 @@
-import SidebarAddServerIcon from "./SidebarAddServerIcon";
+import SidebarAddServerIcon from "./SidebarAddServerIcon.component";
 
-import ServerListItem from "./ServerListItem";
+import ServerListItem from "./ServerListItem.component";
 import { Server } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import { useUserServers } from "@/hooks";

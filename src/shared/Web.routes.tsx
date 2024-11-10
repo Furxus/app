@@ -1,14 +1,14 @@
 import { Outlet, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
-import ServerLayout from "@/servers/ServerLayout";
+import ServerLayout from "@/servers/Servers.layout";
 import ChannelPage from "@/servers/pages/Channel.page";
-import PostLayout from "@/posts/PostsLayout";
-import PostPage from "@/posts/pages/Post";
-import PostsFollowing from "@/posts/pages/PostsFollowing";
-import PostsTrending from "@/posts/pages/PostsTrending";
+import PostLayout from "@/posts/Posts.layout";
+import PostPage from "@/posts/pages/Post.page";
+import PostsFollowing from "@/posts/pages/PostsFollowing.page";
+import PostsTrending from "@/posts/pages/PostsTrending.page";
 import { LoginPage, RegisterPage, NotFound } from "./pages";
 import VerifyPage from "./pages/Verify.page";
-import DMsLayout from "@/dms/DMsLayout";
+import DMsLayout from "@/dms/DMs.layout";
 import DMChannelPage from "@/dms/DMChannel.page";
 
 const WebRoutes = () => {

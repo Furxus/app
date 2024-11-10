@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
-import { AuthContext } from "./providers/AuthProvider";
-import { AppModeContext } from "./providers/AppModeProvider";
+import { AuthContext } from "./providers/Auth.provider";
+import { AppModeContext } from "./providers/AppMode.provider";
 import { UserServersContext } from "./providers/UserServers.provider";
 
 export function useAuth() {

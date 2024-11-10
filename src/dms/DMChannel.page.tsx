@@ -1,11 +1,11 @@
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { useParams } from "react-router-dom";
 
-import DMHeader from "./components/DMHeader";
-import ChannelMessages from "@/servers/components/channels/ChannelMessages";
+import DMHeader from "./components/DMHeader.component";
+import ChannelMessages from "@/servers/components/channels/ChannelMessages.component";
 import { useAuth } from "@/hooks";
 import { DMChannel, Message, User } from "@furxus/types";
-import ChannelTextInput from "@/shared/components/ChannelTextInput";
+import ChannelTextInput from "@/shared/components/MessageTextInput.component";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, socket } from "@/api";
 import { useEffect } from "react";

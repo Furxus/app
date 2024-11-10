@@ -1,4 +1,4 @@
-import APILoading from "./shared/components/status/APILoading";
+import APILoading from "./shared/components/status/APILoading.component";
 
 import { useAppMode } from "./hooks";
 import SEO from "./shared/SEO";
