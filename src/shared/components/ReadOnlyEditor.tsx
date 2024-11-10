@@ -20,10 +20,7 @@ const ReadOnlyEditor = ({ content }: { content: any }) => {
 
     useEffect(() => {
         return () => {
-            if (editor) {
-                console.log("Destroying editor");
-                editor.destroy();
-            }
+            if (editor) editor.destroy();
         };
     }, [editor, content]);
 
