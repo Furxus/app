@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 
 import MessageEmbed from "./MessageEmbed.component";
 import { useRef, useState } from "react";
-import { Tooltip } from "@mui/material";
+import Tooltip from "../Tooltip";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
 
 import { useMutation } from "@tanstack/react-query";

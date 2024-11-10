@@ -83,11 +83,15 @@ const ServerInvitesDialog = ({
                                                 </time>
                                             }
                                         >
-                                            <time dateTime={invite.expiresAt}>
-                                                {moment(
-                                                    invite.expiresAt
-                                                ).fromNow()}
-                                            </time>
+                                            <>
+                                                <time
+                                                    dateTime={invite.expiresAt}
+                                                >
+                                                    {moment(
+                                                        invite.expiresAt
+                                                    ).fromNow()}
+                                                </time>
+                                            </>
                                         </Tooltip>
                                     ) : (
                                         "Never"
@@ -140,9 +144,13 @@ const ServerInvitesDialog = ({
                                             </time>
                                         }
                                     >
-                                        <time dateTime={invite.createdAt}>
-                                            {moment(invite.createdAt).fromNow()}
-                                        </time>
+                                        <>
+                                            <time dateTime={invite.createdAt}>
+                                                {moment(
+                                                    invite.createdAt
+                                                ).fromNow()}
+                                            </time>
+                                        </>
                                     </Tooltip>
                                 </TableCell>
                             </Fragment>

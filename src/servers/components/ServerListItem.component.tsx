@@ -12,7 +12,8 @@ import Avatar from "@/shared/components/avatar/Avatar.component";
 import MAvatar from "@mui/material/Avatar";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
-import { Tooltip, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import Tooltip from "@/shared/components/Tooltip";
 
 const ServerListItem = ({ server }: { server: Server }) => {
     const { user } = useAuth();

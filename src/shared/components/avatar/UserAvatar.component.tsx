@@ -1,7 +1,8 @@
 import { api } from "@/api";
 import { useAppMode, useAuth } from "@/hooks";
 import { DMChannel, User } from "@furxus/types";
-import { ButtonProps, IconButton, Tooltip, TooltipProps } from "@mui/material";
+import { ButtonProps, IconButton, TooltipProps } from "@mui/material";
+import Tooltip from "../Tooltip";
 import Avatar, { AvatarProps } from "@mui/material/Avatar";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";

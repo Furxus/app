@@ -7,7 +7,7 @@ import ProfileSettings from "@/shared/components/profile/ProfileSettings.compone
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip from "@/shared/components/Tooltip";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
 
 const SidebarProfile = () => {
