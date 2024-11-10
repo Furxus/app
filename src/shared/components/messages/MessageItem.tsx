@@ -58,19 +58,17 @@ const MessageItem = ({
         });
     };
 
-    const { author, content, createdAt, updatedAt } = message;
-
     // Check if the previous message is from the same user and was sent within 5 minutes
-    const isSameUser = messages[index - 1]?.author?.id === author?.id;
+    const isSameUser = messages[index - 1]?.author?.id === message.author?.id;
     const isWithinFiveMinutes =
-        moment(createdAt).diff(
+        moment(message.createdAt).diff(
             moment(messages[index - 1]?.createdAt),
             "minutes"
         ) <= 5;
     const showAvatarAndName = !isSameUser || !isWithinFiveMinutes;
 
     // Checks if the current message is from a different day than the previous message
-    const isNewDay = !moment(createdAt).isSame(
+    const isNewDay = !moment(message.createdAt).isSame(
         moment(messages[index - 1]?.createdAt),
         "day"
     );
@@ -81,29 +79,32 @@ const MessageItem = ({
                 <Tooltip
                     disableInteractive
                     title={
-                        <time className="text-xs" dateTime={createdAt}>
-                            {moment(createdAt).calendar()} (
-                            {moment(createdAt).fromNow()})
+                        <time className="text-xs" dateTime={message.createdAt}>
+                            {moment(message.createdAt).calendar()} (
+                            {moment(message.createdAt).fromNow()})
                         </time>
                     }
                 >
                     <time
                         className="absolute left-[-52px] top-[0.31rem] text-neutral-400 text-[10px]"
-                        dateTime={createdAt}
+                        dateTime={message.createdAt}
                     >
-                        {moment(createdAt).format("hh:mm A")}
+                        {moment(message.createdAt).format("hh:mm A")}
                     </time>
                 </Tooltip>
             )}
             <Stack direction="row" alignItems="flex-end" className="w-full">
-                <ReadOnlyEditor content={content} />
+                <ReadOnlyEditor content={message.content} />
                 {message.edited && (
                     <Tooltip
                         disableInteractive
                         title={
-                            <time className="text-xs" dateTime={updatedAt}>
-                                {moment(updatedAt).calendar()} (
-                                {moment(updatedAt).fromNow()})
+                            <time
+                                className="text-xs"
+                                dateTime={message.updatedAt}
+                            >
+                                {moment(message.updatedAt).calendar()} (
+                                {moment(message.updatedAt).fromNow()})
                             </time>
                         }
                         placement="top-start"
@@ -138,7 +139,7 @@ const MessageItem = ({
         <>
             {isNewDay && (
                 <Divider className="mt-1 rounded-lg text-neutral-400 shadow-2xl">
-                    {moment(createdAt).format("dddd, MMMM Do YYYY")}
+                    {moment(message.createdAt).format("dddd, MMMM Do YYYY")}
                 </Divider>
             )}
             {showAvatarAndName ? (
@@ -159,19 +160,20 @@ const MessageItem = ({
                                 },
                             },
                         }}
-                        user={author}
+                        user={message.author}
                     />
                     <Stack className="w-full">
                         <Stack gap={1} direction="row" alignItems="center">
                             <Typography className="font-bold">
-                                {author?.displayName ?? author?.username}
+                                {message.author?.displayName ??
+                                    message.author?.username}
                             </Typography>
                             <time
                                 className="text-gray-400 text-xs"
-                                dateTime={createdAt}
+                                dateTime={message.createdAt}
                             >
-                                {moment(createdAt).calendar()} (
-                                {moment(createdAt).fromNow()})
+                                {moment(message.createdAt).calendar()} (
+                                {moment(message.createdAt).fromNow()})
                             </time>
                         </Stack>
                         <Stack onContextMenu={showMenu} className="w-full">
@@ -206,17 +208,21 @@ const MessageItem = ({
                 </Stack>
             )}
             <Menu id={`message-menu-${message.id}`}>
-                {auth.id === author?.id && (
+                {auth.id === message.author?.id && (
                     <Item onClick={() => setMessageEditing(true)}>
                         <FaEdit className="mr-2" />
                         Edit Message
                     </Item>
                 )}
-                <Item onClick={() => copy(generateText(content, extensions))}>
+                <Item
+                    onClick={() =>
+                        copy(generateText(message.content, extensions))
+                    }
+                >
                     <FaCopy className="mr-2" />
                     Copy Text
                 </Item>
-                {auth.id === author?.id && (
+                {auth.id === message.author?.id && (
                     <Item
                         onClick={() => deleteMessage()}
                         className="text-red-500"
