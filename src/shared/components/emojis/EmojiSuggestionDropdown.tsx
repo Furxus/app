@@ -3,7 +3,6 @@ import { offset, shift, useFloating, flip } from "@floating-ui/react";
 import { Stack } from "@mui/material";
 import { Editor } from "@tiptap/react";
 import { TextSelection } from "@tiptap/pm/state";
-import Emoji from "@tiptap-pro/extension-emoji";
 
 const EmojiSuggestionDropdown = ({
     editor,

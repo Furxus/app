@@ -20,7 +20,11 @@ body {
 }
 
 [data-type="emoji"] {
-    @apply size-[1.4em] block p-0 m-0;
+    @apply size-[1.4em] inline-block;
+}
+
+.prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply max-w-full m-0;
 }
 
 .gradient-sidebar {

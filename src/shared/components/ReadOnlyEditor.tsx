@@ -12,7 +12,7 @@ const ReadOnlyEditor = ({ content }: { content: any }) => {
         editorProps: {
             attributes: {
                 class: classNames(
-                    "prose dark:prose-invert max-w-none [&_ol]:list-decimal [&_ul]:list-disc"
+                    "prose dark:prose-invert m-0 p-0 max-w-none [&_ol]:list-decimal [&_ul]:list-disc"
                 ),
             },
         },
