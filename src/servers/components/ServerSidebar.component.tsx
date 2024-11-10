@@ -19,6 +19,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
     if (!channels) return <></>;
     if (channels && channels.length > 0 && !channelId)
         navigate(`/servers/${server.id}/${channels[0].id}`);
+
     return (
         <Stack
             pt={1}

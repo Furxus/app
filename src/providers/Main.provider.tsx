@@ -14,6 +14,7 @@ import { AuthProvider } from "./Auth.provider";
 import { AppModeProvider } from "./AppMode.provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CacheProvider, ThemeProvider } from "@emotion/react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
@@ -83,7 +84,11 @@ export default function MainProvider() {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <QueryClientProvider client={queryClient}>
-                    <Router>
+                    <Router
+                        future={{
+                            v7_startTransition: true,
+                        }}
+                    >
                         <ThemeProvider theme={theme}>
                             <StyledEngineProvider injectFirst>
                                 <CacheProvider value={emotionCache}>
@@ -96,6 +101,16 @@ export default function MainProvider() {
                                                     <UserServersProvider>
                                                         <CssBaseline />
                                                         <App />
+                                                        {import.meta.env
+                                                            .DEV && (
+                                                            <ReactQueryDevtools
+                                                                buttonPosition="top-right"
+                                                                position="bottom"
+                                                                initialIsOpen={
+                                                                    false
+                                                                }
+                                                            />
+                                                        )}
                                                     </UserServersProvider>
                                                 </AppModeProvider>
                                             </AuthProvider>

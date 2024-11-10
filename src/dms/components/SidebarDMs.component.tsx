@@ -38,7 +38,7 @@ const SidebarDMs = () => {
                     </span>
                 </Stack>
             </Stack>
-            <Stack direction="column" className="h-full w-full p-2">
+            <Stack className="h-full w-full p-2">
                 <Virtuoso
                     data={dms}
                     itemContent={(index, dm) => (

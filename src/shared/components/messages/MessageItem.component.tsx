@@ -43,7 +43,7 @@ const MessageItem = ({
     const messageHovered = useHover(hoverRef);
 
     const { mutate: deleteMessage } = useMutation({
-        mutationKey: ["deleteMessage"],
+        mutationKey: ["deleteMessage", { messageId: message.id }],
         mutationFn: () =>
             api.delete(
                 `/channels/${message.channel.id}/messages/${message.id}`
@@ -120,11 +120,10 @@ const MessageItem = ({
                     {message.embeds.map((embed, i) =>
                         embed.media?.includes("spotify") ? (
                             <iframe
+                                key={i}
                                 src={embed.media}
                                 width={400}
                                 height={80}
-                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
                             />
                         ) : (
                             <MessageEmbed embed={embed} key={i} />
@@ -152,7 +151,7 @@ const MessageItem = ({
                 >
                     <UserAvatar
                         button={{
-                            btnClasses: "rounded-full",
+                            btnClasses: "rounded-full mt-2",
                             btnProps: {
                                 sx: {
                                     width: 40,

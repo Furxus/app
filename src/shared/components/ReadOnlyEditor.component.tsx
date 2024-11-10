@@ -4,7 +4,13 @@ import { useEffect } from "react";
 import Link from "@tiptap/extension-link";
 import classNames from "classnames";
 
-const ReadOnlyEditor = ({ content }: { content: any }) => {
+const ReadOnlyEditor = ({
+    content,
+    additionalClasses,
+}: {
+    content: any;
+    additionalClasses?: string;
+}) => {
     const editor = useEditor({
         extensions: [...extensions, Link],
         content,
@@ -12,7 +18,8 @@ const ReadOnlyEditor = ({ content }: { content: any }) => {
         editorProps: {
             attributes: {
                 class: classNames(
-                    "prose dark:prose-invert m-0 p-0 max-w-none [&_ol]:list-decimal [&_ul]:list-disc"
+                    "prose dark:prose-invert m-0 p-0 max-w-none [&_ol]:list-decimal [&_ul]:list-disc",
+                    additionalClasses
                 ),
             },
         },

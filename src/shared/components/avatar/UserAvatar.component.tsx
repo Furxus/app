@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import { useAppMode, useAuth } from "@/hooks";
 import { DMChannel, User } from "@furxus/types";
-import { ButtonProps, IconButton } from "@mui/material";
+import { ButtonProps, IconButton, Tooltip, TooltipProps } from "@mui/material";
 import Avatar, { AvatarProps } from "@mui/material/Avatar";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
@@ -10,18 +10,27 @@ import { FaUserCircle, FaUserMinus, FaUserPlus } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useHover } from "usehooks-ts";
-import { DNDBadge, IdleBadge, OfflineBadge, OnlineBadge } from "../Badges.component";
+import {
+    DNDBadge,
+    IdleBadge,
+    OfflineBadge,
+    OnlineBadge,
+} from "../Badges.component";
 
 const UserAvatar = ({
     avatar,
     button,
     user,
+    tooltip,
     withBadge = false,
+    withTooltip = false,
 }: {
     user: User;
     avatar?: { avatarProps?: AvatarProps; avatarClasses?: string };
     button?: { btnProps?: ButtonProps; btnClasses?: string };
+    tooltip?: { tooltipProps?: TooltipProps; tooltipClasses?: string };
     withBadge?: boolean;
+    withTooltip?: boolean;
 }) => {
     const navigate = useNavigate();
     const { appMode, changeAppMode } = useAppMode();
@@ -164,13 +173,29 @@ const UserAvatar = ({
 
     return (
         <>
-            <IconButton
-                onContextMenu={showUserMenu}
-                className={btnClasses}
-                {...btnProps}
-            >
-                {withBadge ? renderBadgeAndAvatar() : renderAvatar()}
-            </IconButton>
+            {withTooltip ? (
+                <Tooltip
+                    title={user.displayName ?? user.username}
+                    {...tooltip?.tooltipProps}
+                >
+                    <IconButton
+                        onContextMenu={showUserMenu}
+                        className={btnClasses}
+                        {...btnProps}
+                    >
+                        {withBadge ? renderBadgeAndAvatar() : renderAvatar()}
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <IconButton
+                    onContextMenu={showUserMenu}
+                    className={btnClasses}
+                    {...btnProps}
+                >
+                    {withBadge ? renderBadgeAndAvatar() : renderAvatar()}
+                </IconButton>
+            )}
+
             <Menu id={`avatar-menu-${user?.id}`}>
                 <Item>
                     <FaUserCircle className="mr-2" />

@@ -35,7 +35,11 @@ const Avatars = ({
 
     const { mutate: updateAvatar, isPending } = useMutation({
         mutationKey: ["updateAvatar"],
-        mutationFn: (avatar: any) => api.patch("/@me", { avatar }),
+        mutationFn: (avatar: any) => {
+            if (!previousMode)
+                return api.patch("/@me", { defaultAvatar: avatar });
+            return api.patch("/@me", { avatar });
+        },
         onSuccess: () => {
             setOpen(false);
             setMainOpen(false);

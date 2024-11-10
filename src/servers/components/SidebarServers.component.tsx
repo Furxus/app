@@ -1,7 +1,6 @@
 import SidebarAddServerIcon from "./SidebarAddServerIcon.component";
 
 import ServerListItem from "./ServerListItem.component";
-import { Server } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import { useUserServers } from "@/hooks";
 
@@ -17,7 +16,7 @@ const SidebarServers = () => {
             alignItems="center"
             gap={1}
         >
-            {servers?.map((server: Server, i: number) => (
+            {servers?.map((server, i: number) => (
                 <ServerListItem server={server} key={i} />
             ))}
             <SidebarAddServerIcon />

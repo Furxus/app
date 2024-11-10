@@ -12,6 +12,7 @@ import Avatar from "@/shared/components/avatar/Avatar.component";
 import MAvatar from "@mui/material/Avatar";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import { Tooltip, Typography } from "@mui/material";
 
 const ServerListItem = ({ server }: { server: Server }) => {
     const { user } = useAuth();
@@ -31,15 +32,6 @@ const ServerListItem = ({ server }: { server: Server }) => {
                 .then((res) => res.data),
     });
 
-    // const [leaveServer] = useMutation(LeaveServer, {
-    //     onCompleted: () => {
-    //         navigate("/servers");
-    //     },
-    //     variables: {
-    //         id: server.id,
-    //     },
-    // });
-
     const { show } = useContextMenu();
 
     // Keep this for now since they are no permission system created
@@ -50,7 +42,6 @@ const ServerListItem = ({ server }: { server: Server }) => {
             event,
         });
     };
-    1;
 
     const navigateToServer = () => {
         if (isActive) return;
@@ -61,38 +52,50 @@ const ServerListItem = ({ server }: { server: Server }) => {
         <Stack justifyContent="center" position="relative">
             {isActive && <ActiveServerPill />}
             {hover && !isActive && <HoverServerPill />}
-            {server.icon ? (
-                <Avatar
-                    server={server}
-                    onClick={navigateToServer}
-                    className="cursor-pointer hover:rounded-3xl"
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}
-                    onContextMenu={showMenu}
-                    sx={{
-                        width: 56,
-                        height: 56,
-                        bgcolor: "transparent",
-                    }}
-                >
-                    {server.nameAcronym}
-                </Avatar>
-            ) : (
-                <MAvatar
-                    onClick={navigateToServer}
-                    className="cursor-pointer hover:rounded-3xl bg-neutral-700"
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}
-                    onContextMenu={showMenu}
-                    sx={{
-                        width: 56,
-                        height: 56,
-                        bgcolor: "transparent",
-                    }}
-                >
-                    <span className="font-semibold">{server.nameAcronym}</span>
-                </MAvatar>
-            )}
+            <Tooltip
+                title={
+                    <Typography variant="body2" className="text-white">
+                        {server.name}
+                    </Typography>
+                }
+                arrow
+                placement="right"
+            >
+                {server.icon ? (
+                    <Avatar
+                        server={server}
+                        onClick={navigateToServer}
+                        className="cursor-pointer hover:rounded-3xl"
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}
+                        onContextMenu={showMenu}
+                        sx={{
+                            width: 56,
+                            height: 56,
+                            bgcolor: "transparent",
+                        }}
+                    >
+                        {server.nameAcronym}
+                    </Avatar>
+                ) : (
+                    <MAvatar
+                        onClick={navigateToServer}
+                        className="cursor-pointer hover:rounded-3xl bg-neutral-700"
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}
+                        onContextMenu={showMenu}
+                        sx={{
+                            width: 56,
+                            height: 56,
+                            bgcolor: "transparent",
+                        }}
+                    >
+                        <span className="font-semibold">
+                            {server.nameAcronym}
+                        </span>
+                    </MAvatar>
+                )}
+            </Tooltip>
             <Menu id={`server-menu-${server.id}`}>
                 {user?.id === server.owner.id && (
                     <Item onClick={() => setInvitesDialogVisible(true)}>

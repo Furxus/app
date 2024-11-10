@@ -3,7 +3,12 @@ import { Message } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import MLink from "@mui/material/Link";
 
-import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
+import {
+    EditorContent,
+    generateText,
+    JSONContent,
+    useEditor,
+} from "@tiptap/react";
 
 import "@css/tiptap.css";
 import { Typography } from "@mui/material";
@@ -25,12 +30,12 @@ const ChannelTextEditInput = ({
     setMessageEditing: Dispatch<SetStateAction<boolean>>;
 }) => {
     const [content, setContent] = useState(message.content);
-    const [json, setJson] = useState<JSONContent | null>(null);
+    const [json, setJson] = useState<JSONContent>(message.content);
     const [error, setError] = useState<string | null>(null);
     const [isTypingEmoji, setIsTypingEmoji] = useState(false);
 
     const { mutate: mEditMessage } = useMutation({
-        mutationKey: ["editMessage"],
+        mutationKey: ["editMessage", { messageId: message.id }],
         mutationFn: () =>
             api.patch(
                 `/channels/${message.channel.id}/messages/${message.id}`,
@@ -45,7 +50,9 @@ const ChannelTextEditInput = ({
     });
 
     const editMessage = () => {
-        if (!isTypingEmoji && content.trim() === "") {
+        const text = generateText(json, extensions);
+
+        if (!isTypingEmoji && text.trim() === "") {
             deleteMessage();
             setMessageEditing(false);
             return;
@@ -82,6 +89,12 @@ const ChannelTextEditInput = ({
                         event.preventDefault(); // Prevent new line and send the message
                         editMessage();
                     }
+                    return true;
+                }
+
+                if (event.key === "Escape") {
+                    setMessageEditing(false);
+
                     return true;
                 }
 
