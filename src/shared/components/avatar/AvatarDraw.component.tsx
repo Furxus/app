@@ -82,7 +82,11 @@ const AvatarDraw = ({
                 onClick={() => setOpen(true)}
                 size="small"
                 variant="outlined"
-                color={appMode === "servers" ? "success" : "primary"}
+                color={
+                    appMode === "servers" || appMode === "dms"
+                        ? "success"
+                        : "primary"
+                }
             >
                 Draw
             </Button>
@@ -97,7 +101,8 @@ const AvatarDraw = ({
                     className={classNames(
                         "bg-neutral-900 border rounded-lg p-4",
                         {
-                            "border-green-500/60": appMode === "servers",
+                            "border-green-500/60":
+                                appMode === "servers" || appMode === "dms",
                             "border-blue-500/60": appMode === "posts",
                         }
                     )}
@@ -110,7 +115,8 @@ const AvatarDraw = ({
                         justifyContent="center"
                         alignItems="center"
                         className={classNames("border rounded-md p-2", {
-                            "border-green-500/60": appMode === "servers",
+                            "border-green-500/60":
+                                appMode === "servers" || appMode === "dms",
                             "border-blue-500/60": appMode === "posts",
                         })}
                     >
@@ -146,7 +152,7 @@ const AvatarDraw = ({
                                 onChange={changeSize}
                                 className="w-20 bg-neutral-700 text-neutral-200 rounded-md pl-1"
                                 color={
-                                    appMode === "servers"
+                                    appMode === "servers" || appMode === "dms"
                                         ? Colors.servers
                                         : Colors.posts
                                 }
@@ -186,7 +192,8 @@ const AvatarDraw = ({
                                 onChange={(color: string) => setBgColor(color)}
                                 classNames={classNames("border", {
                                     "border-green-500/60":
-                                        appMode === "servers",
+                                        appMode === "servers" ||
+                                        appMode === "dms",
                                     "border-blue-500/60": appMode === "posts",
                                 })}
                             />
@@ -210,7 +217,7 @@ const AvatarDraw = ({
                             }}
                             style={{
                                 border: `1px solid ${
-                                    appMode === "servers"
+                                    appMode === "servers" || appMode === "dms"
                                         ? Colors.servers
                                         : Colors.posts
                                 }`,
@@ -226,7 +233,9 @@ const AvatarDraw = ({
                     >
                         <Button
                             color={
-                                appMode === "servers" ? "success" : "primary"
+                                appMode === "servers" || appMode === "dms"
+                                    ? "success"
+                                    : "primary"
                             }
                             onClick={() => canvasRef.current?.clearCanvas()}
                             size="small"
@@ -237,7 +246,9 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" ? "success" : "primary"
+                                appMode === "servers" || appMode === "dms"
+                                    ? "success"
+                                    : "primary"
                             }
                             onClick={() => canvasRef.current?.undo()}
                             size="small"
@@ -248,7 +259,9 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" ? "success" : "primary"
+                                appMode === "servers" || appMode === "dms"
+                                    ? "success"
+                                    : "primary"
                             }
                             size="small"
                             variant="outlined"
@@ -259,7 +272,9 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" ? "success" : "primary"
+                                appMode === "servers" || appMode === "dms"
+                                    ? "success"
+                                    : "primary"
                             }
                             size="small"
                             variant="outlined"
@@ -270,7 +285,9 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" ? "success" : "primary"
+                                appMode === "servers" || appMode === "dms"
+                                    ? "success"
+                                    : "primary"
                             }
                             onClick={onClose}
                             size="small"

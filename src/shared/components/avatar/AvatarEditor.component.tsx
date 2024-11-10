@@ -30,7 +30,8 @@ const AvatarEditor = ({
                 justifyContent="center"
                 gap={1.5}
                 className={classNames("bg-neutral-900 border rounded-lg p-4", {
-                    "border-green-500/60": appMode === "servers",
+                    "border-green-500/60":
+                        appMode === "servers" || appMode === "dms",
                     "border-blue-500/60": appMode === "posts",
                 })}
             >

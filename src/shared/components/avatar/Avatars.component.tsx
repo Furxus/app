@@ -64,7 +64,11 @@ const Avatars = ({
                 onClick={() => setOpen(true)}
                 size="small"
                 variant="outlined"
-                color={appMode === "servers" ? "success" : "primary"}
+                color={
+                    appMode === "servers" || appMode === "dms"
+                        ? "success"
+                        : "primary"
+                }
             >
                 Avatars
             </Button>
@@ -78,14 +82,15 @@ const Avatars = ({
                     className={classNames(
                         "bg-neutral-900 border rounded-lg p-4",
                         {
-                            "border-green-500/60": appMode === "servers",
+                            "border-green-500/60":
+                                appMode === "servers" || appMode === "dms",
                             "border-blue-500/60": appMode === "posts",
                         }
                     )}
                 >
                     <Stack direction="column" gap={0.5} alignItems="center">
                         {previousMode ? (
-                            <>
+                            <Stack mb={1}>
                                 <Typography variant="h6">
                                     Previous Avatars
                                 </Typography>
@@ -119,9 +124,9 @@ const Avatars = ({
                                         )
                                     )}
                                 </Stack>
-                            </>
+                            </Stack>
                         ) : (
-                            <>
+                            <Stack mb={1}>
                                 <Typography variant="h6">
                                     Default Avatars
                                 </Typography>
@@ -129,7 +134,19 @@ const Avatars = ({
                                     {species.map((species, index) => (
                                         <Stack
                                             key={index}
-                                            className="p-4"
+                                            className={classNames(
+                                                "p-4 rounded-2xl",
+                                                {
+                                                    "border-[1px]":
+                                                        currentAvatar ===
+                                                        species,
+                                                    "border-green-500/60":
+                                                        appMode === "servers" ||
+                                                        appMode === "dms",
+                                                    "border-blue-500/60":
+                                                        appMode === "posts",
+                                                }
+                                            )}
                                             justifyContent="center"
                                             alignItems="center"
                                             gap={0.5}
@@ -139,12 +156,7 @@ const Avatars = ({
                                         >
                                             <img
                                                 className={classNames(
-                                                    "rounded-full cursor-pointer w-[72px] h-[72px]",
-                                                    {
-                                                        "border-[3px]":
-                                                            currentAvatar ===
-                                                            species,
-                                                    }
+                                                    "rounded-full cursor-pointer w-[72px] h-[72px]"
                                                 )}
                                                 src={`https://cdn.furxus.com/defaultAvatar/${species}.png`}
                                                 alt={species}
@@ -155,7 +167,7 @@ const Avatars = ({
                                         </Stack>
                                     ))}
                                 </Stack>
-                            </>
+                            </Stack>
                         )}
                     </Stack>
                     <Stack
