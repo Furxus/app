@@ -88,9 +88,14 @@ const Avatars = ({
                         }
                     )}
                 >
-                    <Stack direction="column" gap={0.5} alignItems="center">
+                    <Stack
+                        direction="column"
+                        mb={1}
+                        gap={0.5}
+                        alignItems="center"
+                    >
                         {previousMode ? (
-                            <Stack mb={1}>
+                            <>
                                 <Typography variant="h6">
                                     Previous Avatars
                                 </Typography>
@@ -99,7 +104,20 @@ const Avatars = ({
                                         (avatar: string, index: number) => (
                                             <Stack
                                                 key={index}
-                                                className="p-4"
+                                                className={classNames(
+                                                    "p-4 rounded-2xl",
+                                                    {
+                                                        "border-[1px]":
+                                                            indexSelected ===
+                                                            index,
+                                                        "border-green-500/60":
+                                                            appMode ===
+                                                                "servers" ||
+                                                            appMode === "dms",
+                                                        "border-blue-500/60":
+                                                            appMode === "posts",
+                                                    }
+                                                )}
                                                 justifyContent="center"
                                                 alignItems="center"
                                                 gap={0.5}
@@ -110,12 +128,7 @@ const Avatars = ({
                                             >
                                                 <img
                                                     className={classNames(
-                                                        "rounded-full cursor-pointer w-[72px] h-[72px]",
-                                                        {
-                                                            "border-[3px]":
-                                                                currentAvatar ===
-                                                                avatar,
-                                                        }
+                                                        "rounded-full cursor-pointer w-[72px] h-[72px]"
                                                     )}
                                                     src={avatar}
                                                     alt={avatar}
@@ -124,9 +137,9 @@ const Avatars = ({
                                         )
                                     )}
                                 </Stack>
-                            </Stack>
+                            </>
                         ) : (
-                            <Stack mb={1}>
+                            <>
                                 <Typography variant="h6">
                                     Default Avatars
                                 </Typography>
@@ -167,7 +180,7 @@ const Avatars = ({
                                         </Stack>
                                     ))}
                                 </Stack>
-                            </Stack>
+                            </>
                         )}
                     </Stack>
                     <Stack
