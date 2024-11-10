@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import CreatePostButton from "./CreatePostButton.component";
 import { FaFire, FaUsers } from "react-icons/fa";
 import IconButton from "@mui/material/IconButton";
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 const PostsNavbar = () => {
     const navigate = useNavigate();

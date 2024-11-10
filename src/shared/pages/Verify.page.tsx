@@ -1,6 +1,6 @@
 import { api } from "@/api";
 import { useAuth } from "@/hooks";
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

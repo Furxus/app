@@ -1,7 +1,8 @@
 import { api } from "@/api";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
 import { User } from "@furxus/types";
-import { Stack, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 

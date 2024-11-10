@@ -1,5 +1,6 @@
 import { MessageEmbed as MessageEmbedType } from "@furxus/types";
-import { Avatar, Link } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 const MessageEmbed = ({ embed }: { embed: MessageEmbedType }) => {

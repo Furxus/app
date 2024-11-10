@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import Avatar from "@/shared/components/avatar/Avatar.component";
 
 const APILoading = () => {

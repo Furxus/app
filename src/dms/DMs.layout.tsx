@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { Outlet } from "react-router-dom";
 import SidebarDMs from "./components/SidebarDMs.component";
 

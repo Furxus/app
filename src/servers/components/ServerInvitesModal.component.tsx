@@ -7,8 +7,10 @@ import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import { Modal, Tooltip, Typography } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
+import Tooltip from "@/shared/components/Tooltip";
 
 const ServerInvitesDialog = ({
     server,

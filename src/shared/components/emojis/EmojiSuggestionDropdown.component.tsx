@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { offset, shift, useFloating, flip } from "@floating-ui/react";
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { Editor } from "@tiptap/react";
 import { TextSelection } from "@tiptap/pm/state";
 

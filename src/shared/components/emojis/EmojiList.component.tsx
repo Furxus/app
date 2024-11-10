@@ -1,5 +1,5 @@
 import { useAppMode } from "@/hooks";
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import classNames from "classnames";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 

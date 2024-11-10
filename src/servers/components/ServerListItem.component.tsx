@@ -10,9 +10,10 @@ import { Menu, useContextMenu, Item } from "react-contexify";
 import Stack from "@mui/material/Stack";
 import Avatar from "@/shared/components/avatar/Avatar.component";
 import MAvatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
-import { Typography } from "@mui/material";
+
 import Tooltip from "@/shared/components/Tooltip";
 
 const ServerListItem = ({ server }: { server: Server }) => {

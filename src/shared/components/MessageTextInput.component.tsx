@@ -10,7 +10,7 @@ import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
 
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";

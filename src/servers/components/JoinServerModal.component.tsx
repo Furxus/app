@@ -1,7 +1,11 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Link, Modal, Stack, Typography } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
 import { Server } from "@furxus/types";

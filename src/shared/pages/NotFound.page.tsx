@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const NotFound = () => {
     const navigate = useNavigate();

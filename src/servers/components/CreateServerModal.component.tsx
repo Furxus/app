@@ -6,8 +6,13 @@ import { MdClose } from "react-icons/md";
 import AvatarEditor from "react-avatar-edit";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Avatar from "@/shared/components/avatar/Avatar.component";
+import Link from "@mui/material/Link";
 
-import { Avatar, Box, Link, Modal, Stack, Typography } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
 import { Server } from "@furxus/types";

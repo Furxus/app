@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Modal, Typography } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 

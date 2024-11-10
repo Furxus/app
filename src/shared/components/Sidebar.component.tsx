@@ -4,7 +4,8 @@ import { useAppMode, useAuth } from "@hooks";
 import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar.component";
 import Stack from "@mui/material/Stack";
-import { Button, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 const Sidebar = () => {
     const { user } = useAuth();

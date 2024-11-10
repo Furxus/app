@@ -1,4 +1,5 @@
-import { Badge, styled } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
 
 export const OnlineBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-dot": {

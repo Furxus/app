@@ -1,4 +1,4 @@
-import { AvatarProps, Avatar as MAvatar } from "@mui/material";
+import MAvatar, { AvatarProps } from "@mui/material/Avatar";
 import { Server } from "@furxus/types";
 import { useRef } from "react";
 import { useHover } from "usehooks-ts";
