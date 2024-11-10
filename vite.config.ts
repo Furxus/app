@@ -4,11 +4,10 @@ import react from "@vitejs/plugin-react";
 const host = process.env.TAURI_DEV_HOST;
 
 import tsconfigPaths from "vite-tsconfig-paths";
-import inspect from "vite-plugin-inspect";
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-    plugins: [react(), tsconfigPaths(), inspect()],
+    plugins: [react(), tsconfigPaths()],
 
     // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
     //

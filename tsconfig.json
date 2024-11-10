@@ -5,7 +5,7 @@
         "lib": ["ES2020", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "skipLibCheck": true,
-        "baseUrl": "./",
+        "baseUrl": "./src",
 
         /* Bundler mode */
         "moduleResolution": "bundler",
@@ -21,16 +21,16 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "paths": {
-            "@/*": ["src/*"],
-            "@shared/*": ["src/shared/*"],
-            "@servers/*": ["src/servers/*"],
-            "@posts/*": ["src/posts/*"],
-            "@gql/*": ["src/gql/*"],
-            "@utils": ["src/utils.tsx"],
-            "@hooks": ["src/hooks.tsx"],
-            "@css/*": ["src/css/*"]
+            "@/*": ["*"],
+            "@shared/*": ["shared/*"],
+            "@servers/*": ["servers/*"],
+            "@posts/*": ["posts/*"],
+            "@gql/*": ["gql/*"],
+            "@utils": ["utils.tsx"],
+            "@hooks": ["hooks.tsx"],
+            "@css/*": ["css/*"]
         }
     },
-    "include": ["src", "CreateChannelModal.tsx"],
+
     "references": [{ "path": "./tsconfig.node.json" }]
 }

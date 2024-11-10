@@ -1,5 +1,5 @@
 import SidebarPosts from "@/posts/components/SidebarPosts.component";
-import SidebarServers from "@servers/components/SidebarServers";
+import SidebarServers from "@/servers/components/SidebarServers.component";
 import { useAppMode, useAuth } from "@hooks";
 import classNames from "classnames";
 import Avatar from "@/shared/components/avatar/Avatar.component";

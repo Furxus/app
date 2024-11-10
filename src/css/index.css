@@ -20,7 +20,7 @@ body {
 }
 
 [data-type="emoji"] {
-    @apply size-[1.4em] inline-block;
+    @apply size-[1.4em] inline-block align-middle;
 }
 
 .prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {

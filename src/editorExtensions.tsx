@@ -57,7 +57,9 @@ const extensions = [
     Image,
     ListItem,
     OrderedList,
-    HardBreak,
+    HardBreak.configure({
+        keepMarks: false,
+    }),
     Heading.configure({ levels: [1, 2, 3] }),
     Mention,
     Parapgraph,
