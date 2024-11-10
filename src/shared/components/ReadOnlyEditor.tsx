@@ -21,10 +21,11 @@ const ReadOnlyEditor = ({ content }: { content: any }) => {
     useEffect(() => {
         return () => {
             if (editor) {
+                console.log("Destroying editor");
                 editor.destroy();
             }
         };
-    }, [editor]);
+    }, [editor, content]);
 
     return <EditorContent className="message" editor={editor} />;
 };
