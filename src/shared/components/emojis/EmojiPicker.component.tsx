@@ -22,7 +22,11 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
 
     return (
         <>
-            <IconButton onClick={handleClick}></IconButton>
+            <IconButton onClick={handleClick}>
+                <span role="img" aria-label="emoji">
+                    😀
+                </span>
+            </IconButton>
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
