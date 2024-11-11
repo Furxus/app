@@ -8,16 +8,16 @@ import Divider from "@mui/material/Divider";
 import PopoverPicker from "./PopoverPicker.component";
 import { useState } from "react";
 
-const BubbleMenu = ({ editor }: { editor: Editor }) => {
+const BubbleMenu = ({ editor }: { editor: Editor | null }) => {
     const [color, setColor] = useState("#fff");
 
     const onChange = (color: string) => {
-        editor.chain().focus().setColor(color).run();
+        editor?.chain().focus().setColor(color).run();
         setColor(color);
     };
 
     const onReset = () => {
-        editor.chain().focus().unsetColor().run();
+        editor?.chain().focus().unsetColor().run();
         setColor("#fff");
     };
 
@@ -34,27 +34,27 @@ const BubbleMenu = ({ editor }: { editor: Editor }) => {
                 <IconButton
                     size="small"
                     className={classNames("rounded-sm", {
-                        "bg-neutral-800": editor.isActive("bold"),
+                        "bg-neutral-800": editor?.isActive("bold"),
                     })}
-                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    onClick={() => editor?.chain().focus().toggleBold().run()}
                 >
                     <FaBold />
                 </IconButton>
                 <IconButton
                     size="small"
                     className={classNames("rounded-sm", {
-                        "bg-neutral-800": editor.isActive("italic"),
+                        "bg-neutral-800": editor?.isActive("italic"),
                     })}
-                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    onClick={() => editor?.chain().focus().toggleItalic().run()}
                 >
                     <FaItalic />
                 </IconButton>
                 <IconButton
                     size="small"
                     className={classNames("rounded-sm", {
-                        "bg-neutral-800": editor.isActive("strike"),
+                        "bg-neutral-800": editor?.isActive("strike"),
                     })}
-                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    onClick={() => editor?.chain().focus().toggleStrike().run()}
                 >
                     <FaStrikethrough />
                 </IconButton>
