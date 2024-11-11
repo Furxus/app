@@ -16,11 +16,11 @@ import { Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown.component";
-import { extensions } from "../../editorExtensions";
 import Link from "@tiptap/extension-link";
 import classNames from "classnames";
 import BubbleMenu from "./BubbleMenu.component";
 import EmojiPicker from "./emojis/EmojiPicker.component";
+import { useEditorExtensions } from "@/hooks";
 
 const ChannelTextEditInput = ({
     message,
@@ -31,6 +31,7 @@ const ChannelTextEditInput = ({
     deleteMessage: () => void;
     setMessageEditing: Dispatch<SetStateAction<boolean>>;
 }) => {
+    const { extensions } = useEditorExtensions();
     const [content, setContent] = useState(message.content);
     const [json, setJson] = useState<JSONContent>(message.content);
     const [error, setError] = useState<string | null>(null);

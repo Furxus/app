@@ -1,6 +1,6 @@
-import { useAuth } from "@/hooks";
+import { useAuth, useEditorExtensions } from "@/hooks";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
-import { extensions } from "@/editorExtensions";
+
 import { DMChannel } from "@furxus/types";
 
 import Stack from "@mui/material/Stack";
@@ -15,6 +15,7 @@ import Link from "@tiptap/extension-link";
 const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const { extensions } = useEditorExtensions();
     const { user: auth } = useAuth();
 
     const isActive = pathname.includes(channel.id);

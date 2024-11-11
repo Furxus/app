@@ -21,6 +21,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { useEffect } from "react";
 import { socket } from "@/api";
 import { UserServersProvider } from "./UserServers.provider";
+import { UserEmojisProvider } from "./UserEmojis.provider";
+import { EditorExtensionsProvider } from "./EditorExtensions.provider";
 
 const queryClient = new QueryClient();
 
@@ -99,18 +101,22 @@ export default function MainProvider() {
                                             <AuthProvider>
                                                 <AppModeProvider>
                                                     <UserServersProvider>
-                                                        <CssBaseline />
-                                                        <App />
-                                                        {import.meta.env
-                                                            .DEV && (
-                                                            <ReactQueryDevtools
-                                                                buttonPosition="top-right"
-                                                                position="bottom"
-                                                                initialIsOpen={
-                                                                    false
-                                                                }
-                                                            />
-                                                        )}
+                                                        <UserEmojisProvider>
+                                                            <EditorExtensionsProvider>
+                                                                <CssBaseline />
+                                                                <App />
+                                                                {import.meta.env
+                                                                    .DEV && (
+                                                                    <ReactQueryDevtools
+                                                                        buttonPosition="top-right"
+                                                                        position="bottom"
+                                                                        initialIsOpen={
+                                                                            false
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </EditorExtensionsProvider>
+                                                        </UserEmojisProvider>
                                                     </UserServersProvider>
                                                 </AppModeProvider>
                                             </AuthProvider>

@@ -3,7 +3,7 @@ import { FaCogs } from "react-icons/fa";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { MouseEvent, useState } from "react";
 
-import ProfileSettings from "@/shared/components/profile/ProfileSettings.component";
+import ProfileSettings from "@/shared/components/user/UserProfileSettings.component";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";

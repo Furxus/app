@@ -6,12 +6,15 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data/sets/15/twitter.json";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { FaSmile } from "react-icons/fa";
+import { useAuth, useUserEmojis } from "@/hooks";
 
 interface EmojiPickerProps {
     onChange: (value: any) => void;
 }
 
 const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
+    const { user } = useAuth();
+    const { emojis } = useUserEmojis();
     const anchorRef = useRef<HTMLButtonElement>(null);
     const [open, setOpen] = useState(false);
 
@@ -19,6 +22,21 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
         event?.stopPropagation();
         setOpen((prev) => !prev);
     };
+
+    const mappedEmojis = emojis.map((emoji) => ({
+        id: emoji.name,
+        name: emoji.name,
+        keywords: [emoji.shortCode],
+        skins: [{ src: emoji.url }],
+    }));
+
+    const userEmojis = [
+        {
+            id: user.id,
+            name: `${user.displayName ?? user.username}'s Emojis`,
+            emojis: mappedEmojis,
+        },
+    ];
 
     return (
         <>
@@ -36,6 +54,7 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                         onEmojiSelect={(emoji: any) => onChange(emoji)}
                         set="twitter"
                         skinTonePosition="none"
+                        custom={userEmojis}
                     />
                 </Popper>
             </ClickAwayListener>

@@ -77,34 +77,6 @@ const CreateServerDialog = ({
         },
     });
 
-    // const [createServer, { loading }] = useMutation(CreateServer, {
-    //     onCompleted: ({ createServer: serverData }) => {
-    //         setErrors({
-    //             name: null,
-    //             file: null,
-    //         });
-
-    //         if (!serverData) return;
-
-    //         if (serverData.channels && serverData.channels.length > 0)
-    //             navigate(
-    //                 `/servers/${serverData.id}/${serverData.channels[0]?.id}`
-    //             );
-
-    //         closeModal();
-    //     },
-    //     onError: (error) => {
-    //         const errs = error.graphQLErrors[0]?.extensions?.errors as any[];
-    //         if (!errs) return;
-    //         errs.forEach((err) => {
-    //             setErrors((prev) => ({
-    //                 ...prev,
-    //                 [err.type]: err.message,
-    //             }));
-    //         });
-    //     },
-    // });
-
     const closeModal = () => {
         setVisible(false);
         setTimeout(() => {

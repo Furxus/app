@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 
 import authReducer from "./auth";
 import serversReducer from "./user_servers";
+import emojisReducer from "./user_emojis";
 
 const persistConfig = {
     key: "root",
@@ -13,6 +14,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     servers: serversReducer,
+    emojis: emojisReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

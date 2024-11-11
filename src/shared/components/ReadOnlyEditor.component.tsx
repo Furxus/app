@@ -1,8 +1,9 @@
 import { EditorContent, useEditor } from "@tiptap/react";
-import { extensions } from "../../editorExtensions";
+
 import { useEffect } from "react";
 import Link from "@tiptap/extension-link";
 import classNames from "classnames";
+import { useEditorExtensions } from "@/hooks";
 
 const ReadOnlyEditor = ({
     content,
@@ -11,6 +12,8 @@ const ReadOnlyEditor = ({
     content: any;
     additionalClasses?: string;
 }) => {
+    const { extensions } = useEditorExtensions();
+
     const editor = useEditor({
         extensions: [
             ...extensions,

@@ -5,7 +5,7 @@ import { Item, Menu, useContextMenu } from "react-contexify";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 
 import Stack from "@mui/material/Stack";
-import { useAuth } from "@hooks";
+import { useAuth, useEditorExtensions } from "@hooks";
 
 import { useHover } from "usehooks-ts";
 
@@ -25,7 +25,6 @@ import { api } from "@/api";
 import ChannelTextEditInput from "../MessageTextEditInput.component";
 import ReadOnlyEditor from "../ReadOnlyEditor.component";
 import { generateText } from "@tiptap/react";
-import { extensions } from "@/editorExtensions";
 
 const MessageItem = ({
     messages,
@@ -36,6 +35,7 @@ const MessageItem = ({
     message: Message;
     index: number;
 }) => {
+    const { extensions } = useEditorExtensions();
     const { show } = useContextMenu();
     const { user: auth } = useAuth();
     const [messageEditing, setMessageEditing] = useState(false);

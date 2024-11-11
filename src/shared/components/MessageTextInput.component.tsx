@@ -13,10 +13,10 @@ import Link from "@tiptap/extension-link";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown.component";
-import { extensions } from "../../editorExtensions";
 import classNames from "classnames";
 import EmojiPicker from "./emojis/EmojiPicker.component";
 import BubbleMenu from "./BubbleMenu.component";
+import { useEditorExtensions } from "@/hooks";
 
 const ChannelTextInput = ({
     channel,
@@ -26,6 +26,7 @@ const ChannelTextInput = ({
     recipient?: User;
 }) => {
     const [messageContent, setMessageContent] = useState("");
+    const { extensions } = useEditorExtensions();
     const [json, setJson] = useState<JSONContent | null>(null);
 
     const [isTypingEmoji, setIsTypingEmoji] = useState(false);
@@ -117,11 +118,30 @@ const ChannelTextInput = ({
     });
 
     const addEmoji = (emoji: any) => {
-        editor
-            ?.chain()
-            .focus("end")
-            .insertContent(emoji.native + " ")
-            .run();
+        if (!editor) return;
+        if (emoji.native) {
+            editor
+                .chain()
+                .focus("end")
+                .insertContent(emoji.native + " ")
+                .run();
+
+            return;
+        }
+
+        const { state } = editor;
+
+        const node = editor.schema.nodes.emoji.create({
+            id: emoji.id,
+            name: emoji.name,
+            emoji: emoji.src,
+        });
+
+        const transaction = state.tr
+            .insert(state.selection.from, node)
+            .insertText(" ");
+
+        editor.view.dispatch(transaction);
     };
 
     return (
