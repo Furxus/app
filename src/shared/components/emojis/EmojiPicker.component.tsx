@@ -34,6 +34,7 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                     <Picker
                         data={data}
                         onEmojiSelect={(emoji: any) => onChange(emoji)}
+                        set="twitter"
                     />
                 </Popper>
             </ClickAwayListener>
