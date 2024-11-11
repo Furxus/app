@@ -33,7 +33,7 @@ const PopoverPicker = ({
             >
                 {isOpen && (
                     <div
-                        className="absolute right-1/2 translate-y-[-50%] translate-x-[-20%]"
+                        className="absolute top-1/2 translate-y-[-120%] left-1/2 translate-x-[-50%] bg-white"
                         ref={popover}
                         style={{
                             top: "calc(100% + 2px)",

@@ -10,6 +10,8 @@
         "tauri": "tauri"
     },
     "dependencies": {
+        "@emoji-mart/data": "^1.2.1",
+        "@emoji-mart/react": "^1.1.1",
         "@emotion/cache": "^11.13.1",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
@@ -33,6 +35,7 @@
         "@tiptap/extension-bullet-list": "^2.9.1",
         "@tiptap/extension-character-count": "^2.9.1",
         "@tiptap/extension-code-block-lowlight": "^2.9.1",
+        "@tiptap/extension-color": "^2.9.1",
         "@tiptap/extension-highlight": "^2.9.1",
         "@tiptap/extension-image": "^2.9.1",
         "@tiptap/extension-link": "^2.9.1",
@@ -41,6 +44,7 @@
         "@tiptap/extension-placeholder": "^2.9.1",
         "@tiptap/extension-subscript": "^2.9.1",
         "@tiptap/extension-superscript": "^2.9.1",
+        "@tiptap/extension-text-style": "^2.9.1",
         "@tiptap/extension-underline": "^2.9.1",
         "@tiptap/html": "^2.9.1",
         "@tiptap/pm": "^2.9.1",
@@ -52,6 +56,7 @@
         "classnames": "^2.5.1",
         "copy-to-clipboard": "^3.3.3",
         "date-fns": "^3.6.0",
+        "emoji-mart": "^5.6.0",
         "emoji-picker-react": "^4.12.0",
         "formik": "^2.4.6",
         "graphql-ws": "^5.16.0",

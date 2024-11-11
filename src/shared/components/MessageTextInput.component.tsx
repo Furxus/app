@@ -17,6 +17,8 @@ import { api } from "@/api";
 import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown.component";
 import { extensions } from "../../editorExtensions";
 import classNames from "classnames";
+import EmojiPicker from "./emojis/EmojiPicker.component";
+import BubbleMenu from "./BubbleMenu.component";
 
 const ChannelTextInput = ({
     channel,
@@ -114,6 +116,10 @@ const ChannelTextInput = ({
         },
     });
 
+    const addEmoji = (emoji: any) => {
+        editor?.chain().focus().insertContent(emoji.native).run();
+    };
+
     return (
         <Stack
             position="sticky"
@@ -128,7 +134,11 @@ const ChannelTextInput = ({
                     onSelectEmoji={() => handleEmojiSelection(false)}
                 />
             )}
-            <EditorContent className="w-full" editor={editor} />
+            <Stack direction="row" justifyContent="center" alignItems="center">
+                <BubbleMenu editor={editor} />
+                <EditorContent className="w-full" editor={editor} />
+                <EmojiPicker onChange={addEmoji} />
+            </Stack>
             <Stack
                 position="relative"
                 direction="row"
@@ -138,7 +148,7 @@ const ChannelTextInput = ({
                 <Typography
                     position="absolute"
                     bottom={0}
-                    right={5}
+                    right={50}
                     variant="caption"
                     color={messageContent.length === 2000 ? "error" : "inherit"}
                 >

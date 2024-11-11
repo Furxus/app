@@ -14,6 +14,7 @@ import Text from "@tiptap/extension-text";
 import { Markdown } from "tiptap-markdown";
 import Bold from "@tiptap/extension-bold";
 import Code from "@tiptap/extension-code";
+import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import Italic from "@tiptap/extension-italic";
 import Strike from "@tiptap/extension-strike";
@@ -55,6 +56,7 @@ const extensions = [
         forceFallbackImages: true,
     }),
     Image,
+    Color,
     ListItem,
     OrderedList,
     HardBreak.configure({
