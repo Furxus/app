@@ -77,20 +77,20 @@ const EmojiSuggestionDropdown = ({
             const textBeforeMatch = match[0];
             const fromPos = from - textBeforeMatch.length;
 
+            const node = editor.schema.nodes.emoji.create({
+                id: emoji.id,
+                name: emoji.name,
+                emoji: emoji.emoji,
+            });
+
             const transaction = state.tr
                 .delete(fromPos, from)
-                .insertText(emoji, fromPos);
-
-            // Get the correct new position for the cursor after the emoji insertion
-            const newSelectionPos = fromPos + emoji.length;
+                .insert(fromPos, node)
+                .insertText(" ");
 
             // Now, update the transaction with the correct cursor position
             const updatedTransaction = transaction.setSelection(
-                TextSelection.create(
-                    transaction.doc,
-                    newSelectionPos,
-                    newSelectionPos
-                )
+                TextSelection.create(transaction.doc, fromPos + 2)
             );
 
             // Finally, dispatch the updated transaction with the new selection
@@ -122,7 +122,7 @@ const EmojiSuggestionDropdown = ({
             case "Enter":
                 event.preventDefault();
                 if (index >= 0 && index < suggestions.length) {
-                    insertEmoji(suggestions[index].emoji);
+                    insertEmoji(suggestions[index]);
                 }
                 break;
             case "Escape":
@@ -170,7 +170,7 @@ const EmojiSuggestionDropdown = ({
                         gap={1}
                         id={`emoji-${i}`}
                         className="hover:bg-neutral-600 hover:cursor-pointer rounded-lg p-1 w-full"
-                        onClick={() => insertEmoji(emoji.fallbackImage)}
+                        onClick={() => insertEmoji(emoji)}
                         style={{
                             backgroundColor: i === index ? "#2d3748" : "",
                         }}

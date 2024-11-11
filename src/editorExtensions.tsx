@@ -24,7 +24,8 @@ import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { all, createLowlight } from "lowlight";
 
-import twemoji from "twemoji";
+import twemojiUtil from "twemoji";
+import { emojis as twemojis } from "@emoji-mart/data/sets/15/twitter.json";
 
 const lowlight = createLowlight(all);
 
@@ -40,17 +41,36 @@ const extensions = [
     Emoji.configure({
         enableEmoticons: true,
         emojis: emojis.map((emoji) => {
-            if (!emoji.emoji) return emoji;
+            const twemoji: any =
+                twemojis[emoji.name as keyof typeof twemojis] || emoji;
 
-            const twe = twemoji.parse(emoji.emoji, {
-                base: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/",
-                folder: "svg",
-                ext: ".svg",
-            });
+            let image = "";
+
+            if (twemoji.fallbackImage) {
+                const twemojiParse = twemojiUtil.parse(twemoji.emoji, {
+                    base: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/15.1.0/",
+                    ext: ".svg",
+                    folder: "svg",
+                });
+
+                image = twemojiParse.split('src="')[1].split('"')[0];
+            }
+
+            if (twemoji.skins) {
+                const skin = twemoji.skins[0];
+
+                const twemojiParse = twemojiUtil.parse(skin.native, {
+                    base: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/15.1.0/",
+                    ext: ".svg",
+                    folder: "svg",
+                });
+
+                image = twemojiParse.split('src="')[1].split('"')[0];
+            }
 
             return {
                 ...emoji,
-                fallbackImage: twe.split('src="')[1]?.split('"')[0],
+                fallbackImage: image,
             };
         }),
         forceFallbackImages: true,
