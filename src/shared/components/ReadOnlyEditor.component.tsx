@@ -12,7 +12,10 @@ const ReadOnlyEditor = ({
     additionalClasses?: string;
 }) => {
     const editor = useEditor({
-        extensions: [...extensions, Link],
+        extensions: [
+            ...extensions,
+            Link.configure({ openOnClick: true, autolink: true }),
+        ],
         content,
         editable: false,
         editorProps: {

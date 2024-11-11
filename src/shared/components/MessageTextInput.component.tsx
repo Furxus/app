@@ -10,8 +10,6 @@ import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
 
-import Typography from "@mui/material/Typography";
-
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown.component";
@@ -29,19 +27,13 @@ const ChannelTextInput = ({
 }) => {
     const [messageContent, setMessageContent] = useState("");
     const [json, setJson] = useState<JSONContent | null>(null);
-    const [error, setError] = useState<string | null>(null);
+
     const [isTypingEmoji, setIsTypingEmoji] = useState(false);
 
     const { mutate: createMessage } = useMutation({
         mutationKey: ["createMessage"],
         mutationFn: (values: any) =>
             api.put(`/channels/${channel.id}/messages`, values),
-        onError: (error: any) => {
-            setError(error.response.data.message);
-        },
-        onSuccess: () => {
-            setError(null);
-        },
     });
 
     const sendMessage = () => {
@@ -137,7 +129,6 @@ const ChannelTextInput = ({
             <Stack direction="row" justifyContent="center" alignItems="center">
                 <BubbleMenu editor={editor} />
                 <EditorContent className="w-full" editor={editor} />
-                <EmojiPicker onChange={addEmoji} />
             </Stack>
             <Stack
                 position="relative"
@@ -145,20 +136,17 @@ const ChannelTextInput = ({
                 justifyContent="flex-end"
                 gap={1}
             >
-                <Typography
+                <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
                     position="absolute"
                     bottom={0}
-                    right={50}
-                    variant="caption"
-                    color={messageContent.length === 2000 ? "error" : "inherit"}
+                    right={10}
+                    gap={1}
                 >
-                    {messageContent.length}/2000
-                </Typography>
-                {error && (
-                    <Typography variant="caption" color="error">
-                        {error}
-                    </Typography>
-                )}
+                    <EmojiPicker onChange={addEmoji} />
+                </Stack>
             </Stack>
         </Stack>
     );
