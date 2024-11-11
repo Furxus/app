@@ -19,6 +19,8 @@ import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown.component"
 import { extensions } from "../../editorExtensions";
 import Link from "@tiptap/extension-link";
 import classNames from "classnames";
+import BubbleMenu from "./BubbleMenu.component";
+import EmojiPicker from "./emojis/EmojiPicker.component";
 
 const ChannelTextEditInput = ({
     message,
@@ -129,6 +131,10 @@ const ChannelTextEditInput = ({
         },
     });
 
+    const addEmoji = (emoji: any) => {
+        editor?.chain().focus("end").insertContent(emoji.native).run();
+    };
+
     return (
         <Stack
             position="sticky"
@@ -143,27 +149,27 @@ const ChannelTextEditInput = ({
                     editor={editor}
                 />
             )}
-            <EditorContent className="w-full" editor={editor} />
+            <Stack direction="row" justifyContent="center" alignItems="center">
+                <BubbleMenu editor={editor} />
+                <EditorContent className="w-full" editor={editor} />
+            </Stack>
             <Stack
                 position="relative"
                 direction="row"
                 justifyContent="flex-end"
                 gap={1}
             >
-                <Typography
+                <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
                     position="absolute"
                     bottom={0}
-                    right={5}
-                    variant="caption"
-                    color={content.length === 2000 ? "error" : "inherit"}
+                    right={10}
+                    gap={1}
                 >
-                    {content.length}/2000
-                </Typography>
-                {error && (
-                    <Typography variant="caption" color="error">
-                        {error}
-                    </Typography>
-                )}
+                    <EmojiPicker onChange={addEmoji} />
+                </Stack>
             </Stack>
             <Typography variant="subtitle2" className="">
                 escape to{" "}

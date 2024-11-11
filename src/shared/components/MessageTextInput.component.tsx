@@ -117,7 +117,7 @@ const ChannelTextInput = ({
     });
 
     const addEmoji = (emoji: any) => {
-        editor?.chain().focus().insertContent(emoji.native).run();
+        editor?.chain().focus("end").insertContent(emoji.native).run();
     };
 
     return (
