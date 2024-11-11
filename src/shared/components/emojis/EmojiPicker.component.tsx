@@ -1,5 +1,5 @@
-import { IconButton } from "@mui/material";
-import Popover from "@mui/material/Popover";
+import Popper from "@mui/material/Popper";
+import IconButton from "@mui/material/IconButton";
 import { useState, MouseEvent } from "react";
 
 import Picker from "@emoji-mart/react";
@@ -11,13 +11,11 @@ interface EmojiPickerProps {
 
 const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const [open, setOpen] = useState(false);
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
+        setOpen((prev) => !prev);
     };
 
     return (
@@ -27,27 +25,13 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                     😀
                 </span>
             </IconButton>
-            <Popover
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                disableRestoreFocus
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                }}
-                transformOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                }}
-                marginThreshold={0}
-            >
+            <Popper anchorEl={anchorEl} open={open} placement="top-end">
                 <Picker
                     data={data}
                     onEmojiSelect={(emoji: any) => onChange(emoji)}
                     set="twitter"
                 />
-            </Popover>
+            </Popper>
         </>
     );
 };
