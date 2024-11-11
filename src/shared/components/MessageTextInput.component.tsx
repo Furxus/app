@@ -84,12 +84,20 @@ const ChannelTextInput = ({
                     return true;
                 }
 
-                // Set emoji typing state when `:` is typed
-                const typedText = view.state.doc.textBetween(
-                    view.state.selection.from - 1,
+                // Track the "current word" being typed
+                const currentWord = view.state.doc.textBetween(
+                    view.state.selection.from - 20,
                     view.state.selection.from
                 );
-                if (typedText === ":" && !event.shiftKey) {
+
+                // URL detection regex
+                const urlPattern = /https?:\/\/[^\s]+/;
+
+                // Only set isTypingEmoji to true if the current word does not match a URL pattern
+                if (
+                    !urlPattern.test(currentWord) &&
+                    currentWord.endsWith(":")
+                ) {
                     setIsTypingEmoji(true);
                 }
 
