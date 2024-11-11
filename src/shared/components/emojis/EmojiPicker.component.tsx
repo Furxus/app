@@ -35,6 +35,7 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                         data={data}
                         onEmojiSelect={(emoji: any) => onChange(emoji)}
                         set="twitter"
+                        skinTonePosition="none"
                     />
                 </Popper>
             </ClickAwayListener>
