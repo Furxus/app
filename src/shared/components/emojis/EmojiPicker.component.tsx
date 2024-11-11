@@ -40,6 +40,7 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                     vertical: "bottom",
                     horizontal: "right",
                 }}
+                marginThreshold={0}
             >
                 <Picker
                     data={data}
