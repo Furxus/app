@@ -28,9 +28,10 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
                 </span>
             </IconButton>
             <Popover
-                open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
                 onClose={handleClose}
+                disableRestoreFocus
                 anchorOrigin={{
                     vertical: "top",
                     horizontal: "center",
