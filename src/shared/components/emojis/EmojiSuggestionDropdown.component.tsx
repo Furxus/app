@@ -3,6 +3,7 @@ import { offset, shift, useFloating, flip } from "@floating-ui/react";
 import Stack from "@mui/material/Stack";
 import { Editor } from "@tiptap/react";
 import { TextSelection } from "@tiptap/pm/state";
+import { useAuth } from "@/hooks";
 
 const EmojiSuggestionDropdown = ({
     editor,
@@ -11,6 +12,7 @@ const EmojiSuggestionDropdown = ({
     editor: Editor;
     onSelectEmoji: () => void;
 }) => {
+    const { user } = useAuth();
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [query, setQuery] = useState("");
     const [index, setIndex] = useState(-1);
@@ -22,11 +24,14 @@ const EmojiSuggestionDropdown = ({
 
     const filterEmojis = (query: string) =>
         editor.storage.emoji.emojis.filter(
-            ({ shortcodes, tags }: any) =>
-                shortcodes.find((shortcode: any) =>
+            ({ shortcodes, tags, createdBy }: any) =>
+                createdBy === user.id &&
+                (shortcodes.find((shortcode: any) =>
                     shortcode.startsWith(query.toLowerCase())
                 ) ||
-                tags.find((tag: any) => tag.startsWith(query.toLowerCase()))
+                    tags.find((tag: any) =>
+                        tag.startsWith(query.toLowerCase())
+                    ))
         );
 
     const handleTransaction = useCallback(() => {

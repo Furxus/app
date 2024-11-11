@@ -45,8 +45,6 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
         queryFn: () => api.get("/emojis").then((res) => res.data),
     });
 
-    console.log(otherEmojis);
-
     const defaultEmojis = emojis.map((emoji) => {
         const twemoji: any =
             twemojis[emoji.name as keyof typeof twemojis] || emoji;
@@ -91,6 +89,7 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
                 fallbackImage: emoji.url,
                 group: "Custom",
                 tags: [emoji.name],
+                createdBy: emoji.createdBy,
             });
         });
     }

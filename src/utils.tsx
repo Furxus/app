@@ -100,9 +100,3 @@ export const dataURLToFile = (dataURL: string, filename: string) => {
 
 export const randEl = <T extends any>(arr: T[]): T =>
     arr[Math.floor(Math.random() * arr.length)];
-
-export const setupEmojis = () => {
-    const { emojis } = useUserEmojis();
-
-    console.log(emojis);
-};
