@@ -4,7 +4,6 @@ import Stack from "@mui/material/Stack";
 import { useTheme } from "@mui/material/styles";
 import { FaBook, FaHashtag, FaVolumeUp } from "react-icons/fa";
 import { materialDark as darkTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useUserEmojis } from "./hooks";
 
 export const ChannelTypeIcons: Record<string, any> = {
     category: <FaBook />,
