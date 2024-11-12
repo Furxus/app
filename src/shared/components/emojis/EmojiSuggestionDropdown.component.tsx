@@ -22,17 +22,22 @@ const EmojiSuggestionDropdown = ({
         middleware: [offset(5), flip(), shift()],
     });
 
-    const filterEmojis = (query: string) =>
-        editor.storage.emoji.emojis.filter(
-            ({ shortcodes, tags, createdBy }: any) =>
-                createdBy === user.id &&
-                (shortcodes.find((shortcode: any) =>
+    const filterEmojis = (query: string) => {
+        const defaultEmojios = editor.storage.emoji.emojis.filter(
+            (emoji: any) => !emoji.createdBy
+        );
+        const customEmojis = editor.storage.emoji.emojis.filter(
+            (emoji: any) => emoji.createdBy === user.id
+        );
+
+        return [...defaultEmojios, ...customEmojis].filter(
+            ({ shortcodes, tags }: any) =>
+                shortcodes.find((shortcode: any) =>
                     shortcode.startsWith(query.toLowerCase())
                 ) ||
-                    tags.find((tag: any) =>
-                        tag.startsWith(query.toLowerCase())
-                    ))
+                tags.find((tag: any) => tag.startsWith(query.toLowerCase()))
         );
+    };
 
     const handleTransaction = useCallback(() => {
         const { state } = editor;
