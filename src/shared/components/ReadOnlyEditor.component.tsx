@@ -47,7 +47,7 @@ const ReadOnlyEditor = ({
                     "prose dark:prose-invert m-0 p-0 max-w-none [&_ol]:list-decimal [&_ul]:list-disc",
                     additionalClasses,
                     {
-                        "text-2xl": onlyEmojis,
+                        "text-3xl": onlyEmojis,
                     }
                 ),
             },
