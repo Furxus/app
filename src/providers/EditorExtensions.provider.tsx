@@ -35,8 +35,12 @@ const lowlight = createLowlight(common);
 
 export const EditorExtensionsContext = createContext<{
     extensions: any[];
+    defaultEmojis: EmojiItem[];
+    customEmojis: EmojiItem[];
 }>({
     extensions: [],
+    defaultEmojis: [],
+    customEmojis: [],
 });
 
 export function EditorExtensionsProvider({ children }: PropsWithChildren) {
@@ -84,7 +88,9 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
     if (otherEmojis) {
         otherEmojis.forEach((emoji) => {
             customEmojis.push({
-                name: emoji.name,
+                name: defaultEmojis.find((e) => e.name === emoji.name)
+                    ? `${emoji.name} (Custom)`
+                    : emoji.name,
                 shortcodes: [emoji.shortCode],
                 fallbackImage: emoji.url,
                 group: "Custom",
@@ -135,6 +141,8 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
         <EditorExtensionsContext.Provider
             value={{
                 extensions,
+                defaultEmojis,
+                customEmojis,
             }}
         >
             {children}

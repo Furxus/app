@@ -26,7 +26,7 @@ const ChannelTextInput = ({
     recipient?: User;
 }) => {
     const [messageContent, setMessageContent] = useState("");
-    const { extensions } = useEditorExtensions();
+    const { extensions, defaultEmojis } = useEditorExtensions();
     const [json, setJson] = useState<JSONContent | null>(null);
 
     const [isTypingEmoji, setIsTypingEmoji] = useState(false);
@@ -132,9 +132,9 @@ const ChannelTextInput = ({
         const { state } = editor;
 
         const node = editor.schema.nodes.emoji.create({
-            id: emoji.id,
-            name: emoji.name,
-            emoji: emoji.src,
+            name: defaultEmojis.find((e) => e.name === emoji.name)
+                ? `${emoji.name} (Custom)`
+                : emoji.name,
         });
 
         const transaction = state.tr

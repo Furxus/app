@@ -31,7 +31,7 @@ const ChannelTextEditInput = ({
     deleteMessage: () => void;
     setMessageEditing: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { extensions } = useEditorExtensions();
+    const { extensions, defaultEmojis } = useEditorExtensions();
     const [content, setContent] = useState(message.content);
     const [json, setJson] = useState<JSONContent>(message.content);
     const [error, setError] = useState<string | null>(null);
@@ -133,7 +133,30 @@ const ChannelTextEditInput = ({
     });
 
     const addEmoji = (emoji: any) => {
-        editor?.chain().focus("end").insertContent(emoji.native).run();
+        if (!editor) return;
+        if (emoji.native) {
+            editor
+                .chain()
+                .focus("end")
+                .insertContent(emoji.native + " ")
+                .run();
+
+            return;
+        }
+
+        const { state } = editor;
+
+        const node = editor.schema.nodes.emoji.create({
+            name: defaultEmojis.find((e) => e.name === emoji.name)
+                ? `${emoji.name} (Custom)`
+                : emoji.name,
+        });
+
+        const transaction = state.tr
+            .insert(state.selection.from, node)
+            .insertText(" ");
+
+        editor.view.dispatch(transaction);
     };
 
     return (

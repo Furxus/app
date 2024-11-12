@@ -90,7 +90,6 @@ const EmojiSuggestionDropdown = ({
 
             const node = editor.schema.nodes.emoji.create({
                 name: emoji.name,
-                fallbackImage: emoji.fallbackImage,
             });
 
             const transaction = state.tr
