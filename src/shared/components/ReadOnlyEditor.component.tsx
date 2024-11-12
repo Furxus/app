@@ -23,8 +23,6 @@ const ReadOnlyEditor = ({
         onCreate: ({ editor }) => {
             const { content } = editor.getJSON();
 
-            console.log(content);
-
             const checkOnlyEmojis =
                 content?.every(
                     (node) =>
@@ -34,8 +32,6 @@ const ReadOnlyEditor = ({
                                 (n.type === "text" && n.text?.trim() === "")
                         ) || node.type === "emoji"
                 ) ?? false;
-
-            console.log(checkOnlyEmojis);
 
             setOnlyEmojis(checkOnlyEmojis);
         },
