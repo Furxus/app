@@ -25,11 +25,6 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
             ? channel.recipient2
             : channel.recipient1;
 
-    const content = generateText(
-        channel.messages[channel.messages.length - 1].content,
-        [...extensions, Link.configure({ openOnClick: false })]
-    );
-
     return (
         <Stack
             direction="row"
@@ -64,7 +59,14 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
                     channel.messages[channel.messages.length - 1] && (
                         <ReadOnlyEditor
                             additionalClasses="text-xs"
-                            content={content}
+                            content={generateText(
+                                channel.messages[channel.messages.length - 1]
+                                    ?.content,
+                                [
+                                    ...extensions,
+                                    Link.configure({ openOnClick: false }),
+                                ]
+                            )}
                         />
                     )
                 ) : (

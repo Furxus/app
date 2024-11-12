@@ -1,4 +1,4 @@
-import { useAuth } from "@hooks";
+import { useAppMode, useAuth } from "@hooks";
 import { FaCogs } from "react-icons/fa";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { MouseEvent, useState } from "react";
@@ -9,8 +9,11 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@/shared/components/Tooltip";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
+import classNames from "classnames";
+import { Divider } from "@mui/material";
 
 const SidebarProfile = () => {
+    const { appMode } = useAppMode();
     const { user, logout } = useAuth();
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -35,7 +38,13 @@ const SidebarProfile = () => {
                 alignItems="center"
                 justifyContent="flex-start"
                 gap={0.5}
-                className="text-ellipsis px-2 w-full h-[5.65rem] border-t border-green-500/60"
+                className={classNames(
+                    "text-ellipsis px-2 w-full h-[5.65rem] border-t",
+                    {
+                        "border-green-500/60": appMode === "servers",
+                        "border-[#367588]/60": appMode === "dms",
+                    }
+                )}
             >
                 <UserAvatar
                     button={{
@@ -78,6 +87,8 @@ const SidebarProfile = () => {
             </Stack>
             <ProfileSettings open={modalOpen} setOpen={setModalOpen} />
             <Menu id="sidebar-profile-menu">
+                <Item onClick={() => setModalOpen(true)}>Settings</Item>
+                <Divider />
                 <Item onClick={() => logout()}>Logout</Item>
             </Menu>
         </>

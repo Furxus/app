@@ -26,11 +26,11 @@ const SidebarDMs = () => {
             pt={1}
             justifyContent="flex-start"
             alignItems="flex-start"
-            className="shadow-md h-dvh w-60 bg-neutral-700/[.2] border-r border-green-500/60"
+            className="shadow-md h-dvh w-60 bg-neutral-700/[.2] border-r border-[#367588]/60"
         >
             <Stack
                 direction="column"
-                className="w-full border-b border-green-500/60"
+                className="w-full border-b border-[#367588]/60"
             >
                 <Stack className="shadow-2xl bg-neutral-800[0.5] px-3 py-3 w-full">
                     <span className="text-neutral-200 text-md truncate">
