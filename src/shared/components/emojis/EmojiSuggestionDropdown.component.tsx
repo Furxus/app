@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import { Editor } from "@tiptap/react";
 import { TextSelection } from "@tiptap/pm/state";
 import { useAuth } from "@/hooks";
+import Avatar from "../avatar/Avatar.component";
 
 const EmojiSuggestionDropdown = ({
     editor,
@@ -27,7 +28,7 @@ const EmojiSuggestionDropdown = ({
             (emoji: any) => !emoji.createdBy
         );
         const customEmojis = editor.storage.emoji.emojis.filter(
-            (emoji: any) => emoji.createdBy === user.id
+            (emoji: any) => emoji.createdBy?.id === user.id
         );
 
         return [...defaultEmojios, ...customEmojis].filter(
@@ -88,9 +89,8 @@ const EmojiSuggestionDropdown = ({
             const fromPos = from - textBeforeMatch.length;
 
             const node = editor.schema.nodes.emoji.create({
-                id: emoji.id,
                 name: emoji.name,
-                emoji: emoji.emoji,
+                fallbackImage: emoji.fallbackImage,
             });
 
             const transaction = state.tr
@@ -176,7 +176,8 @@ const EmojiSuggestionDropdown = ({
                 {suggestions.map((emoji, i) => (
                     <Stack
                         direction="row"
-                        key={emoji.name}
+                        justifyContent="space-between"
+                        key={i}
                         gap={1}
                         id={`emoji-${i}`}
                         className="hover:bg-neutral-600 hover:cursor-pointer rounded-lg p-1 w-full"
@@ -185,16 +186,35 @@ const EmojiSuggestionDropdown = ({
                             backgroundColor: i === index ? "#2d3748" : "",
                         }}
                     >
-                        {emoji.fallbackImage ? (
-                            <img
-                                className="size-[1.4em]"
-                                src={emoji.fallbackImage}
-                                alt={emoji.name}
-                            />
-                        ) : (
-                            <>{emoji.emoji}</>
+                        <Stack direction="row" gap={1} alignItems="center">
+                            {emoji.fallbackImage ? (
+                                <img
+                                    className="size-[1.4em]"
+                                    src={emoji.fallbackImage}
+                                    alt={emoji.name}
+                                />
+                            ) : (
+                                <>{emoji.emoji}</>
+                            )}
+                            :{emoji.shortcodes[0]}:
+                        </Stack>
+                        {emoji.createdBy && (
+                            <Stack direction="row" gap={0.5}>
+                                <Avatar
+                                    sx={{
+                                        width: "1.5rem",
+                                        height: "1.5rem",
+                                    }}
+                                    src={
+                                        emoji.createdBy.avatar ??
+                                        emoji.createdBy.defaultAvatar
+                                    }
+                                    alt={emoji.createdBy.username}
+                                />
+                                {emoji.createdBy.displayName ??
+                                    emoji.createdBy.username}
+                            </Stack>
                         )}
-                        :{emoji.shortcodes[0]}:
                     </Stack>
                 ))}
             </Stack>
