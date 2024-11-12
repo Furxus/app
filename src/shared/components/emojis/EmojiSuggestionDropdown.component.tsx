@@ -194,7 +194,7 @@ const EmojiSuggestionDropdown = ({
                         ) : (
                             <>{emoji.emoji}</>
                         )}
-                        :{emoji.name}:
+                        :{emoji.shortcodes[0]}:
                     </Stack>
                 ))}
             </Stack>
