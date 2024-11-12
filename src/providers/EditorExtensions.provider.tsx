@@ -23,7 +23,7 @@ import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
-import { all, createLowlight } from "lowlight";
+import { common, createLowlight } from "lowlight";
 
 import twemojiUtil from "twemoji";
 import { emojis as twemojis } from "@emoji-mart/data/sets/15/twitter.json";
@@ -31,7 +31,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Emoji as FurxusEmoji } from "@furxus/types";
 import { api } from "@/api";
 
-const lowlight = createLowlight(all);
+const lowlight = createLowlight(common);
 
 export const EditorExtensionsContext = createContext<{
     extensions: any[];
