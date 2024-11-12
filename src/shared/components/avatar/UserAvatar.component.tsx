@@ -18,7 +18,7 @@ import {
     IdleBadge,
     OfflineBadge,
     OnlineBadge,
-} from "../Badges.component";
+} from "../StatusBadges.component";
 
 const UserAvatar = ({
     avatar,
