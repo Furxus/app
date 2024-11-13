@@ -2,14 +2,13 @@ import { useState } from "react";
 
 import { MuiFileInput } from "mui-file-input";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 const CreatePostButton = () => {
-    const [visible, setvisible] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     const [text, setText] = useState<string | null>(null);
     const [media, setMedia] = useState<File | null>(null);
@@ -30,7 +29,7 @@ const CreatePostButton = () => {
     // });
 
     const closeModal = () => {
-        setvisible(false);
+        setVisible(false);
         setText(null);
         setMedia(null);
         setError(null);
@@ -41,19 +40,85 @@ const CreatePostButton = () => {
             <Button
                 variant="contained"
                 color="success"
-                onClick={() => setvisible(true)}
+                onClick={() => setVisible(true)}
             >
                 Create Post
             </Button>
-            <Dialog
+            <Modal
+                className="flex items-center justify-center"
                 open={visible}
-                onClose={closeModal}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        //createPost();
-                    }
-                }}
+                onClose={() => closeModal()}
             >
+                <Stack
+                    direction="column"
+                    p={4}
+                    gap={2}
+                    alignItems="center"
+                    className="bg-neutral-900 border rounded-lg w-1/5 border-blue-500/60"
+                >
+                    <Typography variant="h6">Create a post</Typography>
+                    <Stack direction="column" gap={2} alignItems="center">
+                        <MuiFileInput
+                            inputProps={{
+                                accept: "image/*, video/*, audio/*",
+                            }}
+                            label="Upload media"
+                            placeholder="No file selected"
+                            onChange={(file) => setMedia(file)}
+                            className="text-ellipsis"
+                            value={media}
+                            error={!!error}
+                        />
+                        <TextField
+                            label="Text"
+                            onChange={(e) => setText(e.target.value)}
+                            name="text"
+                            fullWidth
+                            className="mb-4"
+                            value={text ?? ""}
+                            multiline
+                            error={!!error}
+                            helperText={error}
+                        />
+                        <Stack
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                            gap={2}
+                        >
+                            <Button
+                                //onClick={() => createPost()}
+                                color="success"
+                                variant="contained"
+                                //disabled={loading}
+                            >
+                                Submit
+                            </Button>
+                            <Button
+                                color="error"
+                                variant="outlined"
+                                // disabled={loading}
+                                onClick={closeModal}
+                            >
+                                Cancel
+                            </Button>
+                        </Stack>
+                    </Stack>
+                </Stack>
+            </Modal>
+        </>
+    );
+
+    /* return (
+        <>
+            <Button
+                variant="contained"
+                color="success"
+                onClick={() => setVisible(true)}
+            >
+                Create Post
+            </Button>
+            <Dialog open={visible} onClose={closeModal}>
                 <DialogTitle className="flex justify-between">
                     Create a post
                 </DialogTitle>
@@ -105,7 +170,7 @@ const CreatePostButton = () => {
                 </DialogContent>
             </Dialog>
         </>
-    );
+    );*/
 };
 
 export default CreatePostButton;
