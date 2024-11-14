@@ -1,14 +1,17 @@
 import APILoading from "./shared/components/status/APILoading.component";
 
-import { useAppMode } from "./hooks";
+import { useAppMode, useTauri } from "./hooks";
 import SEO from "./shared/SEO";
 import WebRoutes from "./shared/Web.routes";
 
 import { useQuery } from "@tanstack/react-query";
 import { api } from "./api";
+import Titlebar from "./shared/Titlebar";
+import { Stack } from "@mui/material";
 
 const App = () => {
     const { appMode } = useAppMode();
+    const { inTauri } = useTauri();
 
     const { isLoading, error } = useQuery({
         queryKey: ["ack"],
@@ -40,10 +43,11 @@ const App = () => {
     }
 
     return (
-        <>
+        <Stack className="w-full h-full">
+            {inTauri && <Titlebar />}
             <SEO title={title} image={favicon} />
             <WebRoutes />
-        </>
+        </Stack>
     );
 };
 

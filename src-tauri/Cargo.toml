@@ -1,7 +1,7 @@
 [package]
 name = "furxus"
 version = "0.1.0"
-description = "A Tauri App"
+description = "Furxus"
 authors = ["you"]
 edition = "2021"
 

@@ -2,9 +2,9 @@ import Stack from "@mui/material/Stack";
 import Sidebar from "./components/Sidebar.component";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@/api";
+import { api, socket } from "@/api";
 import Button from "@mui/material/Button";
 
 const Layout = () => {
@@ -21,6 +21,12 @@ const Layout = () => {
             setEmailSent(true);
         },
     });
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            socket.connect();
+        }
+    }, [isLoggedIn]);
 
     if (!isLoggedIn) return <Navigate to="/login" />;
 
@@ -94,9 +100,9 @@ const Layout = () => {
         );
 
     return (
-        <Stack direction="row">
+        <Stack direction="row" className="h-full">
             <Sidebar />
-            <Stack className="w-full h-dvh">
+            <Stack className="w-full">
                 <Outlet />
             </Stack>
         </Stack>

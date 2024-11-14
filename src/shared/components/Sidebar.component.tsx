@@ -28,15 +28,13 @@ const Sidebar = () => {
             justifyContent="center"
             alignItems="center"
             gap={2}
+            flexGrow={1}
             pt={1}
-            className={classNames(
-                "py-2 px-3 h-dvh bg-neutral-700/[.4] border-r",
-                {
-                    "border-blue-500/60": appMode === "posts",
-                    "border-green-500/60": appMode === "servers",
-                    "border-[#367588]/60": appMode === "dms",
-                }
-            )}
+            className={classNames("py-2 px-3 bg-neutral-700/[.4] border-r", {
+                "border-blue-500/60": appMode === "posts",
+                "border-green-500/60": appMode === "servers",
+                "border-[#367588]/60": appMode === "dms",
+            })}
         >
             <Button
                 sx={{ width: 64, height: 64 }}

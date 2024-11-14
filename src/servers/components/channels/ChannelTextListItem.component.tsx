@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { FaTrash } from "react-icons/fa";
-import { BaseServerChannel, Server } from "@furxus/types";
+import { Server, TextChannel } from "@furxus/types";
 import { useAuth } from "@hooks";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import Stack from "@mui/material/Stack";
@@ -15,7 +15,7 @@ const ChannelTextListItem = ({
     channel,
 }: {
     server: Server;
-    channel: BaseServerChannel;
+    channel: TextChannel;
 }) => {
     const { user } = useAuth();
 

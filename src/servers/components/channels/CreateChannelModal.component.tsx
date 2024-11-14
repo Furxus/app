@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { FaHashtag } from "react-icons/fa";
+import { FaHashtag, FaVolumeUp } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -8,6 +8,8 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { Colors } from "@/utils";
 
 const CreateChannelModal = ({
     serverId,
@@ -63,6 +65,13 @@ const CreateChannelModal = ({
         }, 1000);
     };
 
+    const channelIcon =
+        fields.type === "text" ? (
+            <FaHashtag className="text-gray-500 mr-2" />
+        ) : (
+            <FaVolumeUp className="text-gray-500 mr-2" />
+        );
+
     return (
         <Modal
             className="flex items-center justify-center"
@@ -94,9 +103,7 @@ const CreateChannelModal = ({
                             helperText={errors.name}
                             slotProps={{
                                 input: {
-                                    startAdornment: (
-                                        <FaHashtag className="text-gray-500 mr-2" />
-                                    ),
+                                    startAdornment: channelIcon,
                                 },
                             }}
                             onKeyDown={(e) => {
@@ -104,6 +111,48 @@ const CreateChannelModal = ({
                                     createChannel();
                             }}
                         />
+                        <RadioGroup
+                            row
+                            name="type"
+                            value={fields.type}
+                            onChange={(e) =>
+                                setFields((prev) => ({
+                                    ...prev,
+                                    type: e.target.value,
+                                }))
+                            }
+                        >
+                            <Stack direction="row" gap={2}>
+                                <FormControlLabel
+                                    value="text"
+                                    control={
+                                        <Radio
+                                            icon={<FaHashtag />}
+                                            checkedIcon={
+                                                <FaHashtag
+                                                    color={Colors.servers}
+                                                />
+                                            }
+                                        />
+                                    }
+                                    label="Text"
+                                />
+                                <FormControlLabel
+                                    value="voice"
+                                    control={
+                                        <Radio
+                                            icon={<FaVolumeUp />}
+                                            checkedIcon={
+                                                <FaVolumeUp
+                                                    color={Colors.servers}
+                                                />
+                                            }
+                                        />
+                                    }
+                                    label="Voice"
+                                />
+                            </Stack>
+                        </RadioGroup>
                         <Button
                             color="success"
                             onClick={() => {

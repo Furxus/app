@@ -25,6 +25,7 @@ import { api } from "@/api";
 import ChannelTextEditInput from "../MessageTextEditInput.component";
 import ReadOnlyEditor from "../ReadOnlyEditor.component";
 import { generateText } from "@tiptap/react";
+import { Chip } from "@mui/material";
 
 const MessageItem = ({
     messages,
@@ -137,7 +138,12 @@ const MessageItem = ({
     return (
         <>
             {isNewDay && (
-                <Divider className="mt-1 rounded-lg text-neutral-400 shadow-2xl">
+                <Divider
+                    flexItem
+                    className="mt-1 pr-40 rounded-lg text-neutral-400 shadow-2xl"
+                    textAlign="center"
+                    variant="fullWidth"
+                >
                     {moment(message.createdAt).format("dddd, MMMM Do YYYY")}
                 </Divider>
             )}

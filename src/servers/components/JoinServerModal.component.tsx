@@ -40,23 +40,10 @@ const JoinServerDialog = ({
             closeModal();
         },
         onError: (err: any) => {
+            setCode("");
             setError(err.response.data.message);
         },
     });
-
-    // const [joinServer, { loading }] = useMutation(JoinServer, {
-    //     variables: { code },
-    //     onCompleted: () => {
-    //         closeModal();
-    //     },
-    //     onError: (error) => {
-    //         const errs = error.graphQLErrors[0].extensions?.errors as any[];
-    //         if (!errs) return;
-    //         errs.forEach((err) => {
-    //             setError(err.message);
-    //         });
-    //     },
-    // });
 
     const closeModal = () => {
         setCode("");
@@ -86,7 +73,7 @@ const JoinServerDialog = ({
                             name="code"
                             label="Invite Code/Link"
                             value={code}
-                            error={error !== null}
+                            error={!!error}
                             helperText={error}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter" && code) joinServer();

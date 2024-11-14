@@ -14,7 +14,11 @@ const ServerSidebar = ({ server }: { server: Server }) => {
     const { data: channels } = useQuery<BaseServerChannel[]>({
         queryKey: ["getChannels", { serverId: server.id }],
         queryFn: () =>
-            api.get(`/channels/${server.id}`).then((res) => res.data),
+            api
+                .get(`/channels/${server.id}`, {
+                    params: { populate: ["voiceStates"] },
+                })
+                .then((res) => res.data),
     });
 
     useEffect(() => {
@@ -29,7 +33,7 @@ const ServerSidebar = ({ server }: { server: Server }) => {
             pt={1}
             justifyContent="flex-start"
             alignItems="flex-start"
-            className="shadow-md h-dvh border-r w-60 border-green-500/60 bg-neutral-700/[.2]"
+            className="shadow-md border-r h-full w-60 border-green-500/60 bg-neutral-700/[.2]"
         >
             <Stack className="shadow-2xl border-green-500/60 border-b bg-neutral-800[0.5] px-3 py-3 w-full">
                 <span className="text-neutral-200 text-md truncate">

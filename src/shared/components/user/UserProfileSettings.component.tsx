@@ -37,9 +37,9 @@ const ProfileSettings = ({
                 className={classNames(
                     "bg-neutral-900 border rounded-lg h-3/4 w-2/4",
                     {
-                        "border-green-500/60":
-                            appMode === "servers" || appMode === "dms",
                         "border-blue-500/60": appMode === "posts",
+                        "border-green-500/60": appMode === "servers",
+                        "border-[#367588]/60": appMode === "dms",
                     }
                 )}
             >

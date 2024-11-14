@@ -92,7 +92,8 @@ const ChannelTextInput = ({
                 );
 
                 // URL detection regex
-                const urlPattern = /https?:\/\/[^\s]+/;
+                const urlPattern =
+                    /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
 
                 // Only set isTypingEmoji to true if the current word does not match a URL pattern
                 if (
@@ -100,6 +101,10 @@ const ChannelTextInput = ({
                     currentWord.endsWith(":")
                 ) {
                     setIsTypingEmoji(true);
+                }
+
+                if (urlPattern.test(currentWord)) {
+                    setIsTypingEmoji(false);
                 }
 
                 // Reset emoji typing state on space or enter
@@ -119,6 +124,7 @@ const ChannelTextInput = ({
 
     const addEmoji = (emoji: any) => {
         if (!editor) return;
+        console.log(emoji);
         if (emoji.native) {
             editor
                 .chain()

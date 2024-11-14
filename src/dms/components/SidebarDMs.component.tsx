@@ -26,7 +26,7 @@ const SidebarDMs = () => {
             pt={1}
             justifyContent="flex-start"
             alignItems="flex-start"
-            className="shadow-md h-dvh w-60 bg-neutral-700/[.2] border-r border-[#367588]/60"
+            className="shadow-md w-60 h-full bg-neutral-700/[.2] border-r border-[#367588]/60"
         >
             <Stack
                 direction="column"

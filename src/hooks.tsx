@@ -4,6 +4,7 @@ import { AppModeContext } from "./providers/AppMode.provider";
 import { UserServersContext } from "./providers/UserServers.provider";
 import { UserEmojisContext } from "./providers/UserEmojis.provider";
 import { EditorExtensionsContext } from "./providers/EditorExtensions.provider";
+import { TauriContext } from "./providers/Tauri.provider";
 
 export function useAuth() {
     const value = useContext(AuthContext);
@@ -19,6 +20,15 @@ export function useAppMode() {
 
     if (process.env.NODE_ENV === "development" && value === undefined)
         throw new Error("useAppMode must be used within a AppModeProvider");
+
+    return value;
+}
+
+export function useTauri() {
+    const value = useContext(TauriContext);
+
+    if (process.env.NODE_ENV === "development" && value === undefined)
+        throw new Error("useTauri must be used within a TauriProvider");
 
     return value;
 }

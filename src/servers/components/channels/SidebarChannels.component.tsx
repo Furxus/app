@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { BaseServerChannel, Server } from "@furxus/types";
+import {
+    BaseServerChannel,
+    Server,
+    TextChannel,
+    VoiceChannel,
+} from "@furxus/types";
 import { useAuth } from "@hooks";
 import { FaPlus } from "react-icons/fa";
 
@@ -13,6 +18,7 @@ import Stack from "@mui/material/Stack";
 import CreateChannelModal from "./CreateChannelModal.component";
 import { socket } from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
+import ChannelVoiceListItem from "./ChannelVoiceListItem.component";
 
 const ServerSidebarChannels = ({
     server,
@@ -74,11 +80,22 @@ const ServerSidebarChannels = ({
                 <Virtuoso
                     data={channels}
                     itemContent={(i, channel) => (
-                        <ChannelTextListItem
-                            key={i}
-                            server={server}
-                            channel={channel}
-                        />
+                        <>
+                            {channel.type === "text" && (
+                                <ChannelTextListItem
+                                    key={i}
+                                    server={server}
+                                    channel={channel as TextChannel}
+                                />
+                            )}
+                            {channel.type === "voice" && (
+                                <ChannelVoiceListItem
+                                    key={i}
+                                    server={server}
+                                    channel={channel as VoiceChannel}
+                                />
+                            )}
+                        </>
                     )}
                     className="w-full"
                 />

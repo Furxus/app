@@ -16,6 +16,20 @@ const ProfileSidebar = ({
     const { appMode } = useAppMode();
     const { logout } = useAuth();
 
+    let color = Colors.dms;
+
+    switch (appMode) {
+        case "posts":
+            color = Colors.posts;
+            break;
+        case "servers":
+            color = Colors.servers;
+            break;
+        case "dms":
+            color = Colors.dms;
+            break;
+    }
+
     return (
         <Stack
             direction="column"
@@ -23,17 +37,16 @@ const ProfileSidebar = ({
             gap="0.25rem"
             p={4}
             className={classNames("h-full", {
-                "border-r border-blue-500/60": appMode === "posts",
-                "border-r border-green-500/60":
-                    appMode === "servers" || appMode === "dms",
+                "border-blue-500/60": appMode === "posts",
+                "border-green-500/60": appMode === "servers",
+                "border-[#367588]/60": appMode === "dms",
             })}
         >
             <Button
                 variant="text"
                 sx={{
-                    color: appMode === "posts" ? Colors.posts : Colors.servers,
-                    borderRightColor:
-                        appMode === "posts" ? Colors.posts : Colors.servers,
+                    color,
+                    borderRightColor: color,
                     borderRight: currentPage === "profile" ? "2px solid" : null,
                 }}
                 onClick={() => setCurrentPage("profile")}
@@ -44,9 +57,8 @@ const ProfileSidebar = ({
             </Button>
             <Button
                 sx={{
-                    color: appMode === "posts" ? Colors.posts : Colors.servers,
-                    borderRightColor:
-                        appMode === "posts" ? Colors.posts : Colors.servers,
+                    color: color,
+                    borderRightColor: color,
                     borderRight:
                         currentPage === "account" ? "2px solid" : "none",
                 }}
@@ -59,9 +71,8 @@ const ProfileSidebar = ({
             </Button>
             <Button
                 sx={{
-                    color: appMode === "posts" ? Colors.posts : Colors.servers,
-                    borderRightColor:
-                        appMode === "posts" ? Colors.posts : Colors.servers,
+                    color: color,
+                    borderRightColor: color,
                     borderRight:
                         currentPage === "emojis" ? "2px solid" : "none",
                 }}
@@ -75,14 +86,12 @@ const ProfileSidebar = ({
             <Divider
                 flexItem
                 sx={{
-                    background:
-                        appMode === "posts" ? Colors.posts : Colors.servers,
-                    marginTop: "1rem",
+                    background: color,
                 }}
             />
             <Button
                 sx={{
-                    color: appMode === "posts" ? Colors.posts : Colors.servers,
+                    color: color,
                 }}
                 variant="text"
                 onClick={() => logout()}

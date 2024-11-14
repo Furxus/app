@@ -18,11 +18,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { useEffect } from "react";
-import { socket } from "@/api";
 import { UserServersProvider } from "./UserServers.provider";
 import { UserEmojisProvider } from "./UserEmojis.provider";
 import { EditorExtensionsProvider } from "./EditorExtensions.provider";
+import { TauriProvider } from "./Tauri.provider";
 
 const queryClient = new QueryClient();
 
@@ -78,10 +77,6 @@ const theme = createTheme({
 });
 
 export default function MainProvider() {
-    useEffect(() => {
-        socket.connect();
-    }, []);
-
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
@@ -89,6 +84,7 @@ export default function MainProvider() {
                     <Router
                         future={{
                             v7_startTransition: true,
+                            v7_relativeSplatPath: true,
                         }}
                     >
                         <ThemeProvider theme={theme}>
@@ -102,20 +98,23 @@ export default function MainProvider() {
                                                 <AppModeProvider>
                                                     <UserServersProvider>
                                                         <UserEmojisProvider>
-                                                            <EditorExtensionsProvider>
-                                                                <CssBaseline />
-                                                                <App />
-                                                                {import.meta.env
-                                                                    .DEV && (
-                                                                    <ReactQueryDevtools
-                                                                        buttonPosition="top-right"
-                                                                        position="bottom"
-                                                                        initialIsOpen={
-                                                                            false
-                                                                        }
-                                                                    />
-                                                                )}
-                                                            </EditorExtensionsProvider>
+                                                            <TauriProvider>
+                                                                <EditorExtensionsProvider>
+                                                                    <CssBaseline />
+                                                                    <App />
+                                                                    {import.meta
+                                                                        .env
+                                                                        .DEV && (
+                                                                        <ReactQueryDevtools
+                                                                            buttonPosition="bottom-left"
+                                                                            position="bottom"
+                                                                            initialIsOpen={
+                                                                                false
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                                </EditorExtensionsProvider>
+                                                            </TauriProvider>
                                                         </UserEmojisProvider>
                                                     </UserServersProvider>
                                                 </AppModeProvider>
