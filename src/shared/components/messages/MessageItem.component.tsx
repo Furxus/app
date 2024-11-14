@@ -25,7 +25,6 @@ import { api } from "@/api";
 import ChannelTextEditInput from "../MessageTextEditInput.component";
 import ReadOnlyEditor from "../ReadOnlyEditor.component";
 import { generateText } from "@tiptap/react";
-import { Chip } from "@mui/material";
 
 const MessageItem = ({
     messages,
