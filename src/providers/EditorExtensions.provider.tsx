@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import Document from "@tiptap/extension-document";
 import BulletList from "@tiptap/extension-bullet-list";
 import CharacterCount from "@tiptap/extension-character-count";
@@ -49,6 +49,25 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
         queryFn: () => api.get("/emojis").then((res) => res.data),
     });
 
+    const [customEmojis, setCustomEmojis] = useState<EmojiItem[]>([]);
+
+    useEffect(() => {
+        if (otherEmojis) {
+            const ce = otherEmojis.map((emoji) => ({
+                name: defaultEmojis.find((e) => e.name === emoji.name)
+                    ? `${emoji.name}_custom`
+                    : emoji.name,
+                shortcodes: [emoji.shortCode],
+                fallbackImage: emoji.url,
+                group: "Custom",
+                tags: [emoji.name],
+                createdBy: emoji.createdBy,
+            }));
+
+            setCustomEmojis(ce);
+        }
+    }, [otherEmojis]);
+
     const defaultEmojis = emojis.map((emoji) => {
         const twemoji: any =
             twemojis[emoji.name as keyof typeof twemojis] || emoji;
@@ -83,22 +102,13 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
         };
     });
 
-    const customEmojis: EmojiItem[] = [];
+    const emojiExtension = Emoji.configure({
+        enableEmoticons: true,
+        emojis: [...defaultEmojis, ...customEmojis],
+        forceFallbackImages: true,
+    });
 
-    if (otherEmojis) {
-        otherEmojis.forEach((emoji) => {
-            customEmojis.push({
-                name: defaultEmojis.find((e) => e.name === emoji.name)
-                    ? `${emoji.name} (Custom)`
-                    : emoji.name,
-                shortcodes: [emoji.shortCode],
-                fallbackImage: emoji.url,
-                group: "Custom",
-                tags: [emoji.name],
-                createdBy: emoji.createdBy,
-            });
-        });
-    }
+    console.log(customEmojis);
 
     const extensions = [
         Document,
@@ -109,15 +119,11 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
         CodeBlockLowLight.configure({
             lowlight,
         }),
-        Emoji.configure({
-            enableEmoticons: true,
-            emojis: [...defaultEmojis, ...customEmojis],
-            forceFallbackImages: true,
-        }),
         Image,
         Color,
         ListItem,
         OrderedList,
+        emojiExtension,
         HardBreak.configure({
             keepMarks: false,
         }),

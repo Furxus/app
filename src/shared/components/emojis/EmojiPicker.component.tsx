@@ -15,7 +15,7 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
     const { emojis } = useUserEmojis();
 
     const mappedEmojis = emojis.map((emoji) => ({
-        id: emoji.name,
+        id: emoji.id,
         name: emoji.name,
         keywords: [emoji.shortCode],
         skins: [{ src: emoji.url }],
