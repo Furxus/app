@@ -17,6 +17,7 @@ import classNames from "classnames";
 import EmojiPicker from "./emojis/EmojiPicker.component";
 import BubbleMenu from "./BubbleMenu.component";
 import { useEditorExtensions } from "@/hooks";
+import { MarkdownEditor } from "./MarkdownEditor";
 
 const ChannelTextInput = ({
     channel,
@@ -165,8 +166,7 @@ const ChannelTextInput = ({
                 />
             )}
             <Stack direction="row" justifyContent="center" alignItems="center">
-                <BubbleMenu editor={editor} />
-                <EditorContent className="w-full" editor={editor} />
+                <MarkdownEditor />
             </Stack>
             <Stack
                 position="relative"

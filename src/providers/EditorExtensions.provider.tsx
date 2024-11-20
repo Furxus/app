@@ -108,8 +108,6 @@ export function EditorExtensionsProvider({ children }: PropsWithChildren) {
         forceFallbackImages: true,
     });
 
-    console.log(customEmojis);
-
     const extensions = [
         Document,
         BulletList,
