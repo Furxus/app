@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 
 // Markdown imports
 
-import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
+import { JSONContent, useEditor } from "@tiptap/react";
 
 // Tiptap imports
 import Placeholder from "@tiptap/extension-placeholder";
@@ -15,9 +15,8 @@ import { api } from "@/api";
 import EmojiSuggestionDropdown from "./emojis/EmojiSuggestionDropdown.component";
 import classNames from "classnames";
 import EmojiPicker from "./emojis/EmojiPicker.component";
-import BubbleMenu from "./BubbleMenu.component";
 import { useEditorExtensions } from "@/hooks";
-import { MarkdownEditor } from "./MarkdownEditor";
+import { MarkdownEditor } from "./markdown/MarkdownEditor";
 
 const ChannelTextInput = ({
     channel,

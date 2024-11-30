@@ -5,6 +5,7 @@ import { UserServersContext } from "./providers/UserServers.provider";
 import { UserEmojisContext } from "./providers/UserEmojis.provider";
 import { EditorExtensionsContext } from "./providers/EditorExtensions.provider";
 import { TauriContext } from "./providers/Tauri.provider";
+import { EmojisProviderContext } from "./providers/Emojis.provider";
 
 export function useAuth() {
     const value = useContext(AuthContext);
@@ -62,6 +63,15 @@ export function useEditorExtensions() {
         throw new Error(
             "useEditorExtensions must be used within a EditorExtensionsProvider"
         );
+
+    return value;
+}
+
+export function useEmojis() {
+    const value = useContext(EmojisProviderContext);
+
+    if (process.env.NODE_ENV === "development" && value === undefined)
+        throw new Error("useEmojis must be used within a EmojisProvider");
 
     return value;
 }
