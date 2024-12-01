@@ -131,6 +131,12 @@ export const insertEmoji = (editor: Editor, emoji: any) => {
         unicode: emoji.emoji,
         children: [{ text: "" }],
     };
-    Transforms.insertNodes(editor, moji);
-    Transforms.move(editor, { distance: 1, unit: "offset" });
+
+    const { selection } = editor;
+
+    if (selection) {
+        Transforms.insertNodes(editor, moji);
+        const pointAfterEmoji = Editor.after(editor, editor.selection!.focus);
+        Transforms.select(editor, pointAfterEmoji!);
+    }
 };

@@ -18,6 +18,7 @@ import {
     Transforms,
     Point,
 } from "slate";
+import { isKeyHotkey } from "is-hotkey";
 import { withHistory } from "slate-history";
 
 import * as emojiLib from "node-emoji";
@@ -121,6 +122,10 @@ const withEmojis = (editor: any) => {
 
     editor.markableVoid = (element: any) => {
         return element.type === "emoji" || markableVoid(element);
+    };
+
+    editor.isSelectable = (element: any) => {
+        return element.type !== "emoji";
     };
 
     return editor;
@@ -246,20 +251,27 @@ const MarkdownEditor = () => {
                     const emojiRegex = /:\w+:/g;
                     const match = blockText.match(emojiRegex);
                     if (match) {
-                        const emoji = match[0].replace(/:/g, "");
+                        const emojiShortcode = match[0];
+                        const emoji = emojiShortcode.replace(/:/g, "");
                         const emojiUnicode =
                             emojiLib.find(emoji) ||
                             userEmojis.find((e) => e.shortCode === emoji);
                         if (emojiUnicode) {
-                            const emojisRange = Editor.range(
+                            const shortcodeStart = Editor.before(
                                 editor,
-                                start,
-                                end
+                                selection,
+                                {
+                                    unit: "character",
+                                    distance: emojiShortcode.length,
+                                }
                             );
+                            const shortcodeRange = {
+                                anchor: shortcodeStart!,
+                                focus: selection.anchor,
+                            };
+                            Transforms.select(editor, shortcodeRange);
+                            Transforms.delete(editor);
 
-                            console.log(emojisRange, blockRange);
-
-                            Transforms.delete(editor, { at: emojisRange });
                             insertEmoji(editor, emojiUnicode);
                         }
                     }
@@ -271,10 +283,31 @@ const MarkdownEditor = () => {
         [editor]
     );
 
+    console.log(value);
+
     const onKeyDown = useCallback(
         (event: KeyboardEvent) => {
             if (event.key === "Enter" && event.shiftKey) {
                 handleShiftEnter(event);
+            }
+
+            const { selection } = editor;
+
+            if (selection && Range.isCollapsed(selection)) {
+                const { nativeEvent } = event;
+
+                if (isKeyHotkey("left", nativeEvent)) {
+                    event.preventDefault();
+                    Transforms.move(editor, {
+                        unit: "offset",
+                        reverse: true,
+                    });
+                }
+
+                if (isKeyHotkey("right", nativeEvent)) {
+                    event.preventDefault();
+                    Transforms.move(editor, { unit: "offset" });
+                }
             }
         },
         [editor]
@@ -355,13 +388,13 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
         case "emoji":
             return (
                 <span {...attributes} contentEditable={false}>
-                    {children}
                     <img
                         className="w-6 h-6 inline-block align-middle"
                         src={element.url}
                         draggable={false}
                         alt={element.name}
                     />
+                    {children}
                 </span>
             );
         default:
