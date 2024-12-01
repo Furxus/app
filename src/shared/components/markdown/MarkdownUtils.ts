@@ -100,7 +100,6 @@ export const isBlockActive = (editor: Editor, block: string) => {
 
 export const toggleBlockquote = (editor: Editor) => {
     const isActive = isBlockActive(editor, "blockquote");
-    console.log(isActive);
     Transforms.setNodes(
         editor,
         { type: isActive ? "paragraph" : "blockquote" },

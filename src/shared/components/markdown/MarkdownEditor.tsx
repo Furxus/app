@@ -282,8 +282,7 @@ const MarkdownEditor = () => {
         },
         [editor]
     );
-
-    console.log(value);
+    
 
     const onKeyDown = useCallback(
         (event: KeyboardEvent) => {

@@ -30,9 +30,7 @@ const EmojiSuggestionDropdown = ({
         const customEmojis = editor.storage.emoji.emojis.filter(
             (emoji: any) => emoji.createdBy?.id === user.id
         );
-
-        console.log(customEmojis);
-
+     
         return [...defaultEmojios, ...customEmojis].filter(
             ({ shortcodes, tags }: any) =>
                 shortcodes.find((shortcode: any) =>

@@ -124,7 +124,6 @@ const ChannelTextInput = ({
 
     const addEmoji = (emoji: any) => {
         if (!editor) return;
-        console.log(emoji);
         if (emoji.native) {
             editor
                 .chain()

@@ -13,7 +13,6 @@ const Titlebar = () => {
 
     useEffect(() => {
         window?.onResized(async () => {
-            console.log(windowMaximized);
             setWindowMaximized(await window?.isMaximized());
         });
     }, []);
