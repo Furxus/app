@@ -1,13 +1,15 @@
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
 import capitalize from "lodash/capitalize";
-import { useAppMode, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
 import { Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const species = [
     "cat",
@@ -26,7 +28,7 @@ const Avatars = ({
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
     const { user } = useAuth();
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
 
     const [open, setOpen] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState<string>("");
@@ -65,7 +67,7 @@ const Avatars = ({
                 size="small"
                 variant="outlined"
                 color={
-                    appMode === "servers" || appMode === "dms"
+                    appMode.current === "servers" || appMode.current === "dms"
                         ? "success"
                         : "primary"
                 }
@@ -83,8 +85,9 @@ const Avatars = ({
                         "bg-neutral-900 border rounded-lg p-4",
                         {
                             "border-green-500/60":
-                                appMode === "servers" || appMode === "dms",
-                            "border-blue-500/60": appMode === "posts",
+                                appMode.current === "servers" ||
+                                appMode.current === "dms",
+                            "border-blue-500/60": appMode.current === "posts",
                         }
                     )}
                 >
@@ -111,11 +114,13 @@ const Avatars = ({
                                                             indexSelected ===
                                                             index,
                                                         "border-green-500/60":
-                                                            appMode ===
+                                                            appMode.current ===
                                                                 "servers" ||
-                                                            appMode === "dms",
+                                                            appMode.current ===
+                                                                "dms",
                                                         "border-blue-500/60":
-                                                            appMode === "posts",
+                                                            appMode.current ===
+                                                            "posts",
                                                     }
                                                 )}
                                                 justifyContent="center"
@@ -154,10 +159,13 @@ const Avatars = ({
                                                         currentAvatar ===
                                                         species,
                                                     "border-green-500/60":
-                                                        appMode === "servers" ||
-                                                        appMode === "dms",
+                                                        appMode.current ===
+                                                            "servers" ||
+                                                        appMode.current ===
+                                                            "dms",
                                                     "border-blue-500/60":
-                                                        appMode === "posts",
+                                                        appMode.current ===
+                                                        "posts",
                                                 }
                                             )}
                                             justifyContent="center"
@@ -204,7 +212,7 @@ const Avatars = ({
                                 size="small"
                                 variant="outlined"
                                 color={
-                                    appMode === "servers"
+                                    appMode.current === "servers"
                                         ? "success"
                                         : "primary"
                                 }
@@ -242,4 +250,4 @@ const Avatars = ({
     );
 };
 
-export default Avatars;
+export default observer(Avatars);

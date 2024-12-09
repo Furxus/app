@@ -8,9 +8,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, socket } from "@/api";
 import { useEffect } from "react";
 import { Message } from "@furxus/types";
+import { useAppStore } from "@/hooks/useAppStore";
 
 const ChannelPage = () => {
     const queryClient = useQueryClient();
+    const app = useAppStore();
     const { serverId, channelId } = useParams();
 
     const { data: channel } = useQuery({
@@ -71,6 +73,11 @@ const ChannelPage = () => {
             socket.off("message:delete");
         };
     }, []);
+
+    useEffect(() => {
+        app.setActiveServerId(serverId);
+        app.setActiveChannelId(channelId);
+    }, [serverId, channelId]);
 
     if (!channelId) return <Skeleton />;
     if (!channel) return <></>;

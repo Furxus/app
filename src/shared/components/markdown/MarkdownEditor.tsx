@@ -1,4 +1,10 @@
-import { KeyboardEvent, useCallback, useMemo, useState } from "react";
+import {
+    KeyboardEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import {
     Slate,
     Editable,
@@ -25,7 +31,14 @@ import * as emojiLib from "node-emoji";
 
 import HoverToolbar from "./HoverToolbar";
 import { useUserEmojis } from "@/hooks";
+import { useAppStore } from "@/hooks/useAppStore";
 import { insertEmoji } from "./MarkdownUtils";
+import {
+    deserializeFromMarkdown,
+    serializeToMarkdown,
+} from "@/utils/editorUtils";
+import { observer } from "mobx-react-lite";
+import { Channel } from "@furxus/types";
 
 const SHORTCUTS = {
     ">": "blockquote",
@@ -131,12 +144,24 @@ const withEmojis = (editor: any) => {
     return editor;
 };
 
-const MarkdownEditor = () => {
+const MarkdownEditor = ({
+    state,
+    setState,
+    channel,
+    onSubmit,
+}: {
+    state: any;
+    setState: (newState: any) => void;
+    channel: Channel;
+    onSubmit: any;
+}) => {
     const editor = useMemo(
         () => withEmojis(withShortcuts(withHistory(withReact(createEditor())))),
         []
     );
     const { emojis: userEmojis } = useUserEmojis();
+    const { channels } = useAppStore();
+
     const renderElement = useCallback(
         (props: RenderElementProps) => <Element {...props} />,
         []
@@ -147,7 +172,9 @@ const MarkdownEditor = () => {
         []
     );
 
-    const [value, setValue] = useState<Descendant[]>(initialValue);
+    const [value, setValue] = useState<Descendant[]>(
+        deserializeFromMarkdown(state)
+    );
     const decorate = useCallback(([node, path]: [Node, number[]]): Range[] => {
         const ranges: Range[] = [];
 
@@ -231,7 +258,7 @@ const MarkdownEditor = () => {
         }
     };
 
-    const onChange = useCallback(
+    const handleChange = useCallback(
         (newValue: Descendant[]) => {
             const { selection } = editor;
 
@@ -279,15 +306,23 @@ const MarkdownEditor = () => {
             }
 
             setValue(newValue);
+
+            const serialized = serializeToMarkdown(newValue);
+            setState(serialized);
+            channels.setInput(channel.id, serialized);
         },
-        [editor]
+        [editor, setState, channels, channel.id, userEmojis]
     );
-    
 
     const onKeyDown = useCallback(
         (event: KeyboardEvent) => {
             if (event.key === "Enter" && event.shiftKey) {
                 handleShiftEnter(event);
+            }
+
+            if (event.key === "Enter" && !event.shiftKey) {
+                onSubmit();
+                event.preventDefault();
             }
 
             const { selection } = editor;
@@ -309,11 +344,11 @@ const MarkdownEditor = () => {
                 }
             }
         },
-        [editor]
+        [editor, onSubmit, handleShiftEnter]
     );
 
     return (
-        <Slate editor={editor} onChange={onChange} initialValue={value}>
+        <Slate editor={editor} onChange={handleChange} initialValue={value}>
             <HoverToolbar />
             <Editable
                 decorate={decorate}
@@ -327,21 +362,6 @@ const MarkdownEditor = () => {
         </Slate>
     );
 };
-
-const initialValue: Descendant[] = [
-    {
-        type: "paragraph",
-        children: [
-            {
-                text: "This paragraph supports various Markdown features such as **Bold**, _Italic_, **_Bold and Italic_**, ~~Strikethrough~~, `Inline Code`",
-            },
-        ],
-    },
-    {
-        type: "blockquote",
-        children: [{ text: "This is a blockquote with a citation." }],
-    },
-];
 
 const Leaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     let element = <span {...attributes}>{children}</span>;
@@ -386,7 +406,11 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
             );
         case "emoji":
             return (
-                <span {...attributes} contentEditable={false}>
+                <span
+                    className="select-none"
+                    {...attributes}
+                    contentEditable={false}
+                >
                     <img
                         className="w-6 h-6 inline-block align-middle"
                         src={element.url}
@@ -401,4 +425,4 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
     }
 };
 
-export { MarkdownEditor };
+export default observer(MarkdownEditor);

@@ -1,4 +1,4 @@
-import { useAppMode, useAuth } from "@hooks";
+import {  useAuth } from "@hooks";
 import { FaCogs } from "react-icons/fa";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { MouseEvent, useState } from "react";
@@ -11,9 +11,10 @@ import Tooltip from "@/shared/components/Tooltip";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
 import classNames from "classnames";
 import { Divider } from "@mui/material";
+import { useAppStore } from "@/hooks/useAppStore";
 
 const SidebarProfile = () => {
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
     const { user, logout } = useAuth();
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -41,8 +42,8 @@ const SidebarProfile = () => {
                 className={classNames(
                     "text-ellipsis px-2 w-full h-[5.65rem] border-t",
                     {
-                        "border-green-500/60": appMode === "servers",
-                        "border-[#367588]/60": appMode === "dms",
+                        "border-green-500/60": appMode.current === "servers",
+                        "border-[#367588]/60": appMode.current === "dms",
                     }
                 )}
             >

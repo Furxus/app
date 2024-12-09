@@ -1,4 +1,3 @@
-import { useAppMode } from "@/hooks";
 import { ProfileSettingsPages } from "@/utils";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -12,6 +11,8 @@ import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import UserEmojis from "./UserEmojis.component";
+import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const ProfileSettings = ({
     open,
@@ -20,7 +21,7 @@ const ProfileSettings = ({
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
     const [currentPage, setCurrentPage] =
         useState<ProfileSettingsPages>("profile");
 
@@ -37,9 +38,9 @@ const ProfileSettings = ({
                 className={classNames(
                     "bg-neutral-900 border rounded-lg h-3/4 w-2/4",
                     {
-                        "border-blue-500/60": appMode === "posts",
-                        "border-green-500/60": appMode === "servers",
-                        "border-[#367588]/60": appMode === "dms",
+                        "border-blue-500/60": appMode.current === "posts",
+                        "border-green-500/60": appMode.current === "servers",
+                        "border-[#367588]/60": appMode.current === "dms",
                     }
                 )}
             >
@@ -57,8 +58,10 @@ const ProfileSettings = ({
                         >
                             <IconButton
                                 className={classNames("border", {
-                                    "border-green-500": appMode === "servers",
-                                    "border-blue-500": appMode === "posts",
+                                    "border-green-500":
+                                        appMode.current === "servers",
+                                    "border-blue-500":
+                                        appMode.current === "posts",
                                 })}
                                 sx={{
                                     border: "1px solid",
@@ -79,4 +82,4 @@ const ProfileSettings = ({
     );
 };
 
-export default ProfileSettings;
+export default observer(ProfileSettings);

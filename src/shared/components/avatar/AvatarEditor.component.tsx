@@ -1,4 +1,4 @@
-import { useAppMode, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
 import classNames from "classnames";
 import { Dispatch, SetStateAction } from "react";
 import AvatarDraw from "./AvatarDraw.component";
@@ -7,6 +7,8 @@ import AvatarUpload from "./AvatarUpload.component";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
 import Avatar from "@/shared/components/avatar/Avatar.component";
+import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const AvatarEditor = ({
     open,
@@ -15,7 +17,7 @@ const AvatarEditor = ({
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
     const { user } = useAuth();
 
     return (
@@ -31,8 +33,9 @@ const AvatarEditor = ({
                 gap={1.5}
                 className={classNames("bg-neutral-900 border rounded-lg p-4", {
                     "border-green-500/60":
-                        appMode === "servers" || appMode === "dms",
-                    "border-blue-500/60": appMode === "posts",
+                        appMode.current === "servers" ||
+                        appMode.current === "dms",
+                    "border-blue-500/60": appMode.current === "posts",
                 })}
             >
                 <Avatar
@@ -49,4 +52,4 @@ const AvatarEditor = ({
     );
 };
 
-export default AvatarEditor;
+export default observer(AvatarEditor);

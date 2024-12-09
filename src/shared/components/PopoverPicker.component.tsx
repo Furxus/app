@@ -14,7 +14,7 @@ const PopoverPicker = ({
     onChange: any;
     classNames?: string;
 }) => {
-    const popover = useRef<any>();
+    const popover = useRef<any>(null);
     const [isOpen, toggle] = useState(false);
 
     const close = useCallback(() => toggle(false), []);

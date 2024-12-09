@@ -25,7 +25,7 @@ const Titlebar = () => {
     return (
         <Stack
             data-tauri-drag-region
-            className="w-full shadow-xl"
+            className="w-full shadow-xl select-none bg-neutral-900"
             justifyContent="space-between"
             alignItems="center"
             direction="row"

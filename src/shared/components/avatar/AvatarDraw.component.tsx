@@ -1,5 +1,3 @@
-import { useAppMode } from "@/hooks";
-
 import classNames from "classnames";
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
 
@@ -16,13 +14,15 @@ import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 import { FaEraser, FaPaintBrush } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const AvatarDraw = ({
     setMainOpen,
 }: {
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
 
     const [open, setOpen] = useState(false);
 
@@ -83,7 +83,7 @@ const AvatarDraw = ({
                 size="small"
                 variant="outlined"
                 color={
-                    appMode === "servers" || appMode === "dms"
+                    appMode.current === "servers" || appMode.current === "dms"
                         ? "success"
                         : "primary"
                 }
@@ -102,8 +102,9 @@ const AvatarDraw = ({
                         "bg-neutral-900 border rounded-lg p-4",
                         {
                             "border-green-500/60":
-                                appMode === "servers" || appMode === "dms",
-                            "border-blue-500/60": appMode === "posts",
+                                appMode.current === "servers" ||
+                                appMode.current === "dms",
+                            "border-blue-500/60": appMode.current === "posts",
                         }
                     )}
                     justifyContent="center"
@@ -116,8 +117,9 @@ const AvatarDraw = ({
                         alignItems="center"
                         className={classNames("border rounded-md p-2", {
                             "border-green-500/60":
-                                appMode === "servers" || appMode === "dms",
-                            "border-blue-500/60": appMode === "posts",
+                                appMode.current === "servers" ||
+                                appMode.current === "dms",
+                            "border-blue-500/60": appMode.current === "posts",
                         })}
                     >
                         <Stack
@@ -152,7 +154,8 @@ const AvatarDraw = ({
                                 onChange={changeSize}
                                 className="w-20 bg-neutral-700 text-neutral-200 rounded-md pl-1"
                                 color={
-                                    appMode === "servers" || appMode === "dms"
+                                    appMode.current === "servers" ||
+                                    appMode.current === "dms"
                                         ? Colors.servers
                                         : Colors.posts
                                 }
@@ -192,9 +195,10 @@ const AvatarDraw = ({
                                 onChange={(color: string) => setBgColor(color)}
                                 classNames={classNames("border", {
                                     "border-green-500/60":
-                                        appMode === "servers" ||
-                                        appMode === "dms",
-                                    "border-blue-500/60": appMode === "posts",
+                                        appMode.current === "servers" ||
+                                        appMode.current === "dms",
+                                    "border-blue-500/60":
+                                        appMode.current === "posts",
                                 })}
                             />
                             <Typography variant="button">
@@ -217,7 +221,8 @@ const AvatarDraw = ({
                             }}
                             style={{
                                 border: `1px solid ${
-                                    appMode === "servers" || appMode === "dms"
+                                    appMode.current === "servers" ||
+                                    appMode.current === "dms"
                                         ? Colors.servers
                                         : Colors.posts
                                 }`,
@@ -233,7 +238,8 @@ const AvatarDraw = ({
                     >
                         <Button
                             color={
-                                appMode === "servers" || appMode === "dms"
+                                appMode.current === "servers" ||
+                                appMode.current === "dms"
                                     ? "success"
                                     : "primary"
                             }
@@ -246,7 +252,8 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" || appMode === "dms"
+                                appMode.current === "servers" ||
+                                appMode.current === "dms"
                                     ? "success"
                                     : "primary"
                             }
@@ -259,7 +266,8 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" || appMode === "dms"
+                                appMode.current === "servers" ||
+                                appMode.current === "dms"
                                     ? "success"
                                     : "primary"
                             }
@@ -272,7 +280,8 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" || appMode === "dms"
+                                appMode.current === "servers" ||
+                                appMode.current === "dms"
                                     ? "success"
                                     : "primary"
                             }
@@ -285,7 +294,8 @@ const AvatarDraw = ({
                         </Button>
                         <Button
                             color={
-                                appMode === "servers" || appMode === "dms"
+                                appMode.current === "servers" ||
+                                appMode.current === "dms"
                                     ? "success"
                                     : "primary"
                             }
@@ -303,4 +313,4 @@ const AvatarDraw = ({
     );
 };
 
-export default AvatarDraw;
+export default observer(AvatarDraw);

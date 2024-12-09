@@ -1,6 +1,6 @@
 import APILoading from "./shared/components/status/APILoading.component";
 
-import { useAppMode, useTauri } from "./hooks";
+import { useTauri } from "./hooks";
 import SEO from "./shared/SEO";
 import WebRoutes from "./shared/Web.routes";
 
@@ -8,9 +8,14 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "./api";
 import Titlebar from "./shared/Titlebar";
 import { Stack } from "@mui/material";
+import { observer } from "mobx-react-lite";
+import { useAppStore } from "./hooks/useAppStore";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const App = () => {
-    const { appMode } = useAppMode();
+    const location = useLocation();
+    const { appMode } = useAppStore();
     const { inTauri } = useTauri();
 
     const { isLoading, error } = useQuery({
@@ -19,13 +24,19 @@ const App = () => {
         retry: Infinity,
     });
 
+    useEffect(() => {
+        if (location.pathname.includes("/servers")) appMode.set("servers");
+        if (location.pathname.includes("/posts")) appMode.set("posts");
+        if (location.pathname.includes("/dms")) appMode.set("dms");
+    }, [location.pathname]);
+
     if (error) return <APILoading />;
     if (isLoading) return <APILoading />;
 
     let title = "Furxus - Furry Nexus";
     let favicon = "/favicon.ico";
 
-    switch (appMode) {
+    switch (appMode.mode) {
         case "servers":
             title = "Furxus - Servers";
             favicon = "/logo2.png";
@@ -51,4 +62,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default observer(App);

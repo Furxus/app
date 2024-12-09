@@ -1,10 +1,11 @@
-import { useAppMode } from "@/hooks";
+import { useAppStore } from "@/hooks/useAppStore";
 import Stack from "@mui/material/Stack";
 import classNames from "classnames";
+import { observer } from "mobx-react-lite";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 const EmojiList = forwardRef((props: any, ref: any) => {
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
 
     const [emojiIndex, select] = useState(0);
 
@@ -53,7 +54,7 @@ const EmojiList = forwardRef((props: any, ref: any) => {
     return (
         <Stack
             className={classNames("bg-neutral-700 rounded-xl w-full border", {
-                "border-green-500/60": appMode === "servers",
+                "border-green-500/60": appMode.current === "servers",
             })}
             direction="column"
             gap={1}
@@ -88,4 +89,4 @@ const EmojiList = forwardRef((props: any, ref: any) => {
     );
 });
 
-export default EmojiList;
+export default observer(EmojiList);

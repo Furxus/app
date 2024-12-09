@@ -1,5 +1,5 @@
 import { api } from "@/api";
-import { useAppMode, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
 import { DMChannel, User } from "@furxus/types";
 import IconButton from "@mui/material/IconButton";
 import { ButtonProps } from "@mui/material/Button";
@@ -19,6 +19,8 @@ import {
     OfflineBadge,
     OnlineBadge,
 } from "../StatusBadges.component";
+import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const UserAvatar = ({
     avatar,
@@ -36,7 +38,7 @@ const UserAvatar = ({
     withTooltip?: boolean;
 }) => {
     const navigate = useNavigate();
-    const { appMode, changeAppMode } = useAppMode();
+    const { appMode } = useAppStore();
     const { avatarProps, avatarClasses } = avatar ?? {};
     const { btnProps, btnClasses } = button ?? {};
     const { user: auth }: { user: any } = useAuth();
@@ -67,7 +69,7 @@ const UserAvatar = ({
         mutationFn: (recipient: string) =>
             api.post("/dms", { recipient }).then((res) => res.data),
         onSuccess: (dm: DMChannel) => {
-            changeAppMode("dms");
+            appMode.switch("dms", navigate);
             navigate(`/dms/${dm.id}`);
         },
     });
@@ -206,7 +208,7 @@ const UserAvatar = ({
                 </Item>
                 {auth?.id !== user?.id && (
                     <>
-                        {appMode !== "dms" && (
+                        {appMode.current !== "dms" && (
                             <Item onClick={() => openDM(user.id)}>
                                 <MdMail className="mr-2" />
                                 Message
@@ -257,4 +259,4 @@ const UserAvatar = ({
     );
 };
 
-export default UserAvatar;
+export default observer(UserAvatar);

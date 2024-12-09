@@ -2,6 +2,8 @@ import { Descendant, BaseEditor, BaseRange, Range, Element } from "slate";
 import { ReactEditor } from "slate-react";
 import { HistoryEditor } from "slate-history";
 
+export type AppModes = "servers" | "posts" | "dms";
+
 export type CustomText = {
     bold?: boolean;
     italic?: boolean;

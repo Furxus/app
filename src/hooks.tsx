@@ -1,9 +1,7 @@
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./providers/Auth.provider";
-import { AppModeContext } from "./providers/AppMode.provider";
 import { UserServersContext } from "./providers/UserServers.provider";
 import { UserEmojisContext } from "./providers/UserEmojis.provider";
-import { EditorExtensionsContext } from "./providers/EditorExtensions.provider";
 import { TauriContext } from "./providers/Tauri.provider";
 import { EmojisProviderContext } from "./providers/Emojis.provider";
 
@@ -12,15 +10,6 @@ export function useAuth() {
 
     if (process.env.NODE_ENV === "development" && value === undefined)
         throw new Error("useAuth must be used within an AuthProvider");
-
-    return value;
-}
-
-export function useAppMode() {
-    const value = useContext(AppModeContext);
-
-    if (process.env.NODE_ENV === "development" && value === undefined)
-        throw new Error("useAppMode must be used within a AppModeProvider");
 
     return value;
 }
@@ -51,17 +40,6 @@ export function useUserEmojis() {
     if (process.env.NODE_ENV === "development" && value === undefined)
         throw new Error(
             "useUserEmojis must be used within a UserEmojisProvider"
-        );
-
-    return value;
-}
-
-export function useEditorExtensions() {
-    const value = useContext(EditorExtensionsContext);
-
-    if (process.env.NODE_ENV === "development" && value === undefined)
-        throw new Error(
-            "useEditorExtensions must be used within a EditorExtensionsProvider"
         );
 
     return value;

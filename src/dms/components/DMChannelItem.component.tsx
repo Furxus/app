@@ -1,4 +1,4 @@
-import { useAuth, useEditorExtensions } from "@/hooks";
+import { useAuth } from "@/hooks";
 import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
 
 import { DMChannel } from "@furxus/types";
@@ -6,16 +6,12 @@ import { DMChannel } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import { generateText } from "@tiptap/react";
 import classNames from "classnames";
 import { useLocation, useNavigate } from "react-router-dom";
-import ReadOnlyEditor from "@/shared/components/ReadOnlyEditor.component";
-import Link from "@tiptap/extension-link";
 
 const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    const { extensions } = useEditorExtensions();
     const { user: auth } = useAuth();
 
     const isActive = pathname.includes(channel.id);
@@ -55,28 +51,6 @@ const DMChannelItem = ({ channel }: { channel: DMChannel }) => {
                 <Typography variant="caption" className="truncate">
                     {recipient?.displayName ?? recipient?.username}
                 </Typography>
-                {channel.messages && channel.messages.length > 0 ? (
-                    channel.messages[channel.messages.length - 1] && (
-                        <ReadOnlyEditor
-                            additionalClasses="text-xs"
-                            content={generateText(
-                                channel.messages[channel.messages.length - 1]
-                                    ?.content,
-                                [
-                                    ...extensions,
-                                    Link.configure({ openOnClick: false }),
-                                ]
-                            )}
-                        />
-                    )
-                ) : (
-                    <Typography
-                        variant="caption"
-                        className="text-gray-500 truncate"
-                    >
-                        No messages
-                    </Typography>
-                )}
             </Stack>
         </Stack>
     );

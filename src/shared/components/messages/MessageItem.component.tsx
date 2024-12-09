@@ -5,7 +5,7 @@ import { Item, Menu, useContextMenu } from "react-contexify";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 
 import Stack from "@mui/material/Stack";
-import { useAuth, useEditorExtensions } from "@hooks";
+import { useAuth } from "@hooks";
 
 import { useHover } from "usehooks-ts";
 
@@ -22,9 +22,6 @@ import UserAvatar from "@/shared/components/avatar/UserAvatar.component";
 
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
-import ChannelTextEditInput from "../MessageTextEditInput.component";
-import ReadOnlyEditor from "../ReadOnlyEditor.component";
-import { generateText } from "@tiptap/react";
 
 const MessageItem = ({
     messages,
@@ -35,12 +32,11 @@ const MessageItem = ({
     message: Message;
     index: number;
 }) => {
-    const { extensions } = useEditorExtensions();
     const { show } = useContextMenu();
     const { user: auth } = useAuth();
     const [messageEditing, setMessageEditing] = useState(false);
     const hoverRef = useRef<HTMLDivElement>(null);
-    const messageHovered = useHover(hoverRef);
+    const messageHovered = useHover<any>(hoverRef);
 
     const { mutate: deleteMessage } = useMutation({
         mutationKey: ["deleteMessage", { messageId: message.id }],
@@ -94,7 +90,7 @@ const MessageItem = ({
                 </Tooltip>
             )}
             <Stack direction="row" alignItems="flex-end" className="w-full">
-                <ReadOnlyEditor content={message.content} />
+                <span>{message.content}</span>
                 {message.edited && (
                     <Tooltip
                         disableInteractive
@@ -181,15 +177,7 @@ const MessageItem = ({
                             </time>
                         </Stack>
                         <Stack onContextMenu={showMenu} className="w-full">
-                            {messageEditing ? (
-                                <ChannelTextEditInput
-                                    setMessageEditing={setMessageEditing}
-                                    deleteMessage={deleteMessage}
-                                    message={message}
-                                />
-                            ) : (
-                                renderMessage()
-                            )}
+                            {messageEditing ? <></> : renderMessage()}
                         </Stack>
                     </Stack>
                 </Stack>
@@ -200,15 +188,7 @@ const MessageItem = ({
                     pl={7.5}
                     ref={hoverRef}
                 >
-                    {messageEditing ? (
-                        <ChannelTextEditInput
-                            setMessageEditing={setMessageEditing}
-                            deleteMessage={deleteMessage}
-                            message={message}
-                        />
-                    ) : (
-                        renderMessage()
-                    )}
+                    {messageEditing ? <></> : renderMessage()}
                 </Stack>
             )}
             <Menu id={`message-menu-${message.id}`}>
@@ -218,11 +198,7 @@ const MessageItem = ({
                         Edit Message
                     </Item>
                 )}
-                <Item
-                    onClick={() =>
-                        copy(generateText(message.content, extensions))
-                    }
-                >
+                <Item onClick={() => copy("hi")}>
                     <FaCopy className="mr-2" />
                     Copy Text
                 </Item>

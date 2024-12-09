@@ -1,13 +1,25 @@
 import { defineConfig } from "vite";
+
 import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const host = process.env.TAURI_DEV_HOST;
 
-import tsconfigPaths from "vite-tsconfig-paths";
-
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-    plugins: [react(), tsconfigPaths()],
+    plugins: [
+        react({
+            babel: {
+                plugins: [
+                    [
+                        "@babel/plugin-proposal-decorators",
+                        { version: "2023-05" },
+                    ],
+                ],
+            },
+        }),
+        tsconfigPaths(),
+    ],
     define: {
         global: "window",
     },
@@ -17,6 +29,9 @@ export default defineConfig(async () => ({
     // 1. prevent vite from obscuring rust errors
     clearScreen: false,
     // 2. tauri expects a fixed port, fail if that port is not available
+
+    envPrefix: ["VITE_", "TAURI_"],
+
     server: {
         port: 1420,
         strictPort: true,

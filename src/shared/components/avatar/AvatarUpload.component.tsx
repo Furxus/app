@@ -2,19 +2,21 @@ import Button from "@mui/material/Button";
 import classNames from "classnames";
 import { Dispatch, SetStateAction, useState } from "react";
 import AvatarEditor from "react-avatar-edit";
-import { useAppMode, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
 import Stack from "@mui/material/Stack";
 import Modal from "@mui/material/Modal";
 import Avatar from "@/shared/components/avatar/Avatar.component";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const AvatarUpload = ({
     setMainOpen,
 }: {
     setMainOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
     const { user } = useAuth();
 
     const [open, setOpen] = useState(false);
@@ -74,7 +76,7 @@ const AvatarUpload = ({
                 size="small"
                 variant="outlined"
                 color={
-                    appMode === "servers" || appMode === "dms"
+                    appMode.current === "servers" || appMode.current === "dms"
                         ? "success"
                         : "primary"
                 }
@@ -92,8 +94,9 @@ const AvatarUpload = ({
                     className={classNames(
                         "bg-neutral-900 border rounded-lg p-4",
                         {
-                            "border-green-500/60": appMode === "servers",
-                            "border-blue-500/60": appMode === "posts",
+                            "border-green-500/60":
+                                appMode.current === "servers",
+                            "border-blue-500/60": appMode.current === "posts",
                         }
                     )}
                     justifyContent="center"
@@ -165,4 +168,4 @@ const AvatarUpload = ({
     );
 };
 
-export default AvatarUpload;
+export default observer(AvatarUpload);

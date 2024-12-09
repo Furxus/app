@@ -1,13 +1,15 @@
-import { useAppMode, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
 import { useState } from "react";
 import AvatarEditor from "../avatar/AvatarEditor.component";
 import Stack from "@mui/material/Stack";
 import Avatar from "@/shared/components/avatar/Avatar.component";
 import Typography from "@mui/material/Typography";
+import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const ProfileCustomization = () => {
     const { user } = useAuth();
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
 
     const [avatarEditorVisible, setAvatarEditorVisible] = useState(false);
 
@@ -28,7 +30,8 @@ const ProfileCustomization = () => {
                     <Typography
                         variant="caption"
                         color={
-                            appMode === "servers" || appMode === "dms"
+                            appMode.current === "servers" ||
+                            appMode.current === "dms"
                                 ? "success"
                                 : "primary"
                         }
@@ -47,4 +50,4 @@ const ProfileCustomization = () => {
     );
 };
 
-export default ProfileCustomization;
+export default observer(ProfileCustomization);

@@ -11,7 +11,7 @@ import { store, persistor } from "../reducers";
 
 import App from "../App";
 import { AuthProvider } from "./Auth.provider";
-import { AppModeProvider } from "./AppMode.provider";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CacheProvider, ThemeProvider } from "@emotion/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -20,7 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { UserServersProvider } from "./UserServers.provider";
 import { UserEmojisProvider } from "./UserEmojis.provider";
-import { EditorExtensionsProvider } from "./EditorExtensions.provider";
+
 import { TauriProvider } from "./Tauri.provider";
 
 const queryClient = new QueryClient();
@@ -81,12 +81,7 @@ export default function MainProvider() {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <QueryClientProvider client={queryClient}>
-                    <Router
-                        future={{
-                            v7_startTransition: true,
-                            v7_relativeSplatPath: true,
-                        }}
-                    >
+                    <Router>
                         <ThemeProvider theme={theme}>
                             <StyledEngineProvider injectFirst>
                                 <CacheProvider value={emotionCache}>
@@ -95,29 +90,24 @@ export default function MainProvider() {
                                     >
                                         <HelmetProvider>
                                             <AuthProvider>
-                                                <AppModeProvider>
-                                                    <UserServersProvider>
-                                                        <UserEmojisProvider>
-                                                            <TauriProvider>
-                                                                <EditorExtensionsProvider>
-                                                                    <CssBaseline />
-                                                                    <App />
-                                                                    {import.meta
-                                                                        .env
-                                                                        .DEV && (
-                                                                        <ReactQueryDevtools
-                                                                            buttonPosition="bottom-left"
-                                                                            position="bottom"
-                                                                            initialIsOpen={
-                                                                                false
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                </EditorExtensionsProvider>
-                                                            </TauriProvider>
-                                                        </UserEmojisProvider>
-                                                    </UserServersProvider>
-                                                </AppModeProvider>
+                                                <UserServersProvider>
+                                                    <UserEmojisProvider>
+                                                        <TauriProvider>
+                                                            <CssBaseline />
+                                                            <App />
+                                                            {import.meta.env
+                                                                .DEV && (
+                                                                <ReactQueryDevtools
+                                                                    buttonPosition="bottom-left"
+                                                                    position="bottom"
+                                                                    initialIsOpen={
+                                                                        false
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </TauriProvider>
+                                                    </UserEmojisProvider>
+                                                </UserServersProvider>
                                             </AuthProvider>
                                         </HelmetProvider>
                                     </LocalizationProvider>

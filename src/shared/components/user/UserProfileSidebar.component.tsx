@@ -1,9 +1,11 @@
-import { useAppMode, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
+import { useAppStore } from "@/hooks/useAppStore";
 import { Colors, ProfileSettingsPages } from "@/utils";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import classNames from "classnames";
+import { observer } from "mobx-react-lite";
 import { Dispatch, SetStateAction } from "react";
 
 const ProfileSidebar = ({
@@ -13,12 +15,12 @@ const ProfileSidebar = ({
     currentPage: ProfileSettingsPages;
     setCurrentPage: Dispatch<SetStateAction<ProfileSettingsPages>>;
 }) => {
-    const { appMode } = useAppMode();
+    const { appMode } = useAppStore();
     const { logout } = useAuth();
 
     let color = Colors.dms;
 
-    switch (appMode) {
+    switch (appMode.current) {
         case "posts":
             color = Colors.posts;
             break;
@@ -37,9 +39,9 @@ const ProfileSidebar = ({
             gap="0.25rem"
             p={4}
             className={classNames("h-full", {
-                "border-blue-500/60": appMode === "posts",
-                "border-green-500/60": appMode === "servers",
-                "border-[#367588]/60": appMode === "dms",
+                "border-blue-500/60": appMode.current === "posts",
+                "border-green-500/60": appMode.current === "servers",
+                "border-[#367588]/60": appMode.current === "dms",
             })}
         >
             <Button
@@ -102,4 +104,4 @@ const ProfileSidebar = ({
     );
 };
 
-export default ProfileSidebar;
+export default observer(ProfileSidebar);
