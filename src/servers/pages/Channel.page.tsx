@@ -9,6 +9,7 @@ import { api, socket } from "@/api";
 import { useEffect } from "react";
 import { Message } from "@furxus/types";
 import { useAppStore } from "@/hooks/useAppStore";
+import { observer } from "mobx-react-lite";
 
 const ChannelPage = () => {
     const queryClient = useQueryClient();
@@ -91,4 +92,4 @@ const ChannelPage = () => {
     );
 };
 
-export default ChannelPage;
+export default observer(ChannelPage);

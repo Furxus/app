@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Channel, User } from "@furxus/types";
 import Stack from "@mui/material/Stack";
 
@@ -20,18 +19,16 @@ const ChannelTextInput = ({
     recipient?: User;
 }) => {
     const { channels } = useAppStore();
-    const [message, setMessage] = useState(channels.getInput(channel.id));
 
     const { mutate: createMessage } = useMutation({
         mutationKey: ["createMessage"],
         mutationFn: () =>
             api.put(`/channels/${channel.id}/messages`, {
-                content: message,
+                content: channels.getInput(channel.id).trim(),
                 recipient: recipient?.id,
             }),
         onSuccess: () => {
             channels.setInput(channel.id, "");
-            setMessage("");
         },
     });
 
@@ -44,12 +41,7 @@ const ChannelTextInput = ({
             p={2}
         >
             <Stack direction="row" justifyContent="center" alignItems="center">
-                <MarkdownEditor
-                    channel={channel}
-                    state={message}
-                    setState={setMessage}
-                    onSubmit={createMessage}
-                />
+                <MarkdownEditor channel={channel} onSubmit={createMessage} />
             </Stack>
             <Stack
                 position="relative"

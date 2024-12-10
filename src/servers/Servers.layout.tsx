@@ -8,6 +8,7 @@ import { useUserServers } from "@/hooks";
 import { Server } from "@furxus/types";
 import { useEffect } from "react";
 import { socket } from "@/api";
+import { observer } from "mobx-react-lite";
 
 const ServerLayout = () => {
     const { serverId } = useParams();
@@ -59,4 +60,4 @@ const ServerLayout = () => {
     );
 };
 
-export default ServerLayout;
+export default observer(ServerLayout);

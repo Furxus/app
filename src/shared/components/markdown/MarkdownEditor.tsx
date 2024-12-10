@@ -1,7 +1,7 @@
 import {
+    useEffect,
     KeyboardEvent,
     useCallback,
-    useEffect,
     useMemo,
     useState,
 } from "react";
@@ -47,7 +47,7 @@ const SHORTCUTS = {
     "###": "heading-three",
 };
 
-const withShortcuts = (editor: any) => {
+const withShortcuts = (editor: Editor) => {
     const { deleteBackward, insertText } = editor;
 
     editor.insertText = (text: any) => {
@@ -87,7 +87,7 @@ const withShortcuts = (editor: any) => {
         insertText(text);
     };
 
-    editor.deleteBackward = (...args: any[]) => {
+    editor.deleteBackward = (...args: any) => {
         const { selection } = editor;
 
         if (selection && Range.isCollapsed(selection)) {
@@ -115,14 +115,14 @@ const withShortcuts = (editor: any) => {
                 }
             }
 
-            deleteBackward(...args);
+            deleteBackward(args[0]);
         }
     };
 
     return editor;
 };
 
-const withEmojis = (editor: any) => {
+const withEmojis = (editor: Editor) => {
     const { isInline, isVoid, markableVoid } = editor;
 
     editor.isInline = (element: any) => {
@@ -145,13 +145,9 @@ const withEmojis = (editor: any) => {
 };
 
 const MarkdownEditor = ({
-    state,
-    setState,
     channel,
     onSubmit,
 }: {
-    state: any;
-    setState: (newState: any) => void;
     channel: Channel;
     onSubmit: any;
 }) => {
@@ -173,8 +169,15 @@ const MarkdownEditor = ({
     );
 
     const [value, setValue] = useState<Descendant[]>(
-        deserializeFromMarkdown(state)
+        deserializeFromMarkdown(channels.getInput(channel.id))
     );
+
+    useEffect(() => {
+        const newValue = deserializeFromMarkdown(channels.getInput(channel.id));
+        setValue(newValue);
+        editor.children = newValue;
+    }, [channels, channel.id]);
+
     const decorate = useCallback(([node, path]: [Node, number[]]): Range[] => {
         const ranges: Range[] = [];
 
@@ -305,13 +308,12 @@ const MarkdownEditor = ({
                 }
             }
 
-            setValue(newValue);
-
             const serialized = serializeToMarkdown(newValue);
-            setState(serialized);
+
+            setValue(newValue);
             channels.setInput(channel.id, serialized);
         },
-        [editor, setState, channels, channel.id, userEmojis]
+        [editor, channels, channel.id, userEmojis]
     );
 
     const onKeyDown = useCallback(
@@ -322,6 +324,7 @@ const MarkdownEditor = ({
 
             if (event.key === "Enter" && !event.shiftKey) {
                 onSubmit();
+                editor.delete();
                 event.preventDefault();
             }
 
@@ -344,7 +347,7 @@ const MarkdownEditor = ({
                 }
             }
         },
-        [editor, onSubmit, handleShiftEnter]
+        [editor, onSubmit, handleShiftEnter, channels, channel.id]
     );
 
     return (

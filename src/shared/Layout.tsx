@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { api, socket } from "@/api";
 import Button from "@mui/material/Button";
+import { observer } from "mobx-react-lite";
 
 const Layout = () => {
     const navigate = useNavigate();
@@ -109,4 +110,4 @@ const Layout = () => {
     );
 };
 
-export default Layout;
+export default observer(Layout);

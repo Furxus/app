@@ -1,6 +1,6 @@
 import APILoading from "./shared/components/status/APILoading.component";
 
-import { useTauri } from "./hooks";
+import { useAuth, useTauri } from "./hooks";
 import SEO from "./shared/SEO";
 import WebRoutes from "./shared/Web.routes";
 
@@ -11,10 +11,12 @@ import { Stack } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useAppStore } from "./hooks/useAppStore";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const App = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { user } = useAuth();
     const { appMode } = useAppStore();
     const { inTauri } = useTauri();
 
@@ -25,10 +27,27 @@ const App = () => {
     });
 
     useEffect(() => {
-        if (location.pathname.includes("/servers")) appMode.set("servers");
-        if (location.pathname.includes("/posts")) appMode.set("posts");
-        if (location.pathname.includes("/dms")) appMode.set("dms");
+        if (location.pathname.includes("/servers")) {
+            appMode.set("servers");
+            return;
+        }
+        if (location.pathname.includes("/posts")) {
+            appMode.set("posts");
+            return;
+        }
+        if (location.pathname.includes("/dms")) {
+            appMode.set("dms");
+            return;
+        }
+
+        appMode.set(null);
     }, [location.pathname]);
+
+    useEffect(() => {
+        if (user && location.pathname === "/") {
+            appMode.switch(user.preferences.mode ?? "servers", navigate);
+        }
+    }, [user.preferences.mode]);
 
     if (error) return <APILoading />;
     if (isLoading) return <APILoading />;

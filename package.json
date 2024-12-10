@@ -72,6 +72,7 @@
         "markdown-it": "^14.1.0",
         "markdown-to-txt": "^2.0.1",
         "mobx": "^6.13.5",
+        "mobx-persist": "^0.4.1",
         "mobx-persist-store": "^1.1.5",
         "mobx-react": "^9.1.1",
         "mobx-react-lite": "^4.0.7",

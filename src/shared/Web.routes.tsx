@@ -10,6 +10,7 @@ import { LoginPage, RegisterPage, NotFound } from "./pages";
 import VerifyPage from "./pages/Verify.page";
 import DMsLayout from "@/dms/DMs.layout";
 import DMChannelPage from "@/dms/DMChannel.page";
+import { observer } from "mobx-react-lite";
 
 const WebRoutes = () => {
     return (
@@ -39,4 +40,4 @@ const WebRoutes = () => {
     );
 };
 
-export default WebRoutes;
+export default observer(WebRoutes);

@@ -1,11 +1,13 @@
 import { AppModes } from "@/types";
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
 export default class AppModeStore {
-    @observable accessor mode: AppModes = "servers";
+    mode: AppModes | null = null;
 
     constructor() {
+        makeAutoObservable(this);
+
         makePersistable(this, {
             name: "AppModeStore",
             properties: ["mode"],
@@ -13,17 +15,14 @@ export default class AppModeStore {
         });
     }
 
-    @action
-    set(appMode: AppModes) {
+    set(appMode: AppModes | null) {
         this.mode = appMode;
     }
 
-    @action
     get current() {
         return this.mode;
     }
 
-    @action
     switch(appMode: AppModes, navigate: (appMode: AppModes) => void) {
         this.set(appMode);
         navigate(appMode);

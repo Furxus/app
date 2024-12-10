@@ -11,6 +11,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
+import { useAppStore } from "@/hooks/useAppStore";
 
 type ServerError = {
     usernameOrEmail?: string;
@@ -21,6 +22,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const { isLoggedIn, login } = useAuth();
+    const { appMode } = useAppStore();
     const [showPassword, setShowPassword] = useState(false);
 
     const [srvErrors, setSrvErrors] = useState<ServerError>();
@@ -40,6 +42,7 @@ const LoginPage = () => {
         onSuccess: ({ data }) => {
             setSrvErrors(undefined);
             login(data);
+            appMode.switch(data.preferences.mode ?? "servers", navigate);
         },
     });
 

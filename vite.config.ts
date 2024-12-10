@@ -7,19 +7,7 @@ const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-    plugins: [
-        react({
-            babel: {
-                plugins: [
-                    [
-                        "@babel/plugin-proposal-decorators",
-                        { version: "2023-05" },
-                    ],
-                ],
-            },
-        }),
-        tsconfigPaths(),
-    ],
+    plugins: [react(), tsconfigPaths()],
     define: {
         global: "window",
     },
