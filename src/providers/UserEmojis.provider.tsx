@@ -23,6 +23,7 @@ export function UserEmojisProvider({ children }: PropsWithChildren) {
     const { data: userEmojis } = useQuery({
         queryKey: ["getUserEmojis"],
         queryFn: () => api.get("/@me/emojis").then((res) => res.data),
+        enabled: localStorage.getItem("token") !== null,
     });
 
     useEffect(() => {

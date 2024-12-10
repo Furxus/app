@@ -1,19 +1,13 @@
 import { Channel } from "@furxus/types";
 import { observable, makeAutoObservable } from "mobx";
-import { makePersistable } from "mobx-persist-store";
 
 export default class ChannelStore {
     channels = observable.map<string, Channel>();
     inputs = observable.map<string, string>();
+    current = observable.box<Channel | null>(null);
 
     constructor() {
         makeAutoObservable(this);
-
-        makePersistable(this, {
-            name: "ChannelStore",
-            properties: ["channels", "inputs"],
-            storage: window.localStorage,
-        });
     }
 
     setInput(channelId: string, content: string) {
@@ -25,11 +19,16 @@ export default class ChannelStore {
     }
 
     add(channel: Channel) {
+        if (this.channels.has(channel.id)) return;
         this.channels.set(channel.id, channel);
     }
 
     addAll(channels: Channel[]) {
         channels.forEach((channel) => this.add(channel));
+    }
+
+    set(channel: Channel | null) {
+        this.current.set(channel);
     }
 
     get all() {

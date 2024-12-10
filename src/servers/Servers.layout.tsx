@@ -1,20 +1,52 @@
 import ServerSidebar from "./components/ServerSidebar.component";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { FaBook } from "react-icons/fa";
 
 import "@css/ServerSideContextMenu.css";
 import Stack from "@mui/material/Stack";
-import { useUserServers } from "@/hooks";
 import { Server } from "@furxus/types";
-import { useEffect } from "react";
-import { socket } from "@/api";
+import { useEffect, useState } from "react";
+import { api, socket } from "@/api";
 import { observer } from "mobx-react-lite";
+import { useQuery } from "@tanstack/react-query";
+import { useAppStore } from "@/hooks/useAppStore";
 
 const ServerLayout = () => {
-    const { serverId } = useParams();
-    const { servers } = useUserServers();
+    const app = useAppStore();
+    const navigate = useNavigate();
+    const [server, setServer] = useState<Server | null>(null);
 
-    const server = servers.find((srv: Server) => srv.id === serverId);
+    const { data: servers } = useQuery<Server[]>({
+        queryKey: ["getUserServers"],
+        queryFn: () => api.get("/@me/servers").then((res) => res.data),
+        enabled: localStorage.getItem("token") !== null,
+    });
+
+    const { serverId, channelId } = useParams();
+
+    useEffect(() => {
+        if (servers) {
+            app.servers.addAll(servers);
+            let server = servers.find((s) => s.id === serverId);
+            if (!server) {
+                server = servers[0];
+            }
+            if (server) {
+                setServer(server);
+                app.servers.set(server);
+                if (!serverId) {
+                    navigate(`/servers/${server.id}`);
+                }
+
+                if (!channelId) {
+                    const channelId = server.channels[0];
+                    if (channelId) {
+                        navigate(`/servers/${server.id}/${channelId}`);
+                    }
+                }
+            }
+        }
+    }, [servers, serverId, channelId]);
 
     useEffect(() => {
         if (server) {
@@ -26,7 +58,7 @@ const ServerLayout = () => {
         };
     }, [serverId, server]);
 
-    if (servers.length === 0)
+    if (servers?.length === 0)
         return (
             <Stack
                 alignItems="center"

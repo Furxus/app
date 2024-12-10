@@ -41,7 +41,11 @@ const ChannelTextInput = ({
             p={2}
         >
             <Stack direction="row" justifyContent="center" alignItems="center">
-                <MarkdownEditor channel={channel} onSubmit={createMessage} />
+                <MarkdownEditor
+                    recipient={recipient}
+                    channel={channel}
+                    onSubmit={createMessage}
+                />
             </Stack>
             <Stack
                 position="relative"

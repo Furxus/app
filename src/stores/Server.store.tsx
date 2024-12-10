@@ -4,6 +4,7 @@ import { Server } from "@furxus/types";
 export default class ServerStore {
     initialServersLoaded = false;
     servers = observable.map<string, Server>();
+    current = observable.box<Server | null>(null);
 
     constructor() {
         makeAutoObservable(this);
@@ -14,6 +15,7 @@ export default class ServerStore {
     }
 
     add(server: Server) {
+        if (this.servers.has(server.id)) return;
         this.servers.set(server.id, server);
     }
 
@@ -27,6 +29,14 @@ export default class ServerStore {
 
     get(id: string) {
         return this.servers.get(id);
+    }
+
+    set(server: Server | null) {
+        this.current.set(server);
+    }
+
+    has(id: string) {
+        return this.servers.has(id);
     }
 
     get all() {

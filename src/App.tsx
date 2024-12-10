@@ -47,7 +47,7 @@ const App = () => {
         if (user && location.pathname === "/") {
             appMode.switch(user.preferences.mode ?? "servers", navigate);
         }
-    }, [user.preferences.mode]);
+    }, [user, user?.preferences.mode]);
 
     if (error) return <APILoading />;
     if (isLoading) return <APILoading />;

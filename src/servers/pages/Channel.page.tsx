@@ -8,12 +8,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, socket } from "@/api";
 import { useEffect } from "react";
 import { Message } from "@furxus/types";
-import { useAppStore } from "@/hooks/useAppStore";
 import { observer } from "mobx-react-lite";
+import { useAppStore } from "@/hooks/useAppStore";
 
 const ChannelPage = () => {
-    const queryClient = useQueryClient();
     const app = useAppStore();
+    const queryClient = useQueryClient();
     const { serverId, channelId } = useParams();
 
     const { data: channel } = useQuery({
@@ -23,6 +23,12 @@ const ChannelPage = () => {
                 .get(`/channels/${serverId}/${channelId}`)
                 .then((res) => res.data),
     });
+
+    useEffect(() => {
+        if (channel) {
+            app.channels.set(channel);
+        }
+    }, [channel]);
 
     useEffect(() => {
         socket.emit("channel:join", channelId);
@@ -74,11 +80,6 @@ const ChannelPage = () => {
             socket.off("message:delete");
         };
     }, []);
-
-    useEffect(() => {
-        app.setActiveServerId(serverId);
-        app.setActiveChannelId(channelId);
-    }, [serverId, channelId]);
 
     if (!channelId) return <Skeleton />;
     if (!channel) return <></>;

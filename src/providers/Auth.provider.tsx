@@ -25,7 +25,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const navigate = useNavigate();
     const user = useSelector((state: any) => state.auth.user);
 
-    const token = localStorage.getItem("fx-token");
+    const token = localStorage.getItem("token");
 
     const { data: meData } = useQuery({
         queryKey: ["me"],
@@ -59,13 +59,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     const loginUser = (userData: UserWithToken) => {
         const { token, ...user } = userData;
-        localStorage.setItem("fx-token", token);
+        localStorage.setItem("token", token);
         navigate(user.preferences.mode ?? "servers");
         dispatch(updateUser(user));
     };
 
     const logoutUser = () => {
-        localStorage.removeItem("fx-token");
+        localStorage.removeItem("token");
         dispatch(logout());
     };
 

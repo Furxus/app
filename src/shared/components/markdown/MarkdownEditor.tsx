@@ -38,7 +38,7 @@ import {
     serializeToMarkdown,
 } from "@/utils/editorUtils";
 import { observer } from "mobx-react-lite";
-import { Channel } from "@furxus/types";
+import { BaseServerChannel, Channel, User } from "@furxus/types";
 
 const SHORTCUTS = {
     ">": "blockquote",
@@ -146,9 +146,11 @@ const withEmojis = (editor: Editor) => {
 
 const MarkdownEditor = ({
     channel,
+    recipient,
     onSubmit,
 }: {
     channel: Channel;
+    recipient?: User;
     onSubmit: any;
 }) => {
     const editor = useMemo(
@@ -324,7 +326,9 @@ const MarkdownEditor = ({
 
             if (event.key === "Enter" && !event.shiftKey) {
                 onSubmit();
-                editor.delete();
+                editor.children = [
+                    { type: "paragraph", children: [{ text: "" }] },
+                ];
                 event.preventDefault();
             }
 
@@ -356,9 +360,27 @@ const MarkdownEditor = ({
             <Editable
                 decorate={decorate}
                 renderLeaf={renderLeaf}
+                placeholder={
+                    recipient
+                        ? `Message @${
+                              recipient.displayName ?? recipient.username
+                          }`
+                        : `Message #${(channel as BaseServerChannel).name}`
+                }
+                renderPlaceholder={({
+                    children,
+                    attributes: { style, ...attributes },
+                }) => (
+                    <div
+                        {...attributes}
+                        className="text-white opacity-30 block absolute top-2 left-2 pointer-events-none select-none max-w-full w-full"
+                    >
+                        {children}
+                    </div>
+                )}
                 renderElement={renderElement}
                 onKeyDown={onKeyDown}
-                className="w-full border border-green-500/60 rounded-xl p-2"
+                className="w-full h-full border border-green-500/60 rounded-xl p-2"
                 spellCheck
                 autoFocus
             />
