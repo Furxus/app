@@ -17,7 +17,7 @@ const ChannelPage = () => {
     const { serverId, channelId } = useParams();
 
     const { data: channel } = useQuery({
-        queryKey: ["getChannel", { id: channelId }],
+        queryKey: ["getChannel", { channelId }],
         queryFn: () =>
             api
                 .get(`/channels/${serverId}/${channelId}`)
@@ -27,12 +27,15 @@ const ChannelPage = () => {
     useEffect(() => {
         if (channel) {
             app.channels.set(channel);
+            socket.emit("channel:focus", channelId);
         }
-    }, [channel]);
+
+        return () => {
+            socket.emit("channel:blur", channelId);
+        };
+    }, [channelId]);
 
     useEffect(() => {
-        socket.emit("channel:join", channelId);
-
         socket.on("message:create", (message: Message) => {
             queryClient.setQueryData(
                 ["getMessages", { channelId }],
@@ -74,7 +77,9 @@ const ChannelPage = () => {
         });
 
         return () => {
-            socket.emit("channel:leave", channelId);
+            if (channelId) {
+                socket.emit("channel:leave", channelId);
+            }
             socket.off("message:create");
             socket.off("message:update");
             socket.off("message:delete");

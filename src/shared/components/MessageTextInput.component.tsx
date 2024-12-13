@@ -22,15 +22,19 @@ const ChannelTextInput = ({
 
     const { mutate: createMessage } = useMutation({
         mutationKey: ["createMessage"],
-        mutationFn: () =>
-            api.put(`/channels/${channel.id}/messages`, {
-                content: channels.getInput(channel.id).trim(),
-                recipient: recipient?.id,
-            }),
+        mutationFn: (values: any) =>
+            api.put(`/channels/${channel.id}/messages`, values),
         onSuccess: () => {
             channels.setInput(channel.id, "");
         },
     });
+
+    const onSubmit = () => {
+        createMessage({
+            content: channels.getInput(channel.id).trim(),
+            recipient: recipient?.id,
+        });
+    };
 
     return (
         <Stack
@@ -44,7 +48,7 @@ const ChannelTextInput = ({
                 <MarkdownEditor
                     recipient={recipient}
                     channel={channel}
-                    onSubmit={createMessage}
+                    onSubmit={onSubmit}
                 />
             </Stack>
             <Stack

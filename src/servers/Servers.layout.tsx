@@ -34,6 +34,7 @@ const ServerLayout = () => {
             if (server) {
                 setServer(server);
                 app.servers.set(server);
+                socket.emit("server:focus", server.id);
                 if (!serverId) {
                     navigate(`/servers/${server.id}`);
                 }
@@ -54,9 +55,11 @@ const ServerLayout = () => {
         }
 
         return () => {
-            socket.emit("server:blur", serverId);
+            if (serverId) {
+                socket.emit("server:blur", serverId);
+            }
         };
-    }, [serverId, server]);
+    }, [server]);
 
     if (servers?.length === 0)
         return (

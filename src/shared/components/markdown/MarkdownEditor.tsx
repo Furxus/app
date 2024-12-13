@@ -326,6 +326,7 @@ const MarkdownEditor = ({
 
             if (event.key === "Enter" && !event.shiftKey) {
                 onSubmit();
+                Transforms.select(editor, Editor.start(editor, []));
                 editor.children = [
                     { type: "paragraph", children: [{ text: "" }] },
                 ];
